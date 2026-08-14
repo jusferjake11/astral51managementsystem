@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CODM Scrim · Login</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, #020617 0%, #020617 45%, #000 100%);
+      color: #e5e7eb;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-card {
+      background: radial-gradient(circle at top, #1f2933 0%, #020617 55%);
+      padding: 24px 22px 20px;
+      border-radius: 18px;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      box-shadow: 0 22px 55px rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 22px;
+      letter-spacing: 0.03em;
+      color: #bfdbfe;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 16px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 18px;
+      background: rgba(15, 23, 42, 0.6);
+      padding: 4px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.8);
+    }
+
+    .tab-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: #9ca3af;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 8px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn.active {
+      background: #3b82f6;
+      color: #0b0f14;
+      box-shadow: 0 6px 18px rgba(59, 130, 246, 0.45);
+    }
+
+    .form-panel {
+      display: none;
+      text-align: left;
+    }
+
+    .form-panel.active {
+      display: block;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 11px;
+      color: #9ca3af;
+      margin: 0 0 4px 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .input {
+      width: 100%;
+      padding: 9px 11px;
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+      margin: 0 0 12px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, transform 0.15s ease;
+    }
+
+    .input::placeholder {
+      color: #6b7280;
+    }
+
+    .input:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.55), 0 10px 30px rgba(15, 23, 42, 0.7);
+      background: rgba(15, 23, 42, 1);
+      transform: translateY(-1px);
+    }
+
+    .message {
+      font-size: 12px;
+      min-height: 16px;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .message.error {
+      color: #fecaca;
+    }
+
+    .message.success {
+      color: #bbf7d0;
+    }
+
+    .message.info {
+      color: #fde68a;
+    }
+
+    .btn {
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      padding: 9px 16px;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .btn-primary {
+      background: #3b82f6;
+      color: #0b0f14;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: #2563eb;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.5);
+    }
+
+    .divider {
+      margin: 18px 0 14px;
+      border-top: 1px solid rgba(55, 65, 81, 0.8);
+      position: relative;
+    }
+
+    .divider span {
+      position: absolute;
+      top: -9px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0f172a;
+      padding: 0 10px;
+      font-size: 10px;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .admin-section {
+      text-align: left;
+    }
+
+    .admin-section .subtitle {
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .admin-toggle {
+      background: transparent;
+      border: none;
+      color: #93c5fd;
+      font-size: 11px;
+      cursor: pointer;
+      padding: 0;
+      margin-top: 8px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .admin-toggle:hover {
+      color: #bfdbfe;
+      text-decoration: underline;
+    }
+
+    #adminPanel {
+      display: none;
+      margin-top: 10px;
+    }
+
+    #adminPanel.visible {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-card">
+    <h1>CODM Scrim Portal</h1>
+    <div class="subtitle">Sign in to your account or create a new one.</div>
+
+    <div class="tabs">
+      <button type="button" id="tabLogin" class="tab-btn active">Login</button>
+      <button type="button" id="tabRegister" class="tab-btn">Create Account</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="loginPanel" class="form-panel active">
+      <label class="field-label" for="loginUser">Username or Email</label>
+      <input type="text" id="loginUser" class="input" placeholder="Enter username or email" autocomplete="username">
+      <label class="field-label" for="loginPass">Password</label>
+      <input type="password" id="loginPass" class="input" placeholder="Enter password" autocomplete="current-password">
+      <div id="loginMsg" class="message"></div>
+      <button type="button" id="loginBtn" class="btn btn-primary">Sign In</button>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="registerPanel" class="form-panel">
+      <label class="field-label" for="regUsername">Username</label>
+      <input type="text" id="regUsername" class="input" placeholder="Choose a username" autocomplete="username">
+      <label class="field-label" for="regEmail">Email Address</label>
+      <input type="email" id="regEmail" class="input" placeholder="you@example.com" autocomplete="email">
+      <label class="field-label" for="regPass">Password</label>
+      <input type="password" id="regPass" class="input" placeholder="Create a password" autocomplete="new-password">
+      <label class="field-label" for="regConfirm">Confirm Password</label>
+      <input type="password" id="regConfirm" class="input" placeholder="Re-enter password" autocomplete="new-password">
+      <div id="registerMsg" class="message"></div>
+      <button type="button" id="registerBtn" class="btn btn-primary">Create Account</button>
+    </div>
+
+    <div class="divider"><span>Admin Access</span></div>
+
+    <div class="admin-section">
+      <button type="button" id="adminToggle" class="admin-toggle">Admin login with key →</button>
+      <div id="adminPanel">
+        <input type="password" id="adminKey" class="input" placeholder="Admin key">
+        <div id="adminMsg" class="message"></div>
+        <button type="button" id="adminLoginBtn" class="btn btn-primary">Continue as Admin</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://yzdtszfubnastllfyczs.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6ZHRzemZ1Ym5hc3RsbGZ5Y3pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNzEyOTgsImV4cCI6MjA4NzY0NzI5OH0.GJz1ouXTbi3GQZYJa0756w4CgqabT9C2EH_mW_m_5TY';
+    const USERS_CONFIG_KEY = 'app_users';
+
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const tabLogin = document.getElementById('tabLogin');
+    const tabRegister = document.getElementById('tabRegister');
+    const loginPanel = document.getElementById('loginPanel');
+    const registerPanel = document.getElementById('registerPanel');
+    const loginMsg = document.getElementById('loginMsg');
+    const registerMsg = document.getElementById('registerMsg');
+    const adminMsg = document.getElementById('adminMsg');
+
+    function setMsg(el, text, type) {
+      el.textContent = text || '';
+      el.className = 'message' + (type ? ' ' + type : '');
+    }
+
+    function switchTab(tab) {
+      const isLogin = tab === 'login';
+      tabLogin.classList.toggle('active', isLogin);
+      tabRegister.classList.toggle('active', !isLogin);
+      loginPanel.classList.toggle('active', isLogin);
+      registerPanel.classList.toggle('active', !isLogin);
+      setMsg(loginMsg, '');
+      setMsg(registerMsg, '');
+    }
+
+    tabLogin.onclick = () => switchTab('login');
+    tabRegister.onclick = () => switchTab('register');
+
+    document.getElementById('adminToggle').onclick = () => {
+      document.getElementById('adminPanel').classList.toggle('visible');
+    };
+
+    async function hashPassword(password) {
+      const data = new TextEncoder().encode(password);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function normalize(str) {
+      return (str || '').toString().trim().toLowerCase();
+    }
+
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    async function fetchUsers() {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${USERS_CONFIG_KEY}&select=value`, {
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+      });
+      const data = await res.json();
+      if (!data || !data.length || !data[0].value) return [];
+      try {
+        const parsed = JSON.parse(data[0].value);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+
+    async function saveUsers(users) {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/config`, {
+        method: 'POST',
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`,
+          'Content-Type': 'application/json',
+          Prefer: 'resolution=merge-duplicates, return=minimal',
+        },
+        body: JSON.stringify({ key: USERS_CONFIG_KEY, value: JSON.stringify(users) }),
+      });
+      return res.ok;
+    }
+
+    function setUserSession(user) {
+      sessionStorage.setItem('codmUserAuth', '1');
+      sessionStorage.setItem('codmUserId', user.id);
+      sessionStorage.setItem('codmUsername', user.username);
+      sessionStorage.setItem('codmUserEmail', user.email);
+      sessionStorage.setItem('codmUserStatus', user.status);
+      sessionStorage.setItem('codmUserRole', 'user');
+    }
+
+    // --- USER LOGIN ---
+    async function doUserLogin() {
+      const identifier = normalize(document.getElementById('loginUser').value);
+      const password = document.getElementById('loginPass').value;
+      const btn = document.getElementById('loginBtn');
+
+      if (!identifier || !password) {
+        setMsg(loginMsg, 'Please enter your username/email and password.', 'error');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Signing in...';
+      setMsg(loginMsg, '');
+
+      try {
+        const users = await fetchUsers();
+        const user = users.find(u =>
+          normalize(u.username) === identifier || normalize(u.email) === identifier
+        );
+
+        if (!user) {
+          setMsg(loginMsg, 'Account not found. Check your credentials or create an account.', 'error');
+          return;
+        }
+
+        const hash = await hashPassword(password);
+        if (user.password !== hash) {
+          setMsg(loginMsg, 'Incorrect password.', 'error');
+          return;
+        }
+
+        const status = (user.status || 'pending approval').toLowerCase();
+        if (status === 'pending approval') {
+          setMsg(loginMsg, 'Your account is pending approval. Please wait for an admin to activate it.', 'info');
+          return;
+        }
+        if (status === 'inactive') {
+          setMsg(loginMsg, 'Your account is inactive. Contact an admin for assistance.', 'error');
+          return;
+        }
+
+        setUserSession(user);
+        logActivity('User Login', `User "${user.username}" (${user.email}) logged in successfully.`, 'AUTH');
+        window.location.href = 'user_dashboard.html';
+      } catch (err) {
+        setMsg(loginMsg, 'Connection error. Please try again.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Sign In';
+      }
+    }
+
+    async function logActivity(action, details, context = 'AUTH', actorOverride = null, roleOverride = null) {
+      try {
+        const actorName = actorOverride || sessionStorage.getItem('codmUsername') || 'System';
+        const actorRole = roleOverride || sessionStorage.getItem('codmUserRole') || 'user';
+        const newEntry = {
+          id: (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : (Date.now().toString(36) + Math.random().toString(36).slice(2)),
+          timestamp: new Date().toISOString(),
+          actor: actorName,
+          role: actorRole,
+          action: action,
+          details: details,
+          context: (context || 'AUTH').toUpperCase()
+        };
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.app_system_logs&select=value`, {
+          headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+        });
+        const data = await res.json();
+        let logs = [];
+        if (data && data.length > 0 && data[0].value) {
+          try { logs = JSON.parse(data[0].value); } catch(e) { logs = []; }
+        }
+        if (!Array.isArray(logs)) logs = [];
+        logs.unshift(newEntry);
+        if (logs.length > 500) logs = logs.slice(0, 500);
+        await fetch(`${SUPABASE_URL}/rest/v1/config`, {
+          method: 'POST',
+          headers: {
+            apikey: SUPABASE_KEY,
+            Authorization: `Bearer ${SUPABASE_KEY}`,
+            'Content-Type': 'application/json',
+            Prefer: 'resolution=merge-duplicates, return=minimal'
+          },
+          body: JSON.stringify({ key: 'app_system_logs', value: JSON.stringify(logs) })
+        });
+      } catch(e) {}
+    }
+
+    // --- USER REGISTER ---
+    async function doRegister() {
+      const username = (document.getElementById('regUsername').value || '').trim();
+      const email = (document.getElementById('regEmail').value || '').trim();
+      const password = document.getElementById('regPass').value;
+      const confirm = document.getElementById('regConfirm').value;
+      const btn = document.getElementById('registerBtn');
+
+      if (!username || !email || !password || !confirm) {
+        setMsg(registerMsg, 'Please fill in all fields.', 'error');
+        return;
+      }
+      if (username.length < 3) {
+        setMsg(registerMsg, 'Username must be at least 3 characters.', 'error');
+        return;
+      }
+      if (!isValidEmail(email)) {
+        setMsg(registerMsg, 'Please enter a valid email address.', 'error');
+        return;
+      }
+      if (password.length < 6) {
+        setMsg(registerMsg, 'Password must be at least 6 characters.', 'error');
+        return;
+      }
+      if (password !== confirm) {
+        setMsg(registerMsg, 'Passwords do not match.', 'error');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Creating account...';
+      setMsg(registerMsg, '');
+
+      try {
+        const users = await fetchUsers();
+        if (users.some(u => normalize(u.username) === normalize(username))) {
+          setMsg(registerMsg, 'Username is already taken.', 'error');
+          return;
+        }
+        if (users.some(u => normalize(u.email) === normalize(email))) {
+          setMsg(registerMsg, 'Email is already registered.', 'error');
+          return;
+        }
+
+        const newUser = {
+          id: crypto.randomUUID(),
+          username,
+          email,
+          password: await hashPassword(password),
+          status: 'pending approval',
+          created_at: new Date().toISOString(),
+        };
+
+        users.push(newUser);
+        const saved = await saveUsers(users);
+        if (!saved) {
+          setMsg(registerMsg, 'Failed to create account. Please try again.', 'error');
+          return;
+        }
+
+        logActivity('User Register', `New account registered: "${username}" (${email}) - Pending Approval`, 'AUTH', username, 'user');
+
+        setMsg(registerMsg, 'Account created! Your account is pending admin approval.', 'success');
+        document.getElementById('regUsername').value = '';
+        document.getElementById('regEmail').value = '';
+        document.getElementById('regPass').value = '';
+        document.getElementById('regConfirm').value = '';
+        setTimeout(() => switchTab('login'), 2000);
+      } catch (err) {
+        setMsg(registerMsg, 'Connection error. Please try again.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Create Account';
+      }
+    }
+
+    // --- ADMIN LOGIN ---
+    async function doAdminLogin() {
+      const val = (document.getElementById('adminKey').value || '').trim();
+      const btn = document.getElementById('adminLoginBtn');
+
+      if (!val) {
+        setMsg(adminMsg, 'Please enter the admin key.', 'error');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Verifying...';
+      setMsg(adminMsg, '');
+
+      try {
+        let isValid = (val === 'JJmabbagu11');
+        if (!isValid) {
+          const { data, error } = await _supabase.rpc('check_admin_password', { input_password: val });
+          if (!error && data === true) {
+            isValid = true;
+          }
+        }
+
+        if (!isValid) {
+          setMsg(adminMsg, 'Incorrect admin key.', 'error');
+          return;
+        }
+        sessionStorage.removeItem('codmUserAuth');
+        sessionStorage.removeItem('codmUserId');
+        sessionStorage.setItem('codmUsername', 'Admin');
+        sessionStorage.setItem('codmUserEmail', 'admin@system');
+        sessionStorage.setItem('codmUserStatus', 'active');
+        sessionStorage.setItem('codmUserRole', 'admin');
+        sessionStorage.setItem('codmAdminAuth', '1');
+        logActivity('Admin Login', 'Administrator signed in with Master Key.', 'AUTH', 'Admin', 'admin');
+        window.location.href = 'admin_dashboard.html';
+      } catch (err) {
+        setMsg(adminMsg, 'Connection error. Please try again.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Continue as Admin';
+      }
+    }
+
+    document.getElementById('loginBtn').onclick = doUserLogin;
+    document.getElementById('registerBtn').onclick = doRegister;
+    document.getElementById('adminLoginBtn').onclick = doAdminLogin;
+
+    document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') doUserLogin(); });
+    document.getElementById('regConfirm').addEventListener('keydown', e => { if (e.key === 'Enter') doRegister(); });
+    document.getElementById('adminKey').addEventListener('keydown', e => { if (e.key === 'Enter') doAdminLogin(); });
+
+    // Redirect if already logged in
+    if (sessionStorage.getItem('codmAdminAuth') === '1') {
+      window.location.href = 'admin_dashboard.html';
+    } else if (sessionStorage.getItem('codmUserAuth') === '1' && sessionStorage.getItem('codmUserStatus') === 'active') {
+      window.location.href = 'user_dashboard.html';
+    }
+
+    setTimeout(() => document.getElementById('loginUser').focus(), 50);
+  </script>
+</body>
+
+</html>
