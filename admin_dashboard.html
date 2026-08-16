@@ -93,6 +93,7 @@
       .layout {
         grid-template-columns: 1fr;
       }
+
       .sidebar {
         height: auto !important;
         position: relative !important;
@@ -100,46 +101,58 @@
         border-bottom: 1px solid rgba(148, 163, 184, 0.3);
         padding: 15px !important;
       }
+
       .sidebar-title {
         text-align: center;
         margin-bottom: 15px !important;
       }
+
       .sidebar-nav {
         flex-direction: row !important;
         overflow-x: auto;
         padding-bottom: 5px;
         -webkit-overflow-scrolling: touch;
       }
+
       .sidebar-item {
         white-space: nowrap;
         flex-shrink: 0;
       }
+
       .main-view {
         padding: 20px 15px !important;
       }
+
       header {
         flex-direction: column;
         align-items: flex-start !important;
         gap: 15px;
       }
+
       .title-block h1 {
         font-size: 20px !important;
       }
+
       .card-header {
         flex-direction: column;
         align-items: flex-start !important;
         gap: 10px;
       }
+
       .badge-admin {
         align-self: flex-start;
       }
+
       #adminScoreboardLayout {
         grid-template-columns: 1fr !important;
         gap: 20px !important;
       }
-      #playerStatsContainer table, #adminScoreboardLayout table {
+
+      #playerStatsContainer table,
+      #adminScoreboardLayout table {
         font-size: 11px !important;
       }
+
       #adminScoreboardLayout input {
         width: 45px !important;
         padding: 4px 2px !important;
@@ -236,8 +249,17 @@
     }
 
     @keyframes livePulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.4;
+        transform: scale(0.85);
+      }
     }
 
     .sidebar-section-label {
@@ -262,6 +284,7 @@
     .sidebar-nav::-webkit-scrollbar {
       width: 4px;
     }
+
     .sidebar-nav::-webkit-scrollbar-thumb {
       background: rgba(255, 255, 255, 0.1);
       border-radius: 4px;
@@ -648,11 +671,13 @@
       gap: 16px;
       margin-top: 14px;
     }
+
     @media (max-width: 900px) {
       .banned-section-grid {
         grid-template-columns: 1fr;
       }
     }
+
     .banned-card {
       background: radial-gradient(circle at top left, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98));
       border: 1px solid rgba(71, 85, 105, 0.6);
@@ -665,6 +690,7 @@
       position: relative;
       overflow: hidden;
     }
+
     .banned-card::before {
       content: '';
       position: absolute;
@@ -673,15 +699,19 @@
       right: 0;
       height: 3px;
     }
+
     .banned-card.noshow::before {
       background: linear-gradient(90deg, #ef4444, #f87171, #fb923c);
     }
+
     .banned-card.latecancel::before {
       background: linear-gradient(90deg, #f97316, #fbbf24, #f59e0b);
     }
+
     .banned-card.perm::before {
       background: linear-gradient(90deg, #dc2626, #991b1b, #7f1d1d);
     }
+
     .banned-card.warning::before {
       background: linear-gradient(90deg, #eab308, #facc15, #fef08a);
     }
@@ -695,10 +725,22 @@
       letter-spacing: 0.05em;
       text-transform: uppercase;
     }
-    .banned-card.noshow .banned-card-title { color: #fca5a5; }
-    .banned-card.latecancel .banned-card-title { color: #fdba74; }
-    .banned-card.perm .banned-card-title { color: #f87171; }
-    .banned-card.warning .banned-card-title { color: #fef08a; }
+
+    .banned-card.noshow .banned-card-title {
+      color: #fca5a5;
+    }
+
+    .banned-card.latecancel .banned-card-title {
+      color: #fdba74;
+    }
+
+    .banned-card.perm .banned-card-title {
+      color: #f87171;
+    }
+
+    .banned-card.warning .banned-card-title {
+      color: #fef08a;
+    }
 
     .banned-card-subtitle {
       font-size: 11px;
@@ -722,6 +764,7 @@
       gap: 8px;
       align-items: flex-end;
     }
+
     @media (max-width: 640px) {
       .banned-input-row {
         grid-template-columns: 1fr 1fr;
@@ -733,6 +776,7 @@
       flex-direction: column;
       gap: 4px;
     }
+
     .banned-input-group label {
       font-size: 10px;
       font-weight: 600;
@@ -753,10 +797,12 @@
       width: 100%;
       box-sizing: border-box;
     }
+
     .banned-input-field:focus {
       border-color: #38bdf8;
       box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
     }
+
     .banned-input-field::placeholder {
       color: #64748b;
       font-size: 11px;
@@ -768,12 +814,14 @@
       gap: 6px;
       flex-wrap: wrap;
     }
+
     .banned-preset-label {
       font-size: 10px;
       color: #64748b;
       text-transform: uppercase;
       font-weight: 600;
     }
+
     .banned-preset-btn {
       background: rgba(30, 41, 59, 0.9);
       border: 1px solid rgba(71, 85, 105, 0.6);
@@ -785,6 +833,7 @@
       cursor: pointer;
       transition: all 0.15s ease;
     }
+
     .banned-preset-btn:hover {
       background: rgba(51, 65, 85, 0.9);
       color: #f8fafc;
@@ -811,6 +860,7 @@
       box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
       white-space: nowrap;
     }
+
     .banned-add-btn:hover {
       background: linear-gradient(135deg, #f87171, #ef4444);
       transform: translateY(-1px);
@@ -821,6 +871,7 @@
       background: linear-gradient(135deg, #f97316, #ea580c);
       box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
     }
+
     .banned-card.latecancel .banned-add-btn:hover {
       background: linear-gradient(135deg, #fb923c, #f97316);
       box-shadow: 0 6px 16px rgba(249, 115, 22, 0.45);
@@ -850,6 +901,7 @@
       border-collapse: collapse;
       font-size: 11px;
     }
+
     .banned-table th {
       background: rgba(30, 41, 59, 0.95);
       color: #94a3b8;
@@ -863,12 +915,14 @@
       top: 0;
       z-index: 2;
     }
+
     .banned-table td {
       padding: 8px 10px;
       border-bottom: 1px solid rgba(51, 65, 85, 0.3);
       color: #e2e8f0;
       vertical-align: middle;
     }
+
     .banned-table tr:hover td {
       background: rgba(51, 65, 85, 0.25);
     }
@@ -897,6 +951,7 @@
       font-weight: 700;
       font-size: 10px;
     }
+
     .banned-scrim-badge.late {
       background: rgba(249, 115, 22, 0.15);
       border-color: rgba(249, 115, 22, 0.4);
@@ -917,11 +972,13 @@
       align-items: center;
       gap: 3px;
     }
+
     .banned-action-btn:hover {
       background: rgba(239, 68, 68, 0.2);
       border-color: #ef4444;
       color: #fca5a5;
     }
+
     .banned-action-btn.dec-btn:hover {
       background: rgba(59, 130, 246, 0.2);
       border-color: #3b82f6;
@@ -961,6 +1018,168 @@
     .admin-toast.success {
       border-color: #22c55e;
       color: #bbf7d0;
+    }
+
+    /* ── Bootstrap-Style Alert Modal (Error / Warning / Info / Success) ── */
+    @keyframes bsModalFadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes bsModalSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(25px) scale(0.97);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    #bsAlertModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      justify-content: center;
+      align-items: center;
+      z-index: 99999;
+      padding: 16px;
+      animation: bsModalFadeIn 0.25s ease-out;
+    }
+
+    #bsAlertModalContent {
+      width: 100%;
+      max-width: 440px;
+      background: radial-gradient(circle at top left, #1e293b, #020617);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.08);
+      animation: bsModalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .bs-alert-header {
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .bs-alert-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .bs-alert-header.error .bs-alert-icon {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.45);
+      color: #fca5a5;
+      box-shadow: 0 0 15px rgba(239, 68, 68, 0.25);
+    }
+
+    .bs-alert-header.warning .bs-alert-icon {
+      background: rgba(249, 115, 22, 0.15);
+      border: 1px solid rgba(249, 115, 22, 0.45);
+      color: #fdba74;
+      box-shadow: 0 0 15px rgba(249, 115, 22, 0.25);
+    }
+
+    .bs-alert-header.info .bs-alert-icon {
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.45);
+      color: #93c5fd;
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.25);
+    }
+
+    .bs-alert-header.success .bs-alert-icon {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.45);
+      color: #86efac;
+      box-shadow: 0 0 15px rgba(34, 197, 94, 0.25);
+    }
+
+    .bs-alert-title {
+      font-size: 15px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      line-height: 1.2;
+    }
+
+    .bs-alert-header.error .bs-alert-title {
+      color: #fecaca;
+    }
+
+    .bs-alert-header.warning .bs-alert-title {
+      color: #fed7aa;
+    }
+
+    .bs-alert-header.info .bs-alert-title {
+      color: #bfdbfe;
+    }
+
+    .bs-alert-header.success .bs-alert-title {
+      color: #bbf7d0;
+    }
+
+    .bs-alert-body {
+      padding: 22px 24px 18px;
+      text-align: left;
+    }
+
+    .bs-alert-message {
+      font-size: 14px;
+      font-weight: 600;
+      color: #e2e8f0;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .bs-alert-footer {
+      padding: 14px 24px 22px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .bs-alert-close-btn {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 22px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+    }
+
+    .bs-alert-close-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
+
+    .bs-alert-close-btn:active {
+      transform: translateY(0);
     }
 
     .admin-toast.error {
@@ -1303,6 +1522,134 @@
       border: 1px solid rgba(250, 204, 21, 0.35);
     }
 
+    .status-badge.inactive {
+      background: rgba(107, 114, 128, 0.15);
+      color: #cbd5e1;
+      border: 1px solid rgba(107, 114, 128, 0.4);
+    }
+
+    /* CLAN MANAGEMENT STYLING */
+    .approved-clan-list-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .approved-clan-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 14px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(6, 182, 212, 0.05));
+      border: 1px dashed rgba(99, 102, 241, 0.35);
+      border-radius: 14px;
+      min-height: 40px;
+    }
+
+    .approved-clan-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px 7px 12px;
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.18), rgba(6, 182, 212, 0.12));
+      border: 1px solid rgba(34, 197, 94, 0.45);
+      border-radius: 999px;
+      box-shadow: 0 4px 10px rgba(34, 197, 94, 0.1);
+    }
+
+    .approved-clan-chip .chip-tag {
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      color: #bbf7d0;
+      font-size: 12px;
+      padding: 2px 7px;
+      background: rgba(22, 163, 74, 0.3);
+      border-radius: 6px;
+    }
+
+    .approved-clan-chip .chip-name {
+      font-weight: 600;
+      color: #f1f5f9;
+      font-size: 13px;
+    }
+
+    .chip-remove-btn {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      border: none;
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+      font-size: 11px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+
+    .chip-remove-btn:hover {
+      background: rgba(239, 68, 68, 0.45);
+      color: #fff;
+      transform: scale(1.1);
+    }
+
+    .clan-approveall-btn,
+    .clan-list-add-btn,
+    .clan-list-remove-btn,
+    .clan-delete-btn {
+      padding: 5px 9px;
+      border-radius: 8px;
+      border: none;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .clan-approveall-btn {
+      background: linear-gradient(135deg, #22c55e, #0ea5e9);
+      color: #fff;
+      box-shadow: 0 3px 8px rgba(34, 197, 94, 0.25);
+    }
+
+    .clan-approveall-btn:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
+    .clan-list-add-btn {
+      background: rgba(59, 130, 246, 0.2);
+      color: #bfdbfe;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+    }
+
+    .clan-list-add-btn:hover {
+      background: rgba(59, 130, 246, 0.35);
+    }
+
+    .clan-list-remove-btn {
+      background: rgba(245, 158, 11, 0.18);
+      color: #fed7aa;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+
+    .clan-list-remove-btn:hover {
+      background: rgba(245, 158, 11, 0.32);
+    }
+
+    .clan-delete-btn {
+      background: rgba(239, 68, 68, 0.15);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+
+    .clan-delete-btn:hover {
+      background: rgba(239, 68, 68, 0.35);
+      transform: scale(1.05);
+    }
+
     /* SYSTEM LOGS STYLING */
     .log-badge {
       display: inline-flex;
@@ -1314,41 +1661,49 @@
       font-weight: 700;
       letter-spacing: 0.02em;
     }
+
     .log-badge.slot {
       background: rgba(59, 130, 246, 0.15);
       color: #93c5fd;
       border: 1px solid rgba(59, 130, 246, 0.4);
     }
+
     .log-badge.scoreboard {
       background: rgba(234, 179, 8, 0.15);
       color: #fde047;
       border: 1px solid rgba(234, 179, 8, 0.4);
     }
+
     .log-badge.banned {
       background: rgba(239, 68, 68, 0.15);
       color: #fca5a5;
       border: 1px solid rgba(239, 68, 68, 0.4);
     }
+
     .log-badge.schedule {
       background: rgba(168, 85, 247, 0.15);
       color: #d8b4fe;
       border: 1px solid rgba(168, 85, 247, 0.4);
     }
+
     .log-badge.user {
       background: rgba(16, 185, 129, 0.15);
       color: #6ee7b7;
       border: 1px solid rgba(16, 185, 129, 0.4);
     }
+
     .log-badge.auth {
       background: rgba(6, 182, 212, 0.15);
       color: #67e8f9;
       border: 1px solid rgba(6, 182, 212, 0.4);
     }
+
     .log-badge.settings {
       background: rgba(249, 115, 22, 0.15);
       color: #fdba74;
       border: 1px solid rgba(249, 115, 22, 0.4);
     }
+
     .log-badge.general {
       background: rgba(148, 163, 184, 0.15);
       color: #cbd5e1;
@@ -1362,6 +1717,7 @@
       font-weight: 600;
       color: #f1f5f9;
     }
+
     .log-actor-avatar {
       width: 22px;
       height: 22px;
@@ -1376,6 +1732,7 @@
       text-transform: uppercase;
       flex-shrink: 0;
     }
+
     .log-context-badge {
       font-size: 10px;
       font-weight: 700;
@@ -1500,6 +1857,7 @@
         opacity: 0;
         transform: scale(0.95) translateY(-6px);
       }
+
       to {
         opacity: 1;
         transform: scale(1) translateY(0);
@@ -1606,6 +1964,7 @@
       opacity: 0.7;
       transition: opacity 0.15s ease;
     }
+
     .pwd-toggle-btn:hover {
       opacity: 1;
     }
@@ -1620,12 +1979,14 @@
         <div class="sidebar-brand">
           <div class="sidebar-brand-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L3 7V13C3 18.52 6.84 23.74 12 25C17.16 23.74 21 18.52 21 13V7L12 2Z" fill="url(#adminGrad)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
-              <path d="M9 12L11 14L15 10" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 2L3 7V13C3 18.52 6.84 23.74 12 25C17.16 23.74 21 18.52 21 13V7L12 2Z" fill="url(#adminGrad)"
+                stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+              <path d="M9 12L11 14L15 10" stroke="#ffffff" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
               <defs>
                 <linearGradient id="adminGrad" x1="3" y1="2" x2="21" y2="25" gradientUnits="userSpaceOnUse">
-                  <stop stop-color="#6366f1"/>
-                  <stop offset="1" stop-color="#3b82f6"/>
+                  <stop stop-color="#6366f1" />
+                  <stop offset="1" stop-color="#3b82f6" />
                 </linearGradient>
               </defs>
             </svg>
@@ -1679,6 +2040,14 @@
           </button>
 
           <div class="sidebar-section-label">MANAGEMENT</div>
+          <button id="navClans" class="sidebar-item">
+            <span class="nav-item-left">
+              <span class="nav-icon">🛡️</span>
+              <span class="nav-text">Clan Management</span>
+            </span>
+            <span class="nav-pill" id="clansCountBadge"
+              style="background:rgba(250,204,21,0.2); border-color:rgba(250,204,21,0.4); color:#fde68a;">0</span>
+          </button>
           <button id="navUsers" class="sidebar-item">
             <span class="nav-item-left">
               <span class="nav-icon">👥</span>
@@ -1736,7 +2105,8 @@
                   <span class="user-role-label" id="userRoleLabel">Administrator</span>
                 </div>
                 <svg class="user-caret-icon" width="12" height="12" viewBox="0 0 12 12" fill="none">
-                  <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
                 </svg>
               </button>
               <div class="user-dropdown-menu" id="userDropdownMenu">
@@ -1963,7 +2333,8 @@
           <div class="card">
             <div class="card-header" style="align-items:flex-start; flex-wrap:wrap; gap:12px;">
               <div>
-                <div style="font-size:15px; font-weight:700; color:#f8fafc; letter-spacing:0.02em;">Banned & Warning Teams Manager</div>
+                <div style="font-size:15px; font-weight:700; color:#f8fafc; letter-spacing:0.02em;">Banned & Warning
+                  Teams Manager</div>
                 <div style="font-size:12px; color:#9ca3af; margin-top:2px;">
                   Quickly add, manage, and track scrim bans for No Show, Late Cancel, Permanent Bans, and Warnings.
                 </div>
@@ -1981,7 +2352,9 @@
               <div class="banned-card noshow">
                 <div class="banned-card-title">
                   <span>🚫 NO SHOW</span>
-                  <span style="font-size:10px; background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); color:#fca5a5; padding:2px 8px; border-radius:999px;">5 SCRIMS BAN</span>
+                  <span
+                    style="font-size:10px; background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); color:#fca5a5; padding:2px 8px; border-radius:999px;">5
+                    SCRIMS BAN</span>
                 </div>
                 <div class="banned-card-subtitle">Add teams that did not show up for their scheduled match.</div>
 
@@ -1997,7 +2370,8 @@
                     </div>
                     <div class="banned-input-group">
                       <label>Scrim Banned</label>
-                      <input type="text" id="bannedNoShowScrim" class="banned-input-field" placeholder="5 Scrims" value="5 Scrims">
+                      <input type="text" id="bannedNoShowScrim" class="banned-input-field" placeholder="5 Scrims"
+                        value="5 Scrims">
                     </div>
                     <button type="button" id="bannedNoShowAddBtn" class="banned-add-btn">
                       ➕ Add Team
@@ -2005,11 +2379,16 @@
                   </div>
                   <div class="banned-preset-row">
                     <span class="banned-preset-label">Quick Scrim Ban:</span>
-                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('noShow', '5 Scrims')">5 Scrims</button>
-                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('noShow', '4 Scrims')">4 Scrims</button>
-                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('noShow', '3 Scrims')">3 Scrims</button>
-                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('noShow', '2 Scrims')">2 Scrims</button>
-                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('noShow', '1 Scrim')">1 Scrim</button>
+                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('noShow', '5 Scrims')">5
+                      Scrims</button>
+                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('noShow', '4 Scrims')">4
+                      Scrims</button>
+                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('noShow', '3 Scrims')">3
+                      Scrims</button>
+                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('noShow', '2 Scrims')">2
+                      Scrims</button>
+                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('noShow', '1 Scrim')">1
+                      Scrim</button>
                   </div>
                 </div>
 
@@ -2034,7 +2413,9 @@
               <div class="banned-card latecancel">
                 <div class="banned-card-title">
                   <span>🚫 LATE CANCELLATION</span>
-                  <span style="font-size:10px; background:rgba(249,115,22,0.2); border:1px solid rgba(249,115,22,0.4); color:#fdba74; padding:2px 8px; border-radius:999px;">3 SCRIMS BAN</span>
+                  <span
+                    style="font-size:10px; background:rgba(249,115,22,0.2); border:1px solid rgba(249,115,22,0.4); color:#fdba74; padding:2px 8px; border-radius:999px;">3
+                    SCRIMS BAN</span>
                 </div>
                 <div class="banned-card-subtitle">Add teams that cancelled less than designated lead time.</div>
 
@@ -2050,7 +2431,8 @@
                     </div>
                     <div class="banned-input-group">
                       <label>Scrim Banned</label>
-                      <input type="text" id="bannedLateScrim" class="banned-input-field" placeholder="3 Scrims" value="3 Scrims">
+                      <input type="text" id="bannedLateScrim" class="banned-input-field" placeholder="3 Scrims"
+                        value="3 Scrims">
                     </div>
                     <button type="button" id="bannedLateAddBtn" class="banned-add-btn">
                       ➕ Add Team
@@ -2058,10 +2440,14 @@
                   </div>
                   <div class="banned-preset-row">
                     <span class="banned-preset-label">Quick Scrim Ban:</span>
-                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('late', '3 Scrims')">3 Scrims</button>
-                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('late', '2 Scrims')">2 Scrims</button>
-                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('late', '1 Scrim')">1 Scrim</button>
-                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('late', '5 Scrims')">5 Scrims</button>
+                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('late', '3 Scrims')">3
+                      Scrims</button>
+                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('late', '2 Scrims')">2
+                      Scrims</button>
+                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('late', '1 Scrim')">1
+                      Scrim</button>
+                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('late', '5 Scrims')">5
+                      Scrims</button>
                   </div>
                 </div>
 
@@ -2086,7 +2472,9 @@
               <div class="banned-card perm">
                 <div class="banned-card-title">
                   <span>🚫 PERMANENT BANNED</span>
-                  <span style="font-size:10px; background:rgba(220,38,38,0.2); border:1px solid rgba(220,38,38,0.4); color:#f87171; padding:2px 8px; border-radius:999px;">PERM BAN</span>
+                  <span
+                    style="font-size:10px; background:rgba(220,38,38,0.2); border:1px solid rgba(220,38,38,0.4); color:#f87171; padding:2px 8px; border-radius:999px;">PERM
+                    BAN</span>
                 </div>
                 <div class="banned-card-subtitle">Teams or clans permanently disqualified from all scrims.</div>
 
@@ -2126,7 +2514,8 @@
               <div class="banned-card warning">
                 <div class="banned-card-title">
                   <span>⚠️ WARNING LIST</span>
-                  <span style="font-size:10px; background:rgba(234,179,8,0.2); border:1px solid rgba(234,179,8,0.4); color:#fef08a; padding:2px 8px; border-radius:999px;">WARNINGS</span>
+                  <span
+                    style="font-size:10px; background:rgba(234,179,8,0.2); border:1px solid rgba(234,179,8,0.4); color:#fef08a; padding:2px 8px; border-radius:999px;">WARNINGS</span>
                 </div>
                 <div class="banned-card-subtitle">Teams on notice or given strikes for rule violations.</div>
 
@@ -2138,7 +2527,8 @@
                     </div>
                     <div class="banned-input-group">
                       <label>Reason / Level</label>
-                      <input type="text" id="warningReason" class="banned-input-field" placeholder="e.g. Warning 1 (Late Check-in)">
+                      <input type="text" id="warningReason" class="banned-input-field"
+                        placeholder="e.g. Warning 1 (Late Check-in)">
                     </div>
                     <button type="button" id="warningAddBtn" class="banned-add-btn">
                       ➕ Add Warning
@@ -2164,29 +2554,117 @@
             </div>
 
             <!-- Advanced: Raw Text / Bulk Editor (Synchronized in Real-Time) -->
-            <details style="margin-top:16px; background:rgba(15,23,42,0.6); border:1px solid rgba(51,65,85,0.6); border-radius:10px; padding:10px 14px;">
+            <details
+              style="margin-top:16px; background:rgba(15,23,42,0.6); border:1px solid rgba(51,65,85,0.6); border-radius:10px; padding:10px 14px;">
               <summary style="font-size:11px; font-weight:600; color:#94a3b8; cursor:pointer; user-select:none;">
                 ⚙️ Advanced: Raw Text / Bulk Editor (Synchronized in Real-Time)
               </summary>
-              <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:10px; margin-top:10px;">
+              <div
+                style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:10px; margin-top:10px;">
                 <div>
                   <div style="font-size:10px; font-weight:bold; color:#fca5a5; margin-bottom:4px;">RAW NO SHOW</div>
-                  <textarea id="bannedNoShow" style="width:100%; height:120px; background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:8px; color:#e5e7eb; font-size:11px; outline:none; resize:vertical; font-family:monospace; box-sizing:border-box;"></textarea>
+                  <textarea id="bannedNoShow"
+                    style="width:100%; height:120px; background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:8px; color:#e5e7eb; font-size:11px; outline:none; resize:vertical; font-family:monospace; box-sizing:border-box;"></textarea>
                 </div>
                 <div>
                   <div style="font-size:10px; font-weight:bold; color:#fdba74; margin-bottom:4px;">RAW LATE CANCEL</div>
-                  <textarea id="bannedLateCancel" style="width:100%; height:120px; background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:8px; color:#e5e7eb; font-size:11px; outline:none; resize:vertical; font-family:monospace; box-sizing:border-box;"></textarea>
+                  <textarea id="bannedLateCancel"
+                    style="width:100%; height:120px; background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:8px; color:#e5e7eb; font-size:11px; outline:none; resize:vertical; font-family:monospace; box-sizing:border-box;"></textarea>
                 </div>
                 <div>
                   <div style="font-size:10px; font-weight:bold; color:#f87171; margin-bottom:4px;">RAW PERM BAN</div>
-                  <textarea id="bannedPerm" style="width:100%; height:120px; background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:8px; color:#e5e7eb; font-size:11px; outline:none; resize:vertical; font-family:monospace; box-sizing:border-box;"></textarea>
+                  <textarea id="bannedPerm"
+                    style="width:100%; height:120px; background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:8px; color:#e5e7eb; font-size:11px; outline:none; resize:vertical; font-family:monospace; box-sizing:border-box;"></textarea>
                 </div>
                 <div>
-                  <div style="font-size:10px; font-weight:bold; color:#fef08a; margin-bottom:4px;">RAW WARNING LIST</div>
-                  <textarea id="warningList" style="width:100%; height:120px; background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:8px; color:#e5e7eb; font-size:11px; outline:none; resize:vertical; font-family:monospace; box-sizing:border-box;"></textarea>
+                  <div style="font-size:10px; font-weight:bold; color:#fef08a; margin-bottom:4px;">RAW WARNING LIST
+                  </div>
+                  <textarea id="warningList"
+                    style="width:100%; height:120px; background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:8px; color:#e5e7eb; font-size:11px; outline:none; resize:vertical; font-family:monospace; box-sizing:border-box;"></textarea>
                 </div>
               </div>
             </details>
+          </div>
+        </div>
+
+        <!-- CLAN MANAGEMENT VIEW -->
+        <div id="clansView" style="display:none;">
+          <div class="card">
+            <div class="card-header" style="flex-wrap:wrap; gap:12px;">
+              <div>
+                <div style="font-size:15px; font-weight:700; color:#f8fafc; display:flex; align-items:center; gap:8px;">
+                  <span>🛡️ Clan Management & Approval</span>
+                  <span id="clansPendingCount"
+                    style="font-size:11px; background:rgba(250,204,21,0.2); border:1px solid rgba(250,204,21,0.4); color:#fde68a; padding:2px 8px; border-radius:999px;">0
+                    Pending</span>
+                  <span id="clansApprovedCount"
+                    style="font-size:11px; background:rgba(34,197,94,0.2); border:1px solid rgba(34,197,94,0.4); color:#bbf7d0; padding:2px 8px; border-radius:999px;">0
+                    Approved</span>
+                </div>
+                <div style="font-size:12px; color:#9ca3af; margin-top:4px;">
+                  Approve clans for the <strong style="color:#86efac;">APPROVED CLAN LIST</strong> — only approved clans
+                  can reserve scrim slots.
+                </div>
+              </div>
+              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                <select id="filterClanStatus" class="status-select" style="padding:6px 10px; font-size:12px;">
+                  <option value="">All Clans</option>
+                  <option value="pending approval">⏳ Pending Approval</option>
+                  <option value="active-approved">✅ Approved (Active)</option>
+                  <option value="active-unapproved">⚠️ Active Not Approved</option>
+                  <option value="inactive">🚫 Inactive</option>
+                </select>
+                <input id="searchClans" type="text" placeholder="Search clan tag/name/handler..."
+                  style="background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:6px 12px; font-size:12px; color:#e5e7eb; width:200px; outline:none;">
+                <button id="refreshClansBtn" class="btn btn-ghost" style="font-size:11px; padding:6px 12px;">🔄
+                  Refresh</button>
+                <button id="exportClansBtn" class="btn btn-ghost" style="font-size:11px; padding:6px 12px;">📋 Copy
+                  List</button>
+              </div>
+            </div>
+
+            <div class="chips" id="clansTopSummary" style="margin-bottom:10px;"></div>
+
+            <div style="overflow-x:auto;">
+              <table class="users-table" id="clansTable">
+                <thead>
+                  <tr>
+                    <th style="width:80px;">TAG</th>
+                    <th>Clan Name</th>
+                    <th>Clan Handler</th>
+                    <th>Login</th>
+                    <th style="width:90px;">Status</th>
+                    <th style="width:90px;">CLAN LIST</th>
+                    <th style="width:110px;">Registered</th>
+                    <th style="width:230px;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="clansTableBody">
+                  <tr>
+                    <td colspan="8" style="text-align:center; color:#9ca3af; padding:30px;">Loading clan accounts...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- APPROVED CLAN LIST CARD -->
+          <div class="card">
+            <div class="card-header" style="flex-wrap:wrap; gap:12px;">
+              <div>
+                <div style="font-size:14px; font-weight:700; color:#86efac; display:flex; align-items:center; gap:8px;">
+                  <span>✅ APPROVED CLAN LIST (for scrim reservation)</span>
+                </div>
+                <div style="font-size:12px; color:#94a3b8; margin-top:4px;">
+                  These clans are <strong style="color:#86efac;">ELIGIBLE</strong> to reserve scrim slots. Clans marked
+                  "Not Approved" below will be blocked from reserving.
+                </div>
+              </div>
+              <button id="addManualClanBtn" class="btn btn-reserve-admin" style="font-size:11px; padding:6px 12px;">➕
+                Add Clan Manually</button>
+            </div>
+            <div id="approvedClanChips" class="chips" style="min-height:40px; padding:6px 0;"></div>
           </div>
         </div>
 
@@ -2196,7 +2674,8 @@
             <div class="card-header">
               <div>
                 <div style="font-size:14px; font-weight:600;">User Management</div>
-                <div style="font-size:12px; color:#9ca3af; margin-top:4px;">Manage registered accounts and approval status.</div>
+                <div style="font-size:12px; color:#9ca3af; margin-top:4px;">Manage registered accounts and approval
+                  status.</div>
               </div>
               <button id="refreshUsersBtn" class="btn btn-ghost">Refresh</button>
             </div>
@@ -2212,7 +2691,9 @@
                   </tr>
                 </thead>
                 <tbody id="usersTableBody">
-                  <tr><td colspan="5" style="text-align:center; color:#9ca3af; padding:20px;">Loading users...</td></tr>
+                  <tr>
+                    <td colspan="5" style="text-align:center; color:#9ca3af; padding:20px;">Loading users...</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -2226,13 +2707,18 @@
               <div>
                 <div style="font-size:15px; font-weight:700; color:#f8fafc; display:flex; align-items:center; gap:8px;">
                   <span>📜 System Activity Logs</span>
-                  <span id="logsTotalCount" style="font-size:11px; background:rgba(99,102,241,0.2); border:1px solid rgba(99,102,241,0.4); color:#c7d2fe; padding:2px 8px; border-radius:999px;">0 logs</span>
+                  <span id="logsTotalCount"
+                    style="font-size:11px; background:rgba(99,102,241,0.2); border:1px solid rgba(99,102,241,0.4); color:#c7d2fe; padding:2px 8px; border-radius:999px;">0
+                    logs</span>
                 </div>
-                <div style="font-size:12px; color:#9ca3af; margin-top:4px;">Audit trail of all administrative and user operations.</div>
+                <div style="font-size:12px; color:#9ca3af; margin-top:4px;">Audit trail of all administrative and user
+                  operations.</div>
               </div>
               <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-                <input id="searchLogs" type="text" placeholder="Search activity (clan, user, action)..." style="background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:6px 12px; font-size:12px; color:#e5e7eb; width:220px; outline:none;">
-                <select id="filterLogAction" style="background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:6px 10px; font-size:12px; color:#e5e7eb; outline:none; cursor:pointer;">
+                <input id="searchLogs" type="text" placeholder="Search activity (clan, user, action)..."
+                  style="background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:6px 12px; font-size:12px; color:#e5e7eb; width:220px; outline:none;">
+                <select id="filterLogAction"
+                  style="background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:6px 10px; font-size:12px; color:#e5e7eb; outline:none; cursor:pointer;">
                   <option value="">All Actions</option>
                   <option value="Slot">Slot Events</option>
                   <option value="Scoreboard">Scoreboard</option>
@@ -2242,9 +2728,12 @@
                   <option value="Auth">Login / Auth</option>
                   <option value="Settings">Password / Settings</option>
                 </select>
-                <button id="refreshLogsBtn" class="btn btn-ghost" style="font-size:11px; padding:6px 12px;">🔄 Refresh</button>
-                <button id="exportLogsBtn" class="btn btn-ghost" style="font-size:11px; padding:6px 12px;">📋 Copy All</button>
-                <button id="clearLogsBtn" class="btn btn-danger" style="font-size:11px; padding:6px 12px;">🗑️ Clear Logs</button>
+                <button id="refreshLogsBtn" class="btn btn-ghost" style="font-size:11px; padding:6px 12px;">🔄
+                  Refresh</button>
+                <button id="exportLogsBtn" class="btn btn-ghost" style="font-size:11px; padding:6px 12px;">📋 Copy
+                  All</button>
+                <button id="clearLogsBtn" class="btn btn-danger" style="font-size:11px; padding:6px 12px;">🗑️ Clear
+                  Logs</button>
               </div>
             </div>
 
@@ -2260,7 +2749,10 @@
                   </tr>
                 </thead>
                 <tbody id="logsTableBody">
-                  <tr><td colspan="5" style="text-align:center; color:#9ca3af; padding:25px;">Loading activity logs...</td></tr>
+                  <tr>
+                    <td colspan="5" style="text-align:center; color:#9ca3af; padding:25px;">Loading activity logs...
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -2279,7 +2771,8 @@
                 <button id="refreshTournamentBtn" class="btn btn-ghost">Refresh</button>
                 <button id="tournamentAdminReserveBtn" class="btn btn-reserve-admin">🛡️ Admin Reserve</button>
                 <button id="copyTournamentSlotsBtn" class="btn btn-ghost">Copy Slots</button>
-                <button id="announceTournamentBtn" class="btn btn-update" style="background:#22c55e; border-color:#16a34a;">📢
+                <button id="announceTournamentBtn" class="btn btn-update"
+                  style="background:#22c55e; border-color:#16a34a;">📢
                   Copy GC Announce</button>
                 <button id="resetTournamentSlotsBtn" class="btn btn-danger">Reset All Slots</button>
               </div>
@@ -2294,7 +2787,8 @@
             </div>
             <div class="chips" id="tournamentTopClans"></div>
             <div class="footer" style="margin-bottom:10px;">
-              Tournament slots are separate from scrim schedules. What you list here is what appears on Tournament Scoreboard.
+              Tournament slots are separate from scrim schedules. What you list here is what appears on Tournament
+              Scoreboard.
             </div>
             <div class="slot-grid" id="tournamentSlotGrid"></div>
           </div>
@@ -2310,7 +2804,8 @@
                   Teams sync from Tournament Slot (filled slots only).
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px;">
-                  <label for="tournamentScoreboardDatePicker" style="font-size: 11px; color: #9ca3af; white-space: nowrap;">Event
+                  <label for="tournamentScoreboardDatePicker"
+                    style="font-size: 11px; color: #9ca3af; white-space: nowrap;">Event
                     Date:</label>
                   <input type="date" id="tournamentScoreboardDatePicker"
                     style="padding: 4px 6px; border-radius: 6px; border: 1px solid rgba(148,163,184,0.5); background: rgba(15,23,42,0.9); color: #e5e7eb; font-size: 11px; width: 110px; outline: none;">
@@ -2323,7 +2818,8 @@
                   style="font-size:11px; padding:6px 10px; background: #0284c7; border-color: #0369a1;">
                   ⛶ Full Screen
                 </button>
-                <button id="resetTournamentScoreboardBtn" class="btn btn-danger" style="font-size:11px; padding:6px 10px;">
+                <button id="resetTournamentScoreboardBtn" class="btn btn-danger"
+                  style="font-size:11px; padding:6px 10px;">
                   Reset Scoreboard
                 </button>
                 <button id="copyTournamentTopTeamsBtn" class="btn btn-update" style="font-size:11px; padding:6px 10px;">
@@ -2336,7 +2832,8 @@
               </div>
             </div>
             <div style="font-size:13px; color:#9ca3af; padding:4px 2px 10px 2px; margin-bottom:6px;">
-              Team names are synced from Tournament Slot so you don't have to type them again. Fill in round points and totals as needed.
+              Team names are synced from Tournament Slot so you don't have to type them again. Fill in round points and
+              totals as needed.
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 340px; gap: 15px; margin-top: 15px;"
@@ -2453,9 +2950,11 @@
                       <tr>
                         <td style="background:#4dd0e1; color:#020617; font-weight:900; padding:4px; text-align:center;">
                           MVP</td>
-                        <td id="tournamentAdminSumMVP" style="background:#334155; color:#f8fafc; padding:4px; text-align:center;">
+                        <td id="tournamentAdminSumMVP"
+                          style="background:#334155; color:#f8fafc; padding:4px; text-align:center;">
                           PENDING TO UPDATE</td>
-                        <td id="tournamentAdminPtsMVP" style="background:#475569; color:#f8fafc; padding:4px; text-align:center;">
+                        <td id="tournamentAdminPtsMVP"
+                          style="background:#475569; color:#f8fafc; padding:4px; text-align:center;">
                           0 KILLS</td>
                       </tr>
                     </tbody>
@@ -2508,7 +3007,9 @@
         <label style="font-size: 11px; color: #9ca3af;">Clan Name</label>
         <input type="text" id="adminReserveClanInput" class="admin-popup-input"
           style="display: block; width: 100%; margin-top: 4px;" placeholder="Enter Clan Name">
-        <div id="adminReserveBannedNotice" style="display:none; margin-top:8px; padding:8px 10px; border-radius:8px; font-size:11px; text-align:left; line-height:1.4;"></div>
+        <div id="adminReserveBannedNotice"
+          style="display:none; margin-top:8px; padding:8px 10px; border-radius:8px; font-size:11px; text-align:left; line-height:1.4;">
+        </div>
       </div>
 
       <div style="margin-bottom: 15px;">
@@ -2542,6 +3043,22 @@
     </div>
   </div>
 
+  <!-- BOOTSTRAP-STYLE ALERT MODAL (Error / Warning / Info / Success) -->
+  <div id="bsAlertModal">
+    <div id="bsAlertModalContent">
+      <div id="bsAlertHeader" class="bs-alert-header error">
+        <div class="bs-alert-icon" id="bsAlertIcon">⛔</div>
+        <div class="bs-alert-title" id="bsAlertTitle">ERROR</div>
+      </div>
+      <div class="bs-alert-body">
+        <div class="bs-alert-message" id="bsAlertMessage">An error occurred.</div>
+      </div>
+      <div class="bs-alert-footer">
+        <button id="bsAlertCloseBtn" class="bs-alert-close-btn" type="button">OK, GOT IT</button>
+      </div>
+    </div>
+  </div>
+
   <!-- SETTINGS MODAL -->
   <div class="admin-popup" id="settingsModal">
     <div class="admin-popup-content" style="width:360px; max-height:90vh; overflow-y:auto;">
@@ -2549,47 +3066,59 @@
       <div style="font-size:11px; color:#9ca3af; margin-bottom:18px;">Manage your account preferences.</div>
 
       <!-- User Info Display -->
-      <div style="background:rgba(30,41,59,0.6); border:1px solid rgba(71,85,105,0.4); border-radius:10px; padding:12px 14px; margin-bottom:18px; display:flex; align-items:center; gap:12px;">
-        <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#3b82f6);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#fff;flex-shrink:0;" id="settingsAvatarCircle">A</div>
+      <div
+        style="background:rgba(30,41,59,0.6); border:1px solid rgba(71,85,105,0.4); border-radius:10px; padding:12px 14px; margin-bottom:18px; display:flex; align-items:center; gap:12px;">
+        <div
+          style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#3b82f6);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#fff;flex-shrink:0;"
+          id="settingsAvatarCircle">A</div>
         <div style="overflow:hidden;">
           <div style="font-size:13px;font-weight:700;color:#f8fafc;" id="settingsDisplayName">Admin</div>
           <div style="font-size:11px;color:#94a3b8;" id="settingsEmail">admin@system</div>
-          <div style="font-size:10px;margin-top:2px;"><span style="padding:2px 8px;border-radius:999px;font-weight:600;" id="settingsRoleBadge" class="badge-admin">Administrator</span></div>
+          <div style="font-size:10px;margin-top:2px;"><span style="padding:2px 8px;border-radius:999px;font-weight:600;"
+              id="settingsRoleBadge" class="badge-admin">Administrator</span></div>
         </div>
       </div>
 
       <!-- Change Password Section -->
       <div style="border-top:1px solid rgba(71,85,105,0.4); padding-top:16px;">
-        <div style="font-size:12px;font-weight:700;color:#c7d2fe;margin-bottom:12px;letter-spacing:0.05em;">🔐 CHANGE PASSWORD</div>
+        <div style="font-size:12px;font-weight:700;color:#c7d2fe;margin-bottom:12px;letter-spacing:0.05em;">🔐 CHANGE
+          PASSWORD</div>
 
         <div style="margin-bottom:10px;">
           <label style="font-size:11px;color:#9ca3af;display:block;margin-bottom:4px;">Current Password</label>
           <div style="position:relative;">
-            <input type="password" id="settingsOldPass" class="admin-popup-input" style="display:block;width:100%;padding-right:38px;" placeholder="Enter current password">
-            <button type="button" class="pwd-toggle-btn" onclick="togglePwdVis('settingsOldPass',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#94a3b8;cursor:pointer;font-size:14px;padding:0;">👁</button>
+            <input type="password" id="settingsOldPass" class="admin-popup-input"
+              style="display:block;width:100%;padding-right:38px;" placeholder="Enter current password">
+            <button type="button" class="pwd-toggle-btn" onclick="togglePwdVis('settingsOldPass',this)"
+              style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#94a3b8;cursor:pointer;font-size:14px;padding:0;">👁</button>
           </div>
         </div>
 
         <div style="margin-bottom:10px;">
           <label style="font-size:11px;color:#9ca3af;display:block;margin-bottom:4px;">New Password</label>
           <div style="position:relative;">
-            <input type="password" id="settingsNewPass" class="admin-popup-input" style="display:block;width:100%;padding-right:38px;" placeholder="At least 6 characters">
-            <button type="button" class="pwd-toggle-btn" onclick="togglePwdVis('settingsNewPass',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#94a3b8;cursor:pointer;font-size:14px;padding:0;">👁</button>
+            <input type="password" id="settingsNewPass" class="admin-popup-input"
+              style="display:block;width:100%;padding-right:38px;" placeholder="At least 6 characters">
+            <button type="button" class="pwd-toggle-btn" onclick="togglePwdVis('settingsNewPass',this)"
+              style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#94a3b8;cursor:pointer;font-size:14px;padding:0;">👁</button>
           </div>
         </div>
 
         <div style="margin-bottom:14px;">
           <label style="font-size:11px;color:#9ca3af;display:block;margin-bottom:4px;">Confirm New Password</label>
           <div style="position:relative;">
-            <input type="password" id="settingsConfirmPass" class="admin-popup-input" style="display:block;width:100%;padding-right:38px;" placeholder="Repeat new password">
-            <button type="button" class="pwd-toggle-btn" onclick="togglePwdVis('settingsConfirmPass',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#94a3b8;cursor:pointer;font-size:14px;padding:0;">👁</button>
+            <input type="password" id="settingsConfirmPass" class="admin-popup-input"
+              style="display:block;width:100%;padding-right:38px;" placeholder="Repeat new password">
+            <button type="button" class="pwd-toggle-btn" onclick="togglePwdVis('settingsConfirmPass',this)"
+              style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#94a3b8;cursor:pointer;font-size:14px;padding:0;">👁</button>
           </div>
         </div>
 
         <div id="settingsPwdMsg" style="font-size:11px;min-height:16px;margin-bottom:10px;"></div>
 
         <div class="admin-popup-buttons">
-          <button id="settingsSavePassBtn" class="admin-popup-confirm" style="background:#6366f1;">Save Password</button>
+          <button id="settingsSavePassBtn" class="admin-popup-confirm" style="background:#6366f1;">Save
+            Password</button>
           <button id="settingsCloseBtn" class="admin-popup-cancel">Close</button>
         </div>
       </div>
@@ -2793,15 +3322,30 @@
     const navBanned = document.getElementById('navBanned');
     const navTournamentSlot = document.getElementById('navTournamentSlot');
     const navTournamentScoreboard = document.getElementById('navTournamentScoreboard');
+    const navClans = document.getElementById('navClans');
     const navUsers = document.getElementById('navUsers');
     const navLogs = document.getElementById('navLogs');
     const scrimView = document.getElementById('scrimView');
     const scoreboardView = document.getElementById('scoreboardView');
     const bannedView = document.getElementById('bannedView');
+    const clansView = document.getElementById('clansView');
     const usersView = document.getElementById('usersView');
     const logsView = document.getElementById('logsView');
+    const clansTableBody = document.getElementById('clansTableBody');
+    const clansCountBadge = document.getElementById('clansCountBadge');
+    const clansPendingCount = document.getElementById('clansPendingCount');
+    const clansApprovedCount = document.getElementById('clansApprovedCount');
+    const clansTopSummary = document.getElementById('clansTopSummary');
+    const approvedClanChips = document.getElementById('approvedClanChips');
+    const filterClanStatus = document.getElementById('filterClanStatus');
+    const searchClans = document.getElementById('searchClans');
+    const refreshClansBtn = document.getElementById('refreshClansBtn');
+    const exportClansBtn = document.getElementById('exportClansBtn');
+    const addManualClanBtn = document.getElementById('addManualClanBtn');
     const usersTableBody = document.getElementById('usersTableBody');
     const refreshUsersBtn = document.getElementById('refreshUsersBtn');
+    const CLANS_CONFIG_KEY = 'app_clans';
+    let latestClans = [];
     const logsTableBody = document.getElementById('logsTableBody');
     const refreshLogsBtn = document.getElementById('refreshLogsBtn');
     const exportLogsBtn = document.getElementById('exportLogsBtn');
@@ -2945,9 +3489,12 @@
     setTimeout(initSchedSwitcher, 100);
 
     function showAdminToast(message, type = 'info') {
+      if (type === 'error') {
+        showBsAlert(message, 'error');
+        return;
+      }
       const toast = document.createElement('div');
       toast.className = 'admin-toast';
-      if (type === 'error') toast.classList.add('error');
       if (type === 'success') toast.classList.add('success');
       toast.textContent = message;
       document.body.appendChild(toast);
@@ -2959,6 +3506,55 @@
         setTimeout(() => toast.remove(), 250);
       }, 2200);
     }
+
+    function showBsAlert(message, type) {
+      const modal = document.getElementById('bsAlertModal');
+      const header = document.getElementById('bsAlertHeader');
+      const icon = document.getElementById('bsAlertIcon');
+      const title = document.getElementById('bsAlertTitle');
+      const msg = document.getElementById('bsAlertMessage');
+      const closeBtn = document.getElementById('bsAlertCloseBtn');
+      let t = type || 'info';
+      if (!type && message) {
+        const m = message.toString().toLowerCase();
+        if (m.includes('warning') || m.includes('late')) t = 'warning';
+        else if (m.includes('success') || m.includes('saved') || m.includes('reserved') || m.includes('cancelled') || m.includes('approved') || m.includes('updated')) t = 'success';
+        else if (m.includes('error') || m.includes('failed') || m.includes('cannot') || m.includes('not ') || m.includes('incorrect') || m.includes('banned') || m.includes('limit') || m.includes('full') || m.includes('duplicate') || m.includes('🚫') || m.includes('empty') || m.includes('bawal')) t = 'error';
+      }
+      header.className = 'bs-alert-header ' + t;
+      if (t === 'error') { icon.textContent = '⛔'; title.textContent = 'ERROR'; }
+      if (t === 'warning') { icon.textContent = '⚠️'; title.textContent = 'WARNING'; }
+      if (t === 'info') { icon.textContent = 'ℹ️'; title.textContent = 'INFO'; }
+      if (t === 'success') { icon.textContent = '✅'; title.textContent = 'SUCCESS'; }
+      if (t === 'error' && closeBtn) {
+        closeBtn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+        closeBtn.style.boxShadow = '0 6px 18px rgba(220, 38, 38, 0.35)';
+      } else if (t === 'warning' && closeBtn) {
+        closeBtn.style.background = 'linear-gradient(135deg, #f97316, #ea580c)';
+        closeBtn.style.boxShadow = '0 6px 18px rgba(234, 88, 12, 0.35)';
+      } else if (t === 'success' && closeBtn) {
+        closeBtn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
+        closeBtn.style.boxShadow = '0 6px 18px rgba(22, 163, 74, 0.35)';
+      } else if (closeBtn) {
+        closeBtn.style.background = 'linear-gradient(135deg, #3b82f6, #2563eb)';
+        closeBtn.style.boxShadow = '0 6px 18px rgba(37, 99, 235, 0.35)';
+      }
+      msg.textContent = message || '';
+      modal.style.display = 'flex';
+    }
+
+    function closeBsAlert() {
+      const m = document.getElementById('bsAlertModal');
+      if (m) m.style.display = 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const cb = document.getElementById('bsAlertCloseBtn');
+      if (cb) cb.addEventListener('click', closeBsAlert);
+      const am = document.getElementById('bsAlertModal');
+      if (am) am.addEventListener('click', (e) => { if (e.target.id === 'bsAlertModal') closeBsAlert(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { const m = document.getElementById('bsAlertModal'); if (m && m.style.display === 'flex') closeBsAlert(); } });
+    });
 
     function openAdminPopup({ title, message, requireInput = false, placeholder = 'Admin key', initialValue = '', confirmText = 'Confirm', cancelText = 'Cancel' }) {
       adminPopupTitle.textContent = title || '';
@@ -3733,6 +4329,7 @@
       scrimView.style.display = view === 'scrim' ? 'block' : 'none';
       scoreboardView.style.display = view === 'scoreboard' ? 'block' : 'none';
       bannedView.style.display = view === 'banned' ? 'block' : 'none';
+      if (clansView) clansView.style.display = view === 'clans' ? 'block' : 'none';
       if (usersView) usersView.style.display = view === 'users' ? 'block' : 'none';
       if (logsView) logsView.style.display = view === 'logs' ? 'block' : 'none';
       if (tournamentView) tournamentView.style.display = view === 'tournamentSlot' ? 'block' : 'none';
@@ -3741,13 +4338,14 @@
       navScrim.classList.toggle('active', view === 'scrim');
       navScoreboard.classList.toggle('active', view === 'scoreboard');
       if (navBanned) navBanned.classList.toggle('active', view === 'banned');
+      if (navClans) navClans.classList.toggle('active', view === 'clans');
       if (navUsers) navUsers.classList.toggle('active', view === 'users');
       if (navLogs) navLogs.classList.toggle('active', view === 'logs');
       if (navTournamentSlot) navTournamentSlot.classList.toggle('active', view === 'tournamentSlot');
       if (navTournamentScoreboard) navTournamentScoreboard.classList.toggle('active', view === 'tournamentScoreboard');
 
       const schedSwitcherWrap = document.getElementById('schedSwitcherWrap');
-      const hideSched = view === 'tournamentSlot' || view === 'tournamentScoreboard' || view === 'users' || view === 'logs';
+      const hideSched = view === 'tournamentSlot' || view === 'tournamentScoreboard' || view === 'clans' || view === 'users' || view === 'logs';
       if (schedSwitcherWrap) schedSwitcherWrap.style.display = hideSched ? 'none' : '';
 
       if (headerReservationBlock) {
@@ -3758,6 +4356,7 @@
         if (view === 'scrim') adminPageTitle.textContent = 'Scrim Slots · Admin';
         else if (view === 'scoreboard') adminPageTitle.textContent = 'Scoreboard · Admin';
         else if (view === 'banned') adminPageTitle.textContent = 'Banned Teams · Admin';
+        else if (view === 'clans') adminPageTitle.textContent = 'Clan Management · Admin';
         else if (view === 'users') adminPageTitle.textContent = 'User Management · Admin';
         else if (view === 'logs') adminPageTitle.textContent = 'System Logs · Admin';
         else if (view === 'tournamentSlot') adminPageTitle.textContent = 'Tournament Slot · Admin';
@@ -3767,10 +4366,15 @@
       if (view === 'scrim') viewSubtitle.textContent = 'Overview of all reserved slots and clan usage.';
       else if (view === 'scoreboard') viewSubtitle.textContent = 'Manage points and standings for the current event.';
       else if (view === 'banned') viewSubtitle.textContent = `Managing ${currentSched.toUpperCase()} Banned & Warning Teams.`;
+      else if (view === 'clans') viewSubtitle.textContent = 'Approve clan accounts and manage the APPROVED CLAN LIST for scrim reservations.';
       else if (view === 'users') viewSubtitle.textContent = 'Approve, activate, or deactivate registered user accounts.';
       else if (view === 'logs') viewSubtitle.textContent = 'Audit trail of all administrative and user operations.';
       else if (view === 'tournamentSlot') viewSubtitle.textContent = 'Manage tournament slot registrations. No schedule needed.';
       else if (view === 'tournamentScoreboard') viewSubtitle.textContent = 'Scores for teams registered in Tournament Slots.';
+
+      if (view === 'clans') {
+        loadClansTable();
+      }
 
       if (view === 'users') {
         loadUsersTable();
@@ -4411,7 +5015,7 @@
           headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
         });
         let banData = await banRes.json();
-        
+
         // Fallback logic
         const usedFallback = (!banData || banData.length === 0 || !banData[0] || !banData[0].value);
         if (usedFallback) {
@@ -5218,6 +5822,9 @@
     if (navTournamentScoreboard) {
       navTournamentScoreboard.addEventListener('click', () => setActiveView('tournamentScoreboard'));
     }
+    if (navClans) {
+      navClans.addEventListener('click', () => setActiveView('clans'));
+    }
     if (navUsers) {
       navUsers.addEventListener('click', () => setActiveView('users'));
     }
@@ -5226,6 +5833,30 @@
     }
     if (refreshUsersBtn) {
       refreshUsersBtn.addEventListener('click', () => loadUsersTable());
+    }
+    if (refreshClansBtn) {
+      refreshClansBtn.addEventListener('click', () => loadClansTable());
+    }
+    if (searchClans) {
+      searchClans.addEventListener('input', () => applyClansFilter());
+    }
+    if (filterClanStatus) {
+      filterClanStatus.addEventListener('change', () => applyClansFilter());
+    }
+    if (exportClansBtn) {
+      exportClansBtn.addEventListener('click', async () => {
+        if (!latestClans.length) { showAdminToast('No clans to copy.', 'info'); return; }
+        const lines = latestClans.map(c =>
+          `[${c.status || 'pending'}] [${c.clan_approved ? 'APPROVED' : 'NOT APPROVED'}] ${c.clan_tag || ''} ${c.clan_name || ''} — Handler: ${c.clan_handler || c.clan_leader || '—'} — Login: ${c.username || ''} — Registered: ${c.created_at || '—'}`
+        ).join('\n');
+        try {
+          await navigator.clipboard.writeText(lines);
+          showAdminToast('Clan list copied to clipboard!', 'success');
+        } catch { showAdminToast('Failed to copy.', 'error'); }
+      });
+    }
+    if (addManualClanBtn) {
+      addManualClanBtn.addEventListener('click', () => openManualClanModal());
     }
 
     async function fetchAppUsers() {
@@ -5247,6 +5878,29 @@
         method: 'POST',
         headers: { ...supabaseHeaders(), Prefer: 'resolution=merge-duplicates, return=minimal' },
         body: JSON.stringify({ key: USERS_CONFIG_KEY, value: JSON.stringify(users) }),
+      });
+      return res.ok;
+    }
+
+    async function fetchAppClans() {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${CLANS_CONFIG_KEY}&select=value`, {
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+      });
+      const data = await res.json();
+      if (!data || !data.length || !data[0].value) return [];
+      try {
+        const parsed = JSON.parse(data[0].value);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+
+    async function saveAppClans(clans) {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/config`, {
+        method: 'POST',
+        headers: { ...supabaseHeaders(), Prefer: 'resolution=merge-duplicates, return=minimal' },
+        body: JSON.stringify({ key: CLANS_CONFIG_KEY, value: JSON.stringify(clans) }),
       });
       return res.ok;
     }
@@ -5311,7 +5965,7 @@
         const data = await res.json();
         let logs = [];
         if (data && data.length > 0 && data[0].value) {
-          try { logs = JSON.parse(data[0].value); } catch(e) { logs = []; }
+          try { logs = JSON.parse(data[0].value); } catch (e) { logs = []; }
         }
         if (!Array.isArray(logs)) logs = [];
         logs.unshift(newEntry);
@@ -5328,7 +5982,7 @@
         if (logsView && logsView.style.display !== 'none') {
           applyLogsFilter();
         }
-      } catch(e) { console.error('logSystemActivity error:', e); }
+      } catch (e) { console.error('logSystemActivity error:', e); }
     }
 
     function getLogBadgeClass(context) {
@@ -5396,14 +6050,14 @@
         const data = await res.json();
         latestSystemLogs = [];
         if (data && data.length > 0 && data[0].value) {
-          try { latestSystemLogs = JSON.parse(data[0].value); } catch(e) { latestSystemLogs = []; }
+          try { latestSystemLogs = JSON.parse(data[0].value); } catch (e) { latestSystemLogs = []; }
         }
         if (!Array.isArray(latestSystemLogs)) latestSystemLogs = [];
         const total = latestSystemLogs.length;
         if (logsCountBadge) logsCountBadge.textContent = total;
         if (logsTotalCount) logsTotalCount.textContent = `${total} logs`;
         applyLogsFilter();
-      } catch(e) {
+      } catch (e) {
         if (logsTableBody) logsTableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#fecaca; padding:25px;">Failed to load logs.</td></tr>';
       }
     }
@@ -5521,6 +6175,275 @@
       } catch (e) {
         usersTableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#fecaca; padding:20px;">Failed to load users.</td></tr>';
       }
+    }
+
+    async function updateClanAccount(clanId, patchObj) {
+      const clans = await fetchAppClans();
+      const idx = clans.findIndex(c => c.id === clanId);
+      if (idx === -1) { showAdminToast('Clan not found.', 'error'); return false; }
+      const before = { ...clans[idx] };
+      clans[idx] = { ...clans[idx], ...patchObj, updated_at: new Date().toISOString() };
+      const saved = await saveAppClans(clans);
+      if (saved) { latestClans = clans; return true; }
+      return false;
+    }
+
+    async function updateClanStatus(clanId, newStatus) {
+      const clans = await fetchAppClans();
+      const idx = clans.findIndex(c => c.id === clanId);
+      if (idx === -1) { showAdminToast('Clan not found.', 'error'); return false; }
+      const target = clans[idx];
+      clans[idx].status = newStatus;
+      clans[idx].updated_at = new Date().toISOString();
+      const saved = await saveAppClans(clans);
+      if (saved) {
+        showAdminToast(`Account status → "${newStatus}".`, 'success');
+        logSystemActivity('Clan Account Status', `Clan "${target.clan_name || target.clan_tag}" (${target.username}) status changed to "${newStatus}".`, 'USER');
+        latestClans = clans;
+        return true;
+      }
+      showAdminToast('Failed to update.', 'error');
+      return false;
+    }
+
+    async function setClanApproved(clanId, approved) {
+      const clans = await fetchAppClans();
+      const idx = clans.findIndex(c => c.id === clanId);
+      if (idx === -1) { showAdminToast('Clan not found.', 'error'); return false; }
+      const target = clans[idx];
+      clans[idx].clan_approved = !!approved;
+      clans[idx].updated_at = new Date().toISOString();
+      const saved = await saveAppClans(clans);
+      if (saved) {
+        showAdminToast(approved ? '✅ Added to APPROVED CLAN LIST!' : '⚠️ Removed from APPROVED CLAN LIST.', 'success');
+        logSystemActivity('CLAN LIST Updated',
+          `${approved ? 'Added' : 'Removed'} clan "${target.clan_name || target.clan_tag}" ${approved ? 'to' : 'from'} the APPROVED CLAN LIST.`, 'USER');
+        latestClans = clans;
+        return true;
+      }
+      showAdminToast('Failed to update CLAN LIST.', 'error');
+      return false;
+    }
+
+    async function approveClanAccountAndActivate(clanId) {
+      const clans = await fetchAppClans();
+      const idx = clans.findIndex(c => c.id === clanId);
+      if (idx === -1) { showAdminToast('Clan not found.', 'error'); return false; }
+      const target = clans[idx];
+      clans[idx].status = 'active';
+      clans[idx].clan_approved = true;
+      clans[idx].updated_at = new Date().toISOString();
+      const saved = await saveAppClans(clans);
+      if (saved) {
+        showAdminToast('✅ Clan approved + activated! Added to CLAN LIST.', 'success');
+        logSystemActivity('Clan Fully Approved',
+          `Clan "${target.clan_name || target.clan_tag}" (${target.username}) account activated and added to APPROVED CLAN LIST.`, 'USER');
+        latestClans = clans;
+        return true;
+      }
+      showAdminToast('Failed to approve clan.', 'error');
+      return false;
+    }
+
+    async function deleteClanAccount(clanId) {
+      const { confirmed } = await openAdminPopup({
+        title: 'Delete Clan Account',
+        message: 'This will permanently remove this clan account and remove from CLAN LIST. This cannot be undone. Continue?',
+        requireInput: false, confirmText: 'Delete Permanently', cancelText: 'Cancel'
+      });
+      if (!confirmed) return false;
+      const clans = await fetchAppClans();
+      const idx = clans.findIndex(c => c.id === clanId);
+      if (idx === -1) { showAdminToast('Clan not found.', 'error'); return false; }
+      const target = clans[idx];
+      clans.splice(idx, 1);
+      const saved = await saveAppClans(clans);
+      if (saved) {
+        showAdminToast('Clan deleted.', 'success');
+        logSystemActivity('Clan Deleted',
+          `Clan "${target.clan_name || target.clan_tag}" (${target.username}) permanently deleted.`, 'USER');
+        latestClans = clans;
+        return true;
+      }
+      showAdminToast('Failed to delete clan.', 'error');
+      return false;
+    }
+
+    function renderApprovedClanChips(clans) {
+      if (!approvedClanChips) return;
+      const approved = clans.filter(c => c.clan_approved === true);
+      if (approved.length === 0) {
+        approvedClanChips.innerHTML = '<div style="color:#94a3b8; font-size:13px; padding:10px;">⚠️ No clans on the APPROVED LIST yet — use the actions below or Approve button.</div>';
+        return;
+      }
+      approved.sort((a, b) => (a.clan_tag || a.clan_name || '').localeCompare(b.clan_tag || b.clan_name || ''));
+      approvedClanChips.innerHTML = approved.map(c => `
+        <div class="approved-clan-chip">
+          <span class="chip-tag">${escapeHtml(c.clan_tag || '—')}</span>
+          <span class="chip-name">${escapeHtml(c.clan_name || '—')}</span>
+          <button class="chip-remove-btn" data-remove-id="${c.id}" title="Remove from CLAN LIST">✕</button>
+        </div>
+      `).join('');
+      approvedClanChips.querySelectorAll('.chip-remove-btn').forEach(btn => {
+        btn.addEventListener('click', async (ev) => {
+          const id = ev.currentTarget.getAttribute('data-remove-id');
+          const ok = await setClanApproved(id, false);
+          if (ok) loadClansTable();
+        });
+      });
+    }
+
+    function renderClansTable(clans) {
+      if (!clansTableBody) return;
+      if (!clans || clans.length === 0) {
+        clansTableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#9ca3af; padding:25px;">🛡️ No clan registrations yet.</td></tr>';
+        return;
+      }
+      clansTableBody.innerHTML = clans.map(c => {
+        const status = c.status || 'pending approval';
+        const sClass = statusBadgeClass(status);
+        const listApproved = c.clan_approved === true;
+        const listClass = listApproved ? 'active' : 'inactive';
+        return `
+          <tr>
+            <td><span class="status-badge" style="background:linear-gradient(135deg,#6366f1,#8b5cf6); color:white;">${escapeHtml(c.clan_tag || '—')}</span></td>
+            <td><strong style="color:#f8fafc;">${escapeHtml(c.clan_name || '—')}</strong></td>
+            <td style="color:#cbd5e1; font-size:12px;">
+              <div>👤 ${escapeHtml(c.clan_handler || c.clan_leader || '—')}</div>
+            </td>
+            <td style="font-size:12px; color:#cbd5e1;">
+              <div>@${escapeHtml(c.username || '—')}</div>
+            </td>
+            <td><span class="status-badge ${sClass}">${escapeHtml(status)}</span></td>
+            <td>
+              <span class="status-badge ${listClass}">${listApproved ? '✅ ON CLAN LIST' : '❌ NOT ON LIST'}</span>
+            </td>
+            <td style="color:#94a3b8; font-size:11px; white-space:nowrap;">${formatUserDate(c.created_at)}</td>
+            <td>
+              <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                ${status !== 'active' || !listApproved ? `<button class="clan-approveall-btn" data-id="${c.id}">✅ Approve All</button>` : ''}
+                ${!listApproved ? `<button class="clan-list-add-btn" data-id="${c.id}">➕ Add to List</button>` : `<button class="clan-list-remove-btn" data-id="${c.id}">➖ Remove</button>`}
+                <select class="status-select clan-status-select" data-id="${c.id}" style="padding:4px 6px; font-size:11px;">
+                  <option value="active" ${status === 'active' ? 'selected' : ''}>Active</option>
+                  <option value="pending approval" ${status === 'pending approval' ? 'selected' : ''}>Pending</option>
+                  <option value="inactive" ${status === 'inactive' ? 'selected' : ''}>Inactive</option>
+                </select>
+                <button class="clan-delete-btn" data-id="${c.id}" title="Delete clan">🗑️</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      clansTableBody.querySelectorAll('.clan-approveall-btn').forEach(b => b.addEventListener('click', async (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        const ok = await approveClanAccountAndActivate(id);
+        if (ok) loadClansTable();
+      }));
+      clansTableBody.querySelectorAll('.clan-list-add-btn').forEach(b => b.addEventListener('click', async (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        const ok = await setClanApproved(id, true);
+        if (ok) loadClansTable();
+      }));
+      clansTableBody.querySelectorAll('.clan-list-remove-btn').forEach(b => b.addEventListener('click', async (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        const ok = await setClanApproved(id, false);
+        if (ok) loadClansTable();
+      }));
+      clansTableBody.querySelectorAll('.clan-status-select').forEach(sel => {
+        const initial = sel.value;
+        sel.addEventListener('change', async (e) => {
+          const id = e.currentTarget.getAttribute('data-id');
+          e.currentTarget.disabled = true;
+          const ok = await updateClanStatus(id, e.currentTarget.value);
+          e.currentTarget.disabled = false;
+          if (!ok) e.currentTarget.value = initial;
+          else loadClansTable();
+        });
+      });
+      clansTableBody.querySelectorAll('.clan-delete-btn').forEach(b => b.addEventListener('click', async (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        const ok = await deleteClanAccount(id);
+        if (ok) loadClansTable();
+      }));
+    }
+
+    function updateClanCounts(clans) {
+      const total = clans.length;
+      const pending = clans.filter(c => (c.status || '').toLowerCase() !== 'active').length;
+      const approved = clans.filter(c => c.clan_approved === true).length;
+      if (clansCountBadge) clansCountBadge.textContent = total;
+      if (clansPendingCount) clansPendingCount.textContent = pending;
+      if (clansApprovedCount) clansApprovedCount.textContent = approved;
+      if (clansTopSummary) clansTopSummary.textContent = `${approved} clans on APPROVED LIST · ${total} total clan accounts`;
+    }
+
+    function applyClansFilter() {
+      const q = ((searchClans && searchClans.value) || '').toLowerCase();
+      const f = ((filterClanStatus && filterClanStatus.value) || 'all').toLowerCase();
+      let list = latestClans.slice();
+      if (q) list = list.filter(c =>
+        (c.clan_tag || '').toLowerCase().includes(q) ||
+        (c.clan_name || '').toLowerCase().includes(q) ||
+        (c.clan_handler || c.clan_leader || '').toLowerCase().includes(q) ||
+        (c.username || '').toLowerCase().includes(q)
+      );
+      if (f !== 'all') {
+        if (f === 'pending') list = list.filter(c => (c.status || '').toLowerCase() !== 'active');
+        else if (f === 'approved') list = list.filter(c => c.clan_approved === true);
+        else if (f === 'notapproved') list = list.filter(c => c.clan_approved !== true);
+        else if (f === 'inactive') list = list.filter(c => (c.status || '').toLowerCase() === 'inactive');
+      }
+      list.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+      updateClanCounts(latestClans);
+      renderApprovedClanChips(latestClans);
+      renderClansTable(list);
+    }
+
+    async function loadClansTable() {
+      if (!clansTableBody) return;
+      clansTableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#9ca3af; padding:25px;">🛡️ Loading clans...</td></tr>';
+      try {
+        latestClans = await fetchAppClans();
+        if (!Array.isArray(latestClans)) latestClans = [];
+        applyClansFilter();
+      } catch (e) {
+        console.error(e);
+        clansTableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#fecaca; padding:25px;">❌ Failed to load clans.</td></tr>';
+      }
+    }
+
+    async function openManualClanModal() {
+      const tag = prompt('Clan TAG (short, e.g. OBG):');
+      if (tag == null) return;
+      const name = prompt('Full Clan Name:');
+      if (name == null || !name.trim()) return;
+      const handler = prompt('CLAN HANDLER NAME:') || '';
+      const username = prompt('Login Username (optional — if account has no login):') || '';
+      const addNow = confirm('Add this clan to the APPROVED CLAN LIST immediately?');
+      const clans = await fetchAppClans();
+      const newClan = {
+        id: (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : ('MANUAL_' + Date.now().toString(36)),
+        clan_tag: tag.trim().toUpperCase(),
+        clan_name: name.trim(),
+        clan_handler: handler.trim(),
+        username: username.trim(),
+        password: username ? '' : 'MANUAL_ENTRY_NO_LOGIN',
+        status: username ? 'active' : 'manual',
+        clan_approved: addNow,
+        account_type: 'clan',
+        manual_entry: true,
+        created_at: new Date().toISOString()
+      };
+      clans.push(newClan);
+      const saved = await saveAppClans(clans);
+      if (saved) {
+        latestClans = clans;
+        showAdminToast(addNow ? '✅ Clan added to APPROVED LIST!' : '👥 Clan entry added (not on LIST yet).', 'success');
+        logSystemActivity('Manual Clan Entry',
+          `Admin manually added clan "${newClan.clan_tag} ${newClan.clan_name}" ${addNow ? 'to APPROVED LIST' : '(not on LIST)'}.`, 'USER');
+        loadClansTable();
+      } else showAdminToast('Failed to save.', 'error');
     }
 
     function escapeHtml(str) {
@@ -5883,7 +6806,7 @@
         container.style.position = 'absolute'; container.style.left = '0'; container.style.top = '0'; container.style.zIndex = '-9999';
         container.style.width = '1080px'; container.style.padding = '35px'; container.style.backgroundColor = '#020617';
         container.style.color = '#e5e7eb'; container.style.fontFamily = "'Inter', sans-serif";
-        
+
         container.innerHTML = `
           <div style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:-1;">
              <img src="https://images.unsplash.com/photo-1544200175-ca6e80a7b323?q=80&w=1280&auto=format&fit=crop" style="width:100%; height:100%; object-fit:cover; opacity:0.6; filter: brightness(0.8) contrast(1.2);" crossorigin="anonymous">
@@ -5984,7 +6907,7 @@
       warning: []
     };
 
-    window.setBannedPreset = function(type, val) {
+    window.setBannedPreset = function (type, val) {
       if (type === 'noShow') {
         const el = document.getElementById('bannedNoShowScrim');
         if (el) el.value = val;
@@ -6268,14 +7191,14 @@
       if (syncText) syncBannedTextareas();
     }
 
-    window.removeBannedItem = function(type, idx) {
+    window.removeBannedItem = function (type, idx) {
       if (!bannedState[type] || !bannedState[type][idx]) return;
       const removed = bannedState[type].splice(idx, 1);
       renderBannedTables(true);
       showAdminToast(`Removed: ${removed[0]?.team || removed[0]?.clan || 'Team'}`, 'info');
     };
 
-    window.decrementBannedScrim = function(type, idx) {
+    window.decrementBannedScrim = function (type, idx) {
       if (!bannedState[type] || !bannedState[type][idx]) return;
       const item = bannedState[type][idx];
       const match = (item.duration || '').match(/\d+/);
@@ -6446,7 +7369,7 @@
           headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
         });
         let data = await res.json();
-        
+
         // If specific slot key is empty, try the global fallback
         const usedFallback = (!data || data.length === 0 || !data[0] || !data[0].value);
         if (usedFallback) {
@@ -6478,8 +7401,8 @@
             bannedState.noShow = nsLines.map(l => parseBannedLine(l, '5 Scrims')).filter(Boolean);
           }
         }
-      } catch (e) { 
-        console.error('Failed to load banned teams.', e); 
+      } catch (e) {
+        console.error('Failed to load banned teams.', e);
       } finally {
         renderBannedTables(true);
       }
