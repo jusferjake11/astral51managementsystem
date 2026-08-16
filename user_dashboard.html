@@ -12,7 +12,7 @@
     if (sessionStorage.getItem('codmUserAuth') !== '1') {
       window.location.href = 'admin_login.html';
     } else if (sessionStorage.getItem('codmUserStatus') !== 'active') {
-      sessionStorage.removeItem('codmUserAuth');
+      ['codmUserAuth','codmUserId','codmUsername','codmUserEmail','codmUserStatus','codmUserRole','codmAccountType','codmClanTag','codmClanName','codmClanApproved'].forEach(k => sessionStorage.removeItem(k));
       window.location.href = 'admin_login.html';
     }
   </script>
@@ -962,6 +962,151 @@
     .admin-toast.success {
       border-color: #22c55e;
       color: #bbf7d0;
+    }
+
+    /* ── Bootstrap-Style Alert Modal (Error / Warning / Info / Success) ── */
+    @keyframes bsModalFadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes bsModalSlideUp {
+      from { opacity: 0; transform: translateY(25px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    #bsAlertModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      justify-content: center;
+      align-items: center;
+      z-index: 99999;
+      padding: 16px;
+      animation: bsModalFadeIn 0.25s ease-out;
+    }
+
+    #bsAlertModalContent {
+      width: 100%;
+      max-width: 440px;
+      background: radial-gradient(circle at top left, #1e293b, #020617);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.08);
+      animation: bsModalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .bs-alert-header {
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .bs-alert-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .bs-alert-header.error .bs-alert-icon {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.45);
+      color: #fca5a5;
+      box-shadow: 0 0 15px rgba(239, 68, 68, 0.25);
+    }
+
+    .bs-alert-header.warning .bs-alert-icon {
+      background: rgba(249, 115, 22, 0.15);
+      border: 1px solid rgba(249, 115, 22, 0.45);
+      color: #fdba74;
+      box-shadow: 0 0 15px rgba(249, 115, 22, 0.25);
+    }
+
+    .bs-alert-header.info .bs-alert-icon {
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.45);
+      color: #93c5fd;
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.25);
+    }
+
+    .bs-alert-header.success .bs-alert-icon {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.45);
+      color: #86efac;
+      box-shadow: 0 0 15px rgba(34, 197, 94, 0.25);
+    }
+
+    .bs-alert-title {
+      font-size: 15px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      line-height: 1.2;
+    }
+
+    .bs-alert-header.error .bs-alert-title   { color: #fecaca; }
+    .bs-alert-header.warning .bs-alert-title { color: #fed7aa; }
+    .bs-alert-header.info .bs-alert-title    { color: #bfdbfe; }
+    .bs-alert-header.success .bs-alert-title { color: #bbf7d0; }
+
+    .bs-alert-body {
+      padding: 22px 24px 18px;
+      text-align: left;
+    }
+
+    .bs-alert-message {
+      font-size: 14px;
+      font-weight: 600;
+      color: #e2e8f0;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .bs-alert-footer {
+      padding: 14px 24px 22px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .bs-alert-close-btn {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 22px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+    }
+
+    .bs-alert-header.error ~ * ~ .bs-alert-footer .bs-alert-close-btn,
+    #bsAlertModalContent:has(.bs-alert-header.error) .bs-alert-close-btn {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      box-shadow: 0 6px 18px rgba(220, 38, 38, 0.35);
+    }
+
+    .bs-alert-close-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
+
+    .bs-alert-close-btn:active {
+      transform: translateY(0);
     }
 
     .admin-toast.error {
@@ -2222,6 +2367,22 @@
     </div>
   </div>
 
+  <!-- BOOTSTRAP-STYLE ALERT MODAL (Error / Warning / Info / Success) -->
+  <div id="bsAlertModal">
+    <div id="bsAlertModalContent">
+      <div id="bsAlertHeader" class="bs-alert-header error">
+        <div class="bs-alert-icon" id="bsAlertIcon">⛔</div>
+        <div class="bs-alert-title" id="bsAlertTitle">ERROR</div>
+      </div>
+      <div class="bs-alert-body">
+        <div class="bs-alert-message" id="bsAlertMessage">An error occurred.</div>
+      </div>
+      <div class="bs-alert-footer">
+        <button id="bsAlertCloseBtn" class="bs-alert-close-btn" type="button">OK, GOT IT</button>
+      </div>
+    </div>
+  </div>
+
   <!-- SETTINGS MODAL -->
   <div class="admin-popup" id="settingsModal">
     <div class="admin-popup-content" style="width:360px; max-height:90vh; overflow-y:auto;">
@@ -2278,13 +2439,71 @@
       'Content-Type': 'application/json',
     });
 
+    const CLANS_CONFIG_KEY = 'app_clans';
+
+    async function fetchApprovedClansList() {
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${CLANS_CONFIG_KEY}&select=value`, {
+          headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+        });
+        const data = await res.json();
+        if (!data || !data.length || !data[0].value) return [];
+        try {
+          const parsed = JSON.parse(data[0].value);
+          if (!Array.isArray(parsed)) return [];
+          return parsed.filter(c => c.clan_approved === true);
+        } catch { return []; }
+      } catch (e) {
+        console.error('fetchApprovedClansList error:', e);
+        return [];
+      }
+    }
+
+    function checkIfClanApprovedInClanList(clanNameOrTag, approvedClans) {
+      if (!approvedClans || approvedClans.length === 0) return { found: false, match: null };
+      const inputNormalized = (clanNameOrTag || '').toString().trim().toLowerCase();
+      if (!inputNormalized) return { found: false, match: null };
+      const inputWords = inputNormalized.split(/\s+/).filter(Boolean);
+      const inputTag = inputWords[0] || inputNormalized;
+
+      for (const c of approvedClans) {
+        const tag = (c.clan_tag || '').toString().trim().toLowerCase();
+        const name = (c.clan_name || '').toString().trim().toLowerCase();
+        const full = `${tag} ${name}`.trim();
+        const full2 = `${name} ${tag}`.trim();
+
+        if (tag && (tag === inputNormalized || tag === inputTag)) return { found: true, match: c };
+        if (name && (name === inputNormalized || name === inputTag)) return { found: true, match: c };
+        if (full && (full === inputNormalized || full.includes(inputNormalized) || inputNormalized.includes(full))) return { found: true, match: c };
+        if (full2 && (full2 === inputNormalized || full2.includes(inputNormalized) || inputNormalized.includes(full2))) return { found: true, match: c };
+        if (tag.length >= 2 && inputNormalized.includes(tag)) return { found: true, match: c };
+        if (name.length >= 4 && inputNormalized.includes(name)) return { found: true, match: c };
+      }
+      return { found: false, match: null };
+    }
+
+    async function fetchAppClans() {
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${CLANS_CONFIG_KEY}&select=value`, {
+          headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+        });
+        const data = await res.json();
+        if (!data || !data.length || !data[0].value) return [];
+        try { const p = JSON.parse(data[0].value); return Array.isArray(p) ? p : []; } catch { return []; }
+      } catch { return []; }
+    }
+
+    async function saveAppClans(clans) {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/config`, {
+        method: 'POST',
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates, return=minimal' },
+        body: JSON.stringify({ key: CLANS_CONFIG_KEY, value: JSON.stringify(clans) }),
+      });
+      return res.ok;
+    }
+
     function doLogout() {
-      sessionStorage.removeItem('codmUserAuth');
-      sessionStorage.removeItem('codmUserId');
-      sessionStorage.removeItem('codmUsername');
-      sessionStorage.removeItem('codmUserEmail');
-      sessionStorage.removeItem('codmUserStatus');
-      sessionStorage.removeItem('codmUserRole');
+      ['codmUserAuth','codmUserId','codmUsername','codmUserEmail','codmUserStatus','codmUserRole','codmAccountType','codmClanTag','codmClanName','codmClanApproved'].forEach(k => sessionStorage.removeItem(k));
       window.location.href = 'admin_login.html';
     }
 
@@ -2296,24 +2515,51 @@
     (function initUserMenu() {
       const uname = sessionStorage.getItem('codmUsername') || 'User';
       const uemail = sessionStorage.getItem('codmUserEmail') || '';
-      const urole = 'User';
-      const initial = (uname[0] || 'U').toUpperCase();
+      const accountType = sessionStorage.getItem('codmAccountType') || 'user';
+      const clanTag = sessionStorage.getItem('codmClanTag') || '';
+      const clanName = sessionStorage.getItem('codmClanName') || '';
+      const clanApproved = sessionStorage.getItem('codmClanApproved') === 'true';
+
+      let urole = 'User';
+      let displayName = uname;
+      let settingsRoleBadge = 'User';
+      if (accountType === 'clan') {
+        urole = clanTag ? `🛡️ ${clanTag}` : '🛡️ Clan';
+        displayName = clanName ? `${clanName}${clanTag ? ` [${clanTag}]` : ''}` : uname;
+        settingsRoleBadge = `Clan Account${clanApproved ? ' · ✅ LISTED' : ' · ⏳ PENDING LIST'}`;
+      }
+      const initial = ((clanTag && clanTag[0]) || uname[0] || 'U').toUpperCase();
 
       const setEl = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = val; };
-      setEl('userDisplayName', uname);
+      setEl('userDisplayName', displayName);
       setEl('userRoleLabel', urole);
       setEl('userAvatarCircle', initial);
-      setEl('userDropdownName', uname);
-      setEl('userDropdownEmail', uemail);
+      setEl('userDropdownName', displayName);
+      setEl('userDropdownEmail', uemail || (clanName ? `Clan: ${clanName}` : ''));
       setEl('userDropdownAvatar', initial);
-      setEl('settingsDisplayName', uname);
-      setEl('settingsEmail', uemail);
+      setEl('settingsDisplayName', displayName);
+      setEl('settingsEmail', uemail || (accountType === 'clan' ? 'Clan Account — no email on file' : ''));
       setEl('settingsAvatarCircle', initial);
-      setEl('settingsRoleBadge', urole);
+      setEl('settingsRoleBadge', settingsRoleBadge);
 
       // Also keep old badge compat if still in DOM
       const legacyBadge = document.getElementById('userBadgeName');
-      if (legacyBadge) legacyBadge.textContent = uname.toUpperCase();
+      if (legacyBadge) legacyBadge.textContent = (clanTag || uname).toUpperCase();
+
+      // Inject clan-account status banner into top of main content if clan
+      if (accountType === 'clan') {
+        const headerReservationBlock = document.getElementById('headerReservationBlock');
+        if (headerReservationBlock) {
+          const banner = document.createElement('div');
+          banner.style.cssText = `margin-right:12px; padding:6px 12px; border-radius:10px; font-size:11px; font-weight:600; ${clanApproved
+            ? 'background:linear-gradient(135deg, rgba(34,197,94,0.2), rgba(6,182,212,0.15)); color:#bbf7d0; border:1px solid rgba(34,197,94,0.45);'
+            : 'background:linear-gradient(135deg, rgba(234,179,8,0.18), rgba(245,158,11,0.12)); color:#fef08a; border:1px solid rgba(234,179,8,0.45);'}`;
+          banner.innerHTML = clanApproved
+            ? `✅ CLAN LISTED — You may reserve scrim slots`
+            : `⏳ NOT ON CLAN LIST — Ask admin to approve your clan before reserving`;
+          headerReservationBlock.insertBefore(banner, headerReservationBlock.firstChild);
+        }
+      }
 
       const profileBtn = document.getElementById('userProfileBtn');
       const dropdown = document.getElementById('userDropdownMenu');
@@ -2379,28 +2625,52 @@
       if (newPass !== confirmPass) { setMsg('New passwords do not match.'); return; }
       const userId = sessionStorage.getItem('codmUserId');
       if (!userId) { setMsg('Session error. Please log in again.'); return; }
+      const accountType = sessionStorage.getItem('codmAccountType') || 'user';
       this.disabled = true; this.textContent = 'Saving…';
       try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.app_users&select=value`, {
-          headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
-        });
-        const data = await res.json();
-        if (!data || !data.length || !data[0].value) { setMsg('Could not load user data.'); return; }
-        const users = JSON.parse(data[0].value);
-        const user = users.find(u => u.id === userId);
-        if (!user) { setMsg('User not found.'); return; }
         const oldHash = await hashPasswordLocal(oldPass);
-        if (user.password !== oldHash) { setMsg('Incorrect current password.'); return; }
+        let targetArr = null;
+        let target = null;
+        let targetKey = 'app_users';
+        let targetLabel = 'User';
+
+        if (accountType === 'clan') {
+          const clans = await fetchAppClans();
+          targetArr = clans;
+          target = clans.find(c => c.id === userId);
+          targetKey = CLANS_CONFIG_KEY;
+          targetLabel = 'Clan';
+        } else {
+          const res = await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.app_users&select=value`, {
+            headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+          });
+          const data = await res.json();
+          if (!data || !data.length || !data[0].value) { setMsg('Could not load user data.'); return; }
+          targetArr = JSON.parse(data[0].value);
+          target = targetArr.find(u => u.id === userId);
+          targetKey = 'app_users';
+          targetLabel = 'User';
+        }
+
+        if (!target) { setMsg('Account not found.'); return; }
+        if (target.password !== oldHash) { setMsg('Incorrect current password.'); return; }
         if (oldPass === newPass) { setMsg('New password must be different from the current password.', '#fde68a'); return; }
-        user.password = await hashPasswordLocal(newPass);
-        const saveRes = await fetch(`${SUPABASE_URL}/rest/v1/config`, {
-          method: 'POST',
-          headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates, return=minimal' },
-          body: JSON.stringify({ key: 'app_users', value: JSON.stringify(users) }),
-        });
-        if (saveRes.ok) {
+
+        target.password = await hashPasswordLocal(newPass);
+        target.updated_at = new Date().toISOString();
+        let saveRes;
+        if (accountType === 'clan') {
+          saveRes = await saveAppClans(targetArr);
+        } else {
+          saveRes = await (await fetch(`${SUPABASE_URL}/rest/v1/config`, {
+            method: 'POST',
+            headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates, return=minimal' },
+            body: JSON.stringify({ key: targetKey, value: JSON.stringify(targetArr) }),
+          })).ok;
+        }
+        if (saveRes) {
           setMsg('✅ Password changed successfully!', '#4ade80');
-          logSystemActivity('Password Changed', `User "${user.username}" updated their account password.`, 'SETTINGS', user.username, 'user');
+          logSystemActivity('Password Changed', `${targetLabel} "${target.username || target.clan_name || target.id}" updated their account password.`, 'SETTINGS', target.username || target.clan_name || 'Unknown', accountType === 'clan' ? 'clan' : 'user');
           document.getElementById('settingsOldPass').value = '';
           document.getElementById('settingsNewPass').value = '';
           document.getElementById('settingsConfirmPass').value = '';
@@ -2599,9 +2869,12 @@
     setTimeout(initSchedSwitcher, 100);
 
     function showAdminToast(message, type = 'info') {
+      if (type === 'error') {
+        showBsAlert(message, 'error');
+        return;
+      }
       const toast = document.createElement('div');
       toast.className = 'admin-toast';
-      if (type === 'error') toast.classList.add('error');
       if (type === 'success') toast.classList.add('success');
       toast.textContent = message;
       document.body.appendChild(toast);
@@ -2613,6 +2886,55 @@
         setTimeout(() => toast.remove(), 250);
       }, 2200);
     }
+
+    function showBsAlert(message, type) {
+      const modal = document.getElementById('bsAlertModal');
+      const header = document.getElementById('bsAlertHeader');
+      const icon = document.getElementById('bsAlertIcon');
+      const title = document.getElementById('bsAlertTitle');
+      const msg = document.getElementById('bsAlertMessage');
+      const closeBtn = document.getElementById('bsAlertCloseBtn');
+      let t = type || 'info';
+      if (!type && message) {
+        const m = message.toString().toLowerCase();
+        if (m.includes('warning') || m.includes('late')) t = 'warning';
+        else if (m.includes('success') || m.includes('saved') || m.includes('reserved') || m.includes('cancelled') || m.includes('approved') || m.includes('updated')) t = 'success';
+        else if (m.includes('error') || m.includes('failed') || m.includes('cannot') || m.includes('not ') || m.includes('incorrect') || m.includes('banned') || m.includes('limit') || m.includes('full') || m.includes('duplicate') || m.includes('🚫') || m.includes('empty') || m.includes('bawal')) t = 'error';
+      }
+      header.className = 'bs-alert-header ' + t;
+      if (t === 'error')   { icon.textContent = '⛔'; title.textContent = 'ERROR'; }
+      if (t === 'warning') { icon.textContent = '⚠️'; title.textContent = 'WARNING'; }
+      if (t === 'info')    { icon.textContent = 'ℹ️'; title.textContent = 'INFO'; }
+      if (t === 'success') { icon.textContent = '✅'; title.textContent = 'SUCCESS'; }
+      if (t === 'error' && closeBtn) {
+        closeBtn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+        closeBtn.style.boxShadow = '0 6px 18px rgba(220, 38, 38, 0.35)';
+      } else if (t === 'warning' && closeBtn) {
+        closeBtn.style.background = 'linear-gradient(135deg, #f97316, #ea580c)';
+        closeBtn.style.boxShadow = '0 6px 18px rgba(234, 88, 12, 0.35)';
+      } else if (t === 'success' && closeBtn) {
+        closeBtn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
+        closeBtn.style.boxShadow = '0 6px 18px rgba(22, 163, 74, 0.35)';
+      } else if (closeBtn) {
+        closeBtn.style.background = 'linear-gradient(135deg, #3b82f6, #2563eb)';
+        closeBtn.style.boxShadow = '0 6px 18px rgba(37, 99, 235, 0.35)';
+      }
+      msg.textContent = message || '';
+      modal.style.display = 'flex';
+    }
+
+    function closeBsAlert() {
+      const m = document.getElementById('bsAlertModal');
+      if (m) m.style.display = 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const cb = document.getElementById('bsAlertCloseBtn');
+      if (cb) cb.addEventListener('click', closeBsAlert);
+      const am = document.getElementById('bsAlertModal');
+      if (am) am.addEventListener('click', (e) => { if (e.target.id === 'bsAlertModal') closeBsAlert(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { const m = document.getElementById('bsAlertModal'); if (m && m.style.display === 'flex') closeBsAlert(); } });
+    });
 
     function openAdminPopup({ title, message, requireInput = false, placeholder = 'Admin key', initialValue = '', confirmText = 'Confirm', cancelText = 'Cancel' }) {
       adminPopupTitle.textContent = title || '';
@@ -4235,6 +4557,14 @@
       const clan = adminReserveClanInput.value.trim();
       if (!clan) {
         showAdminToast("Please enter a clan name.", "error");
+        return;
+      }
+
+      // --- CLAN LIST VALIDATION (NEW) ---
+      const approvedClans = await fetchApprovedClansList();
+      const approval = checkIfClanApprovedInClanList(clan, approvedClans);
+      if (!approval.found) {
+        showAdminToast(`🚫 CLAN NOT REGISTERED: "${clan}" is NOT on the APPROVED CLAN LIST.\n\nAsk admin to approve your clan first.`, 'error');
         return;
       }
 
