@@ -238,7 +238,8 @@
     /* ── Elite Modal Overlays ── */
     #clanModal,
     #cancelModal,
-    #confirmModal {
+    #confirmModal,
+    #alertModal {
       display: none;
       position: fixed;
       inset: 0;
@@ -249,6 +250,17 @@
       align-items: center;
       z-index: 9999;
       padding: 16px;
+      animation: modalFadeIn 0.25s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes modalSlideUp {
+      from { opacity: 0; transform: translateY(25px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     #clanModalContent,
@@ -263,6 +275,136 @@
       text-align: center;
       box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8);
       position: relative;
+    }
+
+    /* ── Bootstrap-Style Alert Modal ── */
+    #alertModalContent {
+      width: 100%;
+      max-width: 420px;
+      background: radial-gradient(circle at top left, #1e293b, #020617);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.08);
+      animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .alert-modal-header {
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .alert-modal-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .alert-modal-header.error .alert-modal-icon {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.45);
+      color: #fca5a5;
+      box-shadow: 0 0 15px rgba(239, 68, 68, 0.25);
+    }
+
+    .alert-modal-header.warning .alert-modal-icon {
+      background: rgba(249, 115, 22, 0.15);
+      border: 1px solid rgba(249, 115, 22, 0.45);
+      color: #fdba74;
+      box-shadow: 0 0 15px rgba(249, 115, 22, 0.25);
+    }
+
+    .alert-modal-header.info .alert-modal-icon {
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.45);
+      color: #93c5fd;
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.25);
+    }
+
+    .alert-modal-header.success .alert-modal-icon {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.45);
+      color: #86efac;
+      box-shadow: 0 0 15px rgba(34, 197, 94, 0.25);
+    }
+
+    .alert-modal-title {
+      font-size: 15px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      line-height: 1.2;
+    }
+
+    .alert-modal-header.error .alert-modal-title   { color: #fecaca; }
+    .alert-modal-header.warning .alert-modal-title { color: #fed7aa; }
+    .alert-modal-header.info .alert-modal-title    { color: #bfdbfe; }
+    .alert-modal-header.success .alert-modal-title { color: #bbf7d0; }
+
+    .alert-modal-body {
+      padding: 22px 22px 18px;
+      text-align: left;
+    }
+
+    .alert-modal-message {
+      font-size: 14px;
+      font-weight: 600;
+      color: #e2e8f0;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .alert-modal-footer {
+      padding: 14px 22px 22px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .alert-modal-close-btn {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 22px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+    }
+
+    .alert-modal-header.error ~ .alert-modal-footer .alert-modal-close-btn {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      box-shadow: 0 6px 18px rgba(220, 38, 38, 0.35);
+    }
+
+    .alert-modal-header.warning ~ .alert-modal-footer .alert-modal-close-btn {
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      box-shadow: 0 6px 18px rgba(234, 88, 12, 0.35);
+    }
+
+    .alert-modal-header.success ~ .alert-modal-footer .alert-modal-close-btn {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      box-shadow: 0 6px 18px rgba(22, 163, 74, 0.35);
+    }
+
+    .alert-modal-close-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
+
+    .alert-modal-close-btn:active {
+      transform: translateY(0);
     }
 
     /* Clan Selection Card Design */
@@ -462,6 +604,13 @@
   <div class="container">
     <h2 id="pageTitle">ASTRAL 51 CODM Scrim Slot Reservation</h2>
 
+    <!-- ── Auth / Login Status Banner ── -->
+    <div id="authBanner" style="margin-bottom:12px; padding:12px 16px; border-radius:12px; font-size:13px; text-align:center; border:1px solid rgba(55,65,81,0.7); background:rgba(15,23,42,0.85);">
+      <span id="authBannerText">Checking login status…</span>
+      <a id="authLoginLink" href="admin_login.html" style="display:inline-block; margin-left:10px; padding:5px 12px; border-radius:8px; background:linear-gradient(135deg,#8b5cf6,#6366f1); color:#fff; text-decoration:none; font-weight:600; font-size:12px;">🔐 LOGIN FIRST</a>
+      <button id="authLogoutBtn" onclick="handleLogout()" style="display:none; margin-left:10px; padding:5px 13px; border-radius:8px; background:linear-gradient(135deg,#ef4444,#b91c1c); color:#fff; border:none; font-weight:700; font-size:12px; cursor:pointer; letter-spacing:0.05em; transition:opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">🚪 LOGOUT</button>
+    </div>
+
     <!-- ── Sticky Reservation Status Banner ── -->
     <div id="statusBanner" class="closed">
       <div class="status-main">
@@ -473,6 +622,8 @@
 
     <!-- Schedule Fast-Switcher -->
     <div class="sched-switcher">
+      <button class="sched-btn" id="schedBtn6pm" onclick="switchSched('6pm')">🌆 6:00 PM</button>
+      <div class="sched-divider"></div>
       <button class="sched-btn active" id="schedBtn8pm" onclick="switchSched('8pm')">🌙 8:00 PM</button>
       <div class="sched-divider"></div>
       <button class="sched-btn" id="schedBtn10pm" onclick="switchSched('10pm')">🌃 10:00 PM</button>
@@ -490,15 +641,15 @@
   <div id="clanModal">
     <div id="clanModalContent">
       <h3>Reserve Slot</h3>
-      <div class="input-group">
-        <label>Clan Name</label>
-        <input type="text" id="clanInput" placeholder="Enter Clan Name">
+      <div id="clanTagGroup" class="input-group" style="display:none;">
+        <label>Clan Tag <small style="color:#94a3b8;">(locked — from your account)</small></label>
+        <input type="text" id="clanTagInput" readonly placeholder="A51"
+          style="background:rgba(30,41,59,0.8); color:#e5e7eb; opacity:0.85; font-weight:700; letter-spacing:0.05em; text-transform:uppercase;">
       </div>
       <div class="input-group">
-        <label>Cancellation PIN (4 Digits)</label>
-        <input type="password" id="pinInput" maxlength="4" placeholder="••••"
-          style="text-align: center; letter-spacing: 5px; font-size: 18px;">
-        <small>Choose a PIN to protect your slot.</small>
+        <label id="clanNameLabel">Clan / Team Name</label>
+        <input type="text" id="clanInput" placeholder="Enter Team Name (e.g. MAIN, ELITE)">
+        <small id="clanNameHint" style="display:none; color:#94a3b8;">Team name only — your clan tag will be added automatically.</small>
       </div>
       <div class="flex-row">
         <button id="uploadLogoBtn" class="btn btn-ghost">
@@ -524,9 +675,9 @@
       <p class="modal-sub">Select your clan to cancel your slot:</p>
       <div id="cancelList"></div>
       <div id="pinVerificationSection">
-        <label>Enter your 4-Digit PIN:</label>
-        <input type="password" id="cancelPinInput" maxlength="4" placeholder="••••"
-          style="text-align: center; letter-spacing: 5px; font-size: 18px;">
+        <label>Enter your ACCOUNT PASSWORD to confirm cancellation:</label>
+        <input type="password" id="cancelPinInput" placeholder="Your account password"
+          style="text-align: left; letter-spacing: normal; font-size: 14px;">
       </div>
       <div class="flex-row">
         <button id="cancelSubmitBtn" class="btn btn-danger" style="flex: 2;">SUBMIT CANCELLATION</button>
@@ -547,15 +698,84 @@
     </div>
   </div>
 
+  <!-- BOOTSTRAP-STYLE ALERT MODAL (Error / Warning / Info / Success) -->
+  <div id="alertModal">
+    <div id="alertModalContent">
+      <div id="alertModalHeader" class="alert-modal-header error">
+        <div class="alert-modal-icon" id="alertModalIcon">⛔</div>
+        <div class="alert-modal-title" id="alertModalTitle">ERROR</div>
+      </div>
+      <div class="alert-modal-body">
+        <div class="alert-modal-message" id="alertModalMessage">An error occurred.</div>
+      </div>
+      <div class="alert-modal-footer">
+        <button id="alertModalCloseBtn" class="alert-modal-close-btn" type="button">OK, GOT IT</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const SUPABASE_URL = 'https://yzdtszfubnastllfyczs.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6ZHRzemZ1Ym5hc3RsbGZ5Y3pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNzEyOTgsImV4cCI6MjA4NzY0NzI5OH0.GJz1ouXTbi3GQZYJa0756w4CgqabT9C2EH_mW_m_5TY';
     const MAX_SLOTS = 25;
+    const CLANS_CONFIG_KEY = 'app_clans';
+
+    async function fetchApprovedClansList() {
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${CLANS_CONFIG_KEY}&select=value`, {
+          headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+        });
+        const data = await res.json();
+        if (!data || !data.length || !data[0].value) return [];
+        try {
+          const parsed = JSON.parse(data[0].value);
+          if (!Array.isArray(parsed)) return [];
+          return parsed.filter(c => c.clan_approved === true);
+        } catch { return []; }
+      } catch (e) {
+        console.error('fetchApprovedClansList error:', e);
+        return [];
+      }
+    }
+
+    function checkIfClanApprovedInClanList(clanNameOrTag, approvedClans) {
+      if (!approvedClans || approvedClans.length === 0) return { found: false, match: null };
+      const inputNormalized = (clanNameOrTag || '').toString().trim().toLowerCase();
+      if (!inputNormalized) return { found: false, match: null };
+      const inputWords = inputNormalized.split(/\s+/).filter(Boolean);
+      const inputTag = inputWords[0] || inputNormalized;
+
+      for (const c of approvedClans) {
+        const tag = (c.clan_tag || '').toString().trim().toLowerCase();
+        const name = (c.clan_name || '').toString().trim().toLowerCase();
+        const full = `${tag} ${name}`.trim();
+        const full2 = `${name} ${tag}`.trim();
+
+        if (tag && (tag === inputNormalized || tag === inputTag)) {
+          return { found: true, match: c };
+        }
+        if (name && (name === inputNormalized || name === inputTag)) {
+          return { found: true, match: c };
+        }
+        if (full && (full === inputNormalized || full.includes(inputNormalized) || inputNormalized.includes(full))) {
+          return { found: true, match: c };
+        }
+        if (full2 && (full2 === inputNormalized || full2.includes(inputNormalized) || inputNormalized.includes(full2))) {
+          return { found: true, match: c };
+        }
+        if (inputNormalized.includes(tag) && tag.length >= 2) {
+          return { found: true, match: c };
+        }
+        if (inputNormalized.includes(name) && name.length >= 4) {
+          return { found: true, match: c };
+        }
+      }
+      return { found: false, match: null };
+    }
 
     const slotsEl = document.getElementById('slots');
     const clanModal = document.getElementById('clanModal');
     const clanInput = document.getElementById('clanInput');
-    const pinInput = document.getElementById('pinInput');
     const logoFile = document.getElementById('logoFile');
     const uploadLogoBtn = document.getElementById('uploadLogoBtn');
     const uploadStatusText = document.getElementById('uploadStatusText');
@@ -569,6 +789,54 @@
     const countdownText = document.getElementById('countdownText');
     const statusBanner = document.getElementById('statusBanner');
 
+    const USERS_CONFIG_KEY = 'app_users';
+
+    async function hashPasswordLocal(password) {
+      const data = new TextEncoder().encode(password);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function fetchUsersList() {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${USERS_CONFIG_KEY}&select=value`, {
+        headers: supabaseHeaders(),
+      });
+      const data = await res.json();
+      if (!data || !data.length || !data[0].value) return [];
+      try {
+        const parsed = JSON.parse(data[0].value);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+
+    async function fetchAllClansList() {
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${CLANS_CONFIG_KEY}&select=value`, {
+          headers: supabaseHeaders(),
+        });
+        const data = await res.json();
+        if (!data || !data.length || !data[0].value) return [];
+        const parsed = JSON.parse(data[0].value);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function isWithin1HourBeforeSlot(sched) {
+      const now = new Date();
+      const currentMins = now.getHours() * 60 + now.getMinutes();
+      let slotMins;
+      if (sched === '6pm') slotMins = 18 * 60;
+      else if (sched === '8pm') slotMins = 20 * 60;
+      else if (sched === '10pm') slotMins = 22 * 60;
+      else return false;
+      const oneHourBefore = slotMins - 60;
+      return currentMins >= oneHourBefore && currentMins < slotMins;
+    }
+
     let currentLogoBase64 = '';
     let currentSlotToMine = null;
     let selectedSlotIdToCancel = null;
@@ -577,13 +845,14 @@
     let openTime = null;  // Store as {h, m}
     let isCurrentlyOpen = false;
 
-    // --- DUAL SCHEDULE LOGIC ---
+    // --- TRIPLE SCHEDULE LOGIC ---
     const urlParams = new URLSearchParams(window.location.search);
     let currentSched = urlParams.get('sched') || '8pm';
-    if (currentSched !== '8pm' && currentSched !== '10pm') currentSched = '8pm';
+    if (currentSched !== '6pm' && currentSched !== '8pm' && currentSched !== '10pm') currentSched = '8pm';
 
     function switchSched(sched) {
       currentSched = sched;
+      document.getElementById('schedBtn6pm').classList.toggle('active', sched === '6pm');
       document.getElementById('schedBtn8pm').classList.toggle('active', sched === '8pm');
       document.getElementById('schedBtn10pm').classList.toggle('active', sched === '10pm');
       const title = document.getElementById('pageTitle');
@@ -601,11 +870,154 @@
       Authorization: `Bearer ${SUPABASE_KEY}`,
     });
 
+    // --- AUTH GUARD HELPERS ---
+    function getAuthContext() {
+      const isUserAuth = sessionStorage.getItem('codmUserAuth') === '1';
+      const isAdminAuth = sessionStorage.getItem('codmAdminAuth') === '1';
+      const isAuth = isUserAuth || isAdminAuth;
+      const status = sessionStorage.getItem('codmUserStatus') || '';
+      const role = sessionStorage.getItem('codmUserRole') || '';
+      const accountType = isAdminAuth ? 'admin' : (sessionStorage.getItem('codmAccountType') || 'user');
+      const username = sessionStorage.getItem('codmUsername') || '';
+      const email = sessionStorage.getItem('codmUserEmail') || '';
+      const clanTag = sessionStorage.getItem('codmClanTag') || '';
+      const clanName = sessionStorage.getItem('codmClanName') || '';
+      const clanApproved = sessionStorage.getItem('codmClanApproved') === 'true';
+      const isActive = isAuth && (status === 'active');
+      return { isAuth, isActive, accountType, role, username, email, clanTag, clanName, clanApproved, isAdmin: isAdminAuth };
+    }
+
+    function canReserveSlots() {
+      const ctx = getAuthContext();
+      if (!ctx.isActive) return { allowed: false, reason: 'LOGIN REQUIRED — Please sign in with your account before reserving slots.' };
+      if (ctx.accountType === 'clan' && !ctx.clanApproved) {
+        return { allowed: false, reason: '⚠️ CLAN NOT APPROVED — Your clan is NOT on the APPROVED CLAN LIST yet. Ask an admin to approve your clan first.' };
+      }
+      return { allowed: true, reason: '' };
+    }
+
+    function canCancelOwnSlots(clanNameToMatch = '') {
+      const ctx = getAuthContext();
+      if (!ctx.isActive) return { allowed: false, reason: 'LOGIN REQUIRED — Please sign in to cancel your reserved slots.' };
+      if (ctx.accountType === 'clan') {
+        if (!ctx.clanApproved) return { allowed: false, reason: '⚠️ Your clan is not on the APPROVED LIST.' };
+        const normalize = s => (s || '').toString().trim().toLowerCase().replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
+        const myTag = normalize(ctx.clanTag);
+        const myName = normalize(ctx.clanName);
+        const input = normalize(clanNameToMatch);
+        if (clanNameToMatch && input) {
+          const matches = (myTag && (input.includes(myTag) || myTag.includes(input))) ||
+                          (myName && (input.includes(myName) || myName.includes(input)));
+          if (!matches) return { allowed: false, reason: `🚫 You can only cancel slots reserved by YOUR clan (${ctx.clanTag} ${ctx.clanName}).` };
+        }
+      }
+      return { allowed: true, reason: '' };
+    }
+
+    function getLoggedInClanDisplayName() {
+      const ctx = getAuthContext();
+      if (ctx.accountType === 'clan' && (ctx.clanTag || ctx.clanName)) {
+        return `${ctx.clanTag ? ctx.clanTag.toUpperCase() + ' ' : ''}${ctx.clanName || ''}`.trim();
+      }
+      return '';
+    }
+
+    function updateAuthBanner() {
+      const banner = document.getElementById('authBanner');
+      const bannerText = document.getElementById('authBannerText');
+      const loginLink = document.getElementById('authLoginLink');
+      const ctx = getAuthContext();
+
+      if (!ctx.isActive) {
+        banner.style.background = 'rgba(127,29,29,0.25)';
+        banner.style.borderColor = 'rgba(248,113,113,0.55)';
+        bannerText.innerHTML = `🔒 <strong style="color:#fecaca;">NOT LOGGED IN.</strong> <span style="color:#fca5a5;">You must have an account and be logged in to reserve or cancel slots.</span>`;
+        bannerText.style.color = '#fecaca';
+        loginLink.style.display = 'inline-block';
+        loginLink.textContent = '🔐 LOGIN / CREATE ACCOUNT';
+        document.getElementById('authLogoutBtn').style.display = 'none';
+        return;
+      }
+
+      loginLink.style.display = 'none';
+      document.getElementById('authLogoutBtn').style.display = 'inline-block';
+
+      if (ctx.accountType === 'clan') {
+        const display = `${ctx.clanTag ? `[${ctx.clanTag.toUpperCase()}] ` : ''}${ctx.clanName || ctx.username || ''}`;
+        if (ctx.clanApproved) {
+          banner.style.background = 'linear-gradient(135deg, rgba(34,197,94,0.18), rgba(6,182,212,0.14))';
+          banner.style.borderColor = 'rgba(34,197,94,0.5)';
+          bannerText.innerHTML = `✅ Logged in as <strong style="color:#bbf7d0;">${escapeHtml(display)}</strong> · Clan Account · <span style="color:#86efac;">APPROVED ON CLAN LIST</span> — You may reserve slots.`;
+          bannerText.style.color = '#bbf7d0';
+        } else {
+          banner.style.background = 'rgba(180,83,9,0.22)';
+          banner.style.borderColor = 'rgba(245,158,11,0.55)';
+          bannerText.innerHTML = `⏳ Logged in as <strong style="color:#fef08a;">${escapeHtml(display)}</strong> · <span style="color:#fde047;">CLAN NOT ON APPROVED LIST</span> — Ask an admin to approve your clan before reserving.`;
+          bannerText.style.color = '#fef08a';
+        }
+      } else if (ctx.accountType === 'admin') {
+        banner.style.background = 'linear-gradient(135deg, rgba(99,102,241,0.2), rgba(168,85,247,0.18))';
+        banner.style.borderColor = 'rgba(129,140,248,0.55)';
+        bannerText.innerHTML = `🛡️ Logged in as <strong style="color:#c7d2fe;">ADMIN (${escapeHtml(ctx.username || 'Admin')})</strong> — Full reservation access enabled.`;
+        bannerText.style.color = '#c7d2fe';
+      } else {
+        banner.style.background = 'rgba(55,65,81,0.3)';
+        banner.style.borderColor = 'rgba(148,163,184,0.4)';
+        bannerText.innerHTML = `👤 Logged in as <strong style="color:#e5e7eb;">${escapeHtml(ctx.username || 'User')}</strong> (Standard User) — You may reserve slots.`;
+        bannerText.style.color = '#e5e7eb';
+      }
+    }
+
+    function handleLogout() {
+      ['codmUserAuth','codmAdminAuth','codmUserId','codmUsername','codmUserEmail',
+       'codmUserStatus','codmUserRole','codmAccountType','codmClanTag','codmClanName','codmClanApproved']
+        .forEach(k => sessionStorage.removeItem(k));
+      document.getElementById('authLogoutBtn').style.display = 'none';
+      document.getElementById('authLoginLink').style.display = 'inline-block';
+      updateAuthBanner();
+      updateButtonsAuthState();
+    }
+
+    function updateButtonsAuthState() {
+      const reserve = canReserveSlots();
+      // Disable mineBtn regardless of schedule if not allowed (schedule disable will be combined in checkStatus)
+      mineBtn.title = reserve.allowed ? (mineBtn.disabled ? 'Wait for reservations to open.' : 'Reserve a scrim slot.') : reserve.reason;
+      cancelBtn.title = 'Cancel your reserved slot.';
+    }
+
     mineBtn.onclick = async () => {
+      const reserve = canReserveSlots();
+      if (!reserve.allowed) { showPopup(reserve.reason); return; }
       const empty = currentSlots.find(s => !s.clan);
       if (!empty) { showPopup(`All slots full for ${currentSched.toUpperCase()}!`); return; }
-      clanInput.value = '';
-      pinInput.value = '';
+      const ctx = getAuthContext();
+      const tagGroup = document.getElementById('clanTagGroup');
+      const tagInput = document.getElementById('clanTagInput');
+      const nameLabel = document.getElementById('clanNameLabel');
+      const nameHint = document.getElementById('clanNameHint');
+      if (ctx.accountType === 'clan' && ctx.clanTag) {
+        // Clan account mode: TAG LOCKED, Team Name editable
+        tagGroup.style.display = 'block';
+        tagInput.value = ctx.clanTag.toUpperCase();
+        nameLabel.textContent = 'Team Name';
+        clanInput.value = '';
+        clanInput.placeholder = 'e.g. MAIN, ELITE, ACADEMY, B-TEAM';
+        clanInput.readOnly = false;
+        clanInput.style.opacity = '1';
+        clanInput.style.background = '';
+        nameHint.style.display = 'block';
+      } else {
+        // Non-clan mode: single input
+        tagGroup.style.display = 'none';
+        tagInput.value = '';
+        nameLabel.textContent = 'Clan / Team Name';
+        clanInput.value = '';
+        clanInput.placeholder = 'Enter Clan / Team Name';
+        clanInput.readOnly = false;
+        clanInput.style.opacity = '1';
+        clanInput.style.background = '';
+        nameHint.style.display = 'none';
+      }
       currentLogoBase64 = '';
       logoPreview.src = '';
       logoPreviewContainer.style.display = 'none';
@@ -643,10 +1055,32 @@
     clanCancelBtn.onclick = () => clanModal.style.display = 'none';
 
     cancelBtn.onclick = async () => {
+      if (isWithin1HourBeforeSlot(currentSched)) {
+        showPopup("YOU ARE LATE CANCEL MENTION THE ADMIN ON YOUR SGC TO CANCEL YOUR SLOT!");
+        return;
+      }
+      const cancelAuth = canCancelOwnSlots();
+      if (!cancelAuth.allowed) { showPopup(cancelAuth.reason); return; }
       try {
         const res = await fetch(`${SUPABASE_URL}/rest/v1/slots?select=id,slot_number,clan,cancel_key&schedule_type=eq.${currentSched}&clan=neq.&clan=not.is.null&order=slot_number.asc`, { headers: supabaseHeaders() });
-        const filled = await res.json();
+        let filled = await res.json();
         if (!filled || filled.length === 0) { showPopup("No reservations to cancel!"); return; }
+        // For clan accounts, filter to only show their own clan slots
+        const ctx = getAuthContext();
+        if (ctx.accountType === 'clan') {
+          const normalize = s => (s || '').toString().trim().toLowerCase().replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
+          const myTag = normalize(ctx.clanTag);
+          const myName = normalize(ctx.clanName);
+          filled = filled.filter(s => {
+            const inp = normalize(s.clan);
+            return (myTag && (inp.includes(myTag) || myTag.includes(inp))) ||
+                   (myName && (inp.includes(myName) || myName.includes(inp)));
+          });
+          if (filled.length === 0) {
+            showPopup(`No slots to cancel for your clan (${ctx.clanTag} ${ctx.clanName}).`);
+            return;
+          }
+        }
         const cancelList = document.getElementById('cancelList');
         cancelList.innerHTML = '';
         filled.forEach(s => {
@@ -666,20 +1100,45 @@
 
     document.getElementById('cancelCloseBtn').onclick = () => document.getElementById('cancelModal').style.display = 'none';
 
-    document.getElementById('cancelSubmitBtn').onclick = () => {
+    document.getElementById('cancelSubmitBtn').onclick = async () => {
       const selected = document.querySelector('input[name="cancelSlot"]:checked');
       if (!selected) { showPopup("Select a slot."); return; }
-      if (document.getElementById('cancelPinInput').value !== selected.getAttribute('data-key')) { showPopup("Incorrect PIN!"); return; }
+      const targetClan = selected.getAttribute('data-name') || '';
+      const ownerCheck = canCancelOwnSlots(targetClan);
+      if (!ownerCheck.allowed) { showPopup(ownerCheck.reason); return; }
+      const enteredPassword = document.getElementById('cancelPinInput').value;
+      if (!enteredPassword) { showPopup("Please enter your ACCOUNT PASSWORD!"); return; }
+      const userId = sessionStorage.getItem('codmUserId');
+      if (!userId) { showPopup("Not logged in. Please login again."); return; }
+      const accountType = sessionStorage.getItem('codmAccountType') || 'user';
+      let user = null;
+      if (accountType === 'clan') {
+        const clans = await fetchAllClansList();
+        user = clans.find(c => c.id === userId);
+      } else {
+        const users = await fetchUsersList();
+        user = users.find(u => u.id === userId);
+      }
+      if (!user) { showPopup("User not found. Please login again."); return; }
+      const enteredHash = await hashPasswordLocal(enteredPassword);
+      if (enteredHash !== user.password) { showPopup("Incorrect ACCOUNT PASSWORD!"); return; }
       selectedSlotIdToCancel = selected.value;
-      document.getElementById('confirmMessage').innerHTML = `Cancel Slot ${selected.getAttribute('data-num')}: ${selected.getAttribute('data-name')}?`;
+      document.getElementById('confirmMessage').innerHTML = `Cancel Slot ${selected.getAttribute('data-num')}: ${escapeHtml(targetClan)}?`;
       document.getElementById('confirmModal').style.display = 'flex';
     };
 
     document.getElementById('confirmNo').onclick = () => document.getElementById('confirmModal').style.display = 'none';
     document.getElementById('confirmYes').onclick = async () => {
+      if (isWithin1HourBeforeSlot(currentSched)) {
+        showPopup("YOU ARE LATE CANCEL MENTION THE ADMIN ON YOUR SGC TO CANCEL YOUR SLOT!");
+        document.getElementById('confirmModal').style.display = 'none';
+        return;
+      }
       const selected = document.querySelector('input[name="cancelSlot"]:checked');
       const clanName = selected ? selected.getAttribute('data-name') : 'Clan';
       const slotNum = selected ? selected.getAttribute('data-num') : '';
+      const ownerCheck = canCancelOwnSlots(clanName);
+      if (!ownerCheck.allowed) { showPopup(ownerCheck.reason); return; }
       try {
         const response = await fetch(`${SUPABASE_URL}/rest/v1/slots?id=eq.${selectedSlotIdToCancel}`, {
           method: 'PATCH',
@@ -689,7 +1148,7 @@
 
         if (!response.ok) throw new Error('Database rejected cancellation');
 
-        logActivity('Public Slot Cancelled', `Slot ${slotNum} ("${clanName}") cancelled via PIN verification (${currentSched.toUpperCase()}).`, 'SLOT', clanName, 'user');
+        logActivity('Public Slot Cancelled', `Slot ${slotNum} ("${clanName}") cancelled via PASSWORD verification (${currentSched.toUpperCase()}).`, 'SLOT', clanName, 'user');
         showPopup('Cancelled!');
         document.getElementById('confirmModal').style.display = 'none';
         document.getElementById('cancelModal').style.display = 'none';
@@ -735,10 +1194,48 @@
       } catch(e) {}
     }
 
-    function showPopup(message) {
-      const p = document.createElement('div'); p.className = 'success-popup'; p.textContent = message;
-      document.body.appendChild(p); setTimeout(() => p.remove(), 1500);
+    function showPopup(message, type) {
+      const alertModal = document.getElementById('alertModal');
+      const alertHeader = document.getElementById('alertModalHeader');
+      const alertIcon = document.getElementById('alertModalIcon');
+      const alertTitle = document.getElementById('alertModalTitle');
+      const alertMessage = document.getElementById('alertModalMessage');
+
+      let detectedType = type;
+      if (!detectedType) {
+        const m = (message || '').toString().toLowerCase();
+        if (m.includes('you are late') || m.includes('late cancel')) {
+          detectedType = 'warning';
+        } else if (m.includes('you can only mine') || m.includes('limit reached') || m.includes('cannot') || m.includes('not ') || m.includes('incorrect') || m.includes('error') || m.includes('banned') || m.includes('🚫') || m.includes('full') || m.includes('duplicate') || m.includes('not approved') || m.includes('not registered') || m.includes('not found') || m.includes('no reservations') || m.includes('not logged in') || m.includes('select a slot') || m.includes('please enter') || m.includes('bwawal') || m.includes('login required')) {
+          detectedType = 'error';
+        } else if (m.includes('success') || m.includes('reserved') || m.includes('cancelled') || m.includes('done') || m.includes('✅')) {
+          detectedType = 'success';
+        } else {
+          detectedType = 'info';
+        }
+      }
+
+      alertHeader.className = 'alert-modal-header ' + detectedType;
+      if (detectedType === 'error')   { alertIcon.textContent = '⛔'; alertTitle.textContent = 'ERROR'; }
+      if (detectedType === 'warning') { alertIcon.textContent = '⚠️'; alertTitle.textContent = 'WARNING'; }
+      if (detectedType === 'info')    { alertIcon.textContent = 'ℹ️'; alertTitle.textContent = 'INFO'; }
+      if (detectedType === 'success') { alertIcon.textContent = '✅'; alertTitle.textContent = 'SUCCESS'; }
+
+      alertMessage.textContent = message || '';
+      alertModal.style.display = 'flex';
     }
+
+    function closeAlertModal() {
+      document.getElementById('alertModal').style.display = 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const closeBtn = document.getElementById('alertModalCloseBtn');
+      if (closeBtn) closeBtn.addEventListener('click', closeAlertModal);
+      const alertModal = document.getElementById('alertModal');
+      if (alertModal) alertModal.addEventListener('click', (e) => { if (e.target.id === 'alertModal') closeAlertModal(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && alertModal && alertModal.style.display === 'flex') closeAlertModal(); });
+    });
 
     function parseBannedLine(line, defaultDuration = '') {
       line = (line || '').trim();
@@ -829,11 +1326,39 @@
     }
 
     clanSubmitBtn.onclick = async () => {
-      const clan = clanInput.value.trim();
-      const pin = pinInput.value.trim();
-      if (!clan || pin.length !== 4) { showPopup('Check clan name and 4-digit PIN!'); return; }
+      const ctx = getAuthContext();
+      const tagInput = document.getElementById('clanTagInput');
+      const isClanMode = ctx.accountType === 'clan' && tagInput && tagInput.value;
+
+      let teamPart = (clanInput.value || '').trim();
+      let tagPart = '';
+      let finalClanName = '';
+
+      if (isClanMode) {
+        // Clan account mode: Tag LOCKED, combine with team name
+        tagPart = tagInput.value.trim().toUpperCase();
+        if (!teamPart) { showPopup('Please enter a TEAM NAME (e.g. MAIN, ELITE).'); clanSubmitBtn.disabled = false; return; }
+        finalClanName = `${tagPart} ${teamPart}`.trim();
+      } else {
+        if (!teamPart) { showPopup('Please enter clan/team name!'); clanSubmitBtn.disabled = false; return; }
+        finalClanName = teamPart;
+        tagPart = teamPart.split(/\s+/)[0] || teamPart;
+      }
+
+      const clan = finalClanName;
+      const reservedByUserId = sessionStorage.getItem('codmUserId') || null;
+
       clanSubmitBtn.disabled = true;
       try {
+        // --- CLAN LIST VALIDATION (NEW) ---
+        const approvedClans = await fetchApprovedClansList();
+        const approval = checkIfClanApprovedInClanList(clan, approvedClans);
+        if (!approval.found) {
+          showPopup(`🚫 CLAN NOT REGISTERED: "${clan}" is NOT on the APPROVED CLAN LIST.\n\nAsk an admin to add your clan first via Admin → Clan Management.\n\nNote: Your clan needs BOTH a registered clan account AND admin approval on the CLAN LIST.`);
+          clanSubmitBtn.disabled = false;
+          return;
+        }
+
         // --- BANNED CHECK ---
         const banCheck = await checkPublicTeamBanned(clan, currentSched);
         if (banCheck) {
@@ -847,7 +1372,7 @@
 
         // --- VALIDATION LOGIC ---
         const clanUpper = clan.toUpperCase();
-        const tag = clanUpper.split(/\s+/)[0]; // Extract prefix (e.g. "A51" from "A51 MAIN")
+        const tag = (tagPart ? tagPart : clanUpper.split(/\s+/)[0]).toUpperCase();
 
         // 1. Exact Name Check
         const isExactDuplicate = list.some(r => r.clan && r.clan.trim().toUpperCase() === clanUpper);
@@ -857,15 +1382,15 @@
           return;
         }
 
-        // 2. Limit per Clan Group (Prefix Check)
+        // 2. Limit per Clan Group (Prefix Check) — MAX 2 per tag
         const tagCount = list.filter(r => {
           if (!r.clan) return false;
           const rTag = r.clan.trim().toUpperCase().split(/\s+/)[0];
           return rTag === tag;
         }).length;
 
-        if (tagCount >= 3) {
-          showPopup(`Limit reached! Max 3 slots for "${tag}" Group.`);
+        if (tagCount >= 2) {
+          showPopup("YOU CAN ONLY MINE 2 SLOTS");
           clanSubmitBtn.disabled = false;
           return;
         }
@@ -876,7 +1401,7 @@
         const response = await fetch(`${SUPABASE_URL}/rest/v1/slots?id=eq.${empty.id}`, {
           method: 'PATCH',
           headers: { ...supabaseHeaders(), 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-          body: JSON.stringify({ clan, clan_logo: currentLogoBase64, cancel_key: pin }),
+          body: JSON.stringify({ clan, clan_logo: currentLogoBase64, cancel_key: reservedByUserId }),
         });
 
         if (!response.ok) {
@@ -948,8 +1473,12 @@
         isCurrentlyOpen = isOpenManual || isOpenSched;
         statusBanner.className = isCurrentlyOpen ? 'open' : 'closed';
         statusText.textContent = isCurrentlyOpen ? 'RESERVATIONS OPEN' : 'RESERVATIONS CLOSED';
-        mineBtn.disabled = !isCurrentlyOpen;
+        // Combine schedule state with auth: even if reservations are open, disable the button if user is not allowed to reserve
+        const reserve = canReserveSlots();
+        mineBtn.disabled = !isCurrentlyOpen || !reserve.allowed;
+        if (!reserve.allowed) cancelBtn.disabled = true; else cancelBtn.disabled = false;
 
+        updateButtonsAuthState();
         updateCountdown();
       } catch (e) { console.error(e); }
     }
@@ -986,9 +1515,21 @@
       return `${h}h ${m}m ${sec}s`;
     }
 
+    function escapeHtml(str) {
+      return (str || '').toString()
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // Also refresh the auth banner periodically in case user logs in another tab
+    setInterval(updateAuthBanner, 5000);
     setInterval(updateCountdown, 1000);
     setInterval(checkStatus, 15000);
     setInterval(loadSlots, 3000);
+    updateAuthBanner();
+    updateButtonsAuthState();
     loadSlots(); checkStatus();
   </script>
 </body>
