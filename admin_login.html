@@ -242,6 +242,12 @@
       <button type="button" id="tabRegister" class="tab-btn">Create Account</button>
     </div>
 
+    <!-- Account Type Tabs (for login & register) -->
+    <div id="accountTypeTabs" class="tabs" style="margin-bottom: 12px; background: transparent; border: none; padding: 0;">
+      <button type="button" id="acctUser" class="tab-btn active" style="font-size: 11px;">👤 User</button>
+      <button type="button" id="acctClan" class="tab-btn" style="font-size: 11px;">🛡️ Clan</button>
+    </div>
+
     <!-- LOGIN -->
     <div id="loginPanel" class="form-panel active">
       <label class="field-label" for="loginUser">Username or Email</label>
@@ -252,8 +258,8 @@
       <button type="button" id="loginBtn" class="btn btn-primary">Sign In</button>
     </div>
 
-    <!-- REGISTER -->
-    <div id="registerPanel" class="form-panel">
+    <!-- REGISTER - USER -->
+    <div id="registerUserPanel" class="form-panel">
       <label class="field-label" for="regUsername">Username</label>
       <input type="text" id="regUsername" class="input" placeholder="Choose a username" autocomplete="username">
       <label class="field-label" for="regEmail">Email Address</label>
@@ -264,6 +270,27 @@
       <input type="password" id="regConfirm" class="input" placeholder="Re-enter password" autocomplete="new-password">
       <div id="registerMsg" class="message"></div>
       <button type="button" id="registerBtn" class="btn btn-primary">Create Account</button>
+    </div>
+
+    <!-- REGISTER - CLAN -->
+    <div id="registerClanPanel" class="form-panel">
+      <label class="field-label" for="regClanTag">Clan Tag <span style="color:#fca5a5;">*</span></label>
+      <input type="text" id="regClanTag" class="input" placeholder="e.g. A51, ZRM, DTX" maxlength="10" style="text-transform:uppercase;">
+      <label class="field-label" for="regClanName">Full Clan Name <span style="color:#fca5a5;">*</span></label>
+      <input type="text" id="regClanName" class="input" placeholder="e.g. ASTRAL 51 ELITE">
+      <label class="field-label" for="regClanLeader">CLAN HANDLER NAME <span style="color:#fca5a5;">*</span></label>
+      <input type="text" id="regClanLeader" class="input" placeholder="Name of the person handling clan operations">
+      <label class="field-label" for="regClanUsername">Clan Login Username <span style="color:#fca5a5;">*</span></label>
+      <input type="text" id="regClanUsername" class="input" placeholder="Username for your clan account">
+      <label class="field-label" for="regClanPass">Password <span style="color:#fca5a5;">*</span></label>
+      <input type="password" id="regClanPass" class="input" placeholder="Create a password (min 6 chars)" autocomplete="new-password">
+      <label class="field-label" for="regClanConfirm">Confirm Password <span style="color:#fca5a5;">*</span></label>
+      <input type="password" id="regClanConfirm" class="input" placeholder="Re-enter password" autocomplete="new-password">
+      <div id="registerClanMsg" class="message"></div>
+      <div style="font-size: 10px; color:#94a3b8; margin-bottom: 10px; text-align:center; line-height:1.4;">
+        ⚠️ Your clan must be on the CLAN LIST to reserve slots. Admin approval required.
+      </div>
+      <button type="button" id="registerClanBtn" class="btn btn-primary" style="background: linear-gradient(135deg, #8b5cf6, #6366f1);">🛡️ Create Clan Account</button>
     </div>
 
     <div class="divider"><span>Admin Access</span></div>
@@ -287,11 +314,17 @@
 
     const tabLogin = document.getElementById('tabLogin');
     const tabRegister = document.getElementById('tabRegister');
+    const acctUser = document.getElementById('acctUser');
+    const acctClan = document.getElementById('acctClan');
     const loginPanel = document.getElementById('loginPanel');
-    const registerPanel = document.getElementById('registerPanel');
+    const registerUserPanel = document.getElementById('registerUserPanel');
+    const registerClanPanel = document.getElementById('registerClanPanel');
     const loginMsg = document.getElementById('loginMsg');
     const registerMsg = document.getElementById('registerMsg');
+    const registerClanMsg = document.getElementById('registerClanMsg');
     const adminMsg = document.getElementById('adminMsg');
+    const CLANS_CONFIG_KEY = 'app_clans';
+    let currentAccountType = 'user';
 
     function setMsg(el, text, type) {
       el.textContent = text || '';
@@ -303,13 +336,35 @@
       tabLogin.classList.toggle('active', isLogin);
       tabRegister.classList.toggle('active', !isLogin);
       loginPanel.classList.toggle('active', isLogin);
-      registerPanel.classList.toggle('active', !isLogin);
+      if (!isLogin) {
+        switchAccountType(currentAccountType);
+      } else {
+        registerUserPanel.classList.remove('active');
+        registerClanPanel.classList.remove('active');
+      }
+      document.getElementById('accountTypeTabs').style.display = 'block';
       setMsg(loginMsg, '');
       setMsg(registerMsg, '');
+      setMsg(registerClanMsg, '');
+    }
+
+    function switchAccountType(type) {
+      currentAccountType = type;
+      acctUser.classList.toggle('active', type === 'user');
+      acctClan.classList.toggle('active', type === 'clan');
+      const isLogin = tabLogin.classList.contains('active');
+      if (!isLogin) {
+        registerUserPanel.classList.toggle('active', type === 'user');
+        registerClanPanel.classList.toggle('active', type === 'clan');
+      }
+      setMsg(registerMsg, '');
+      setMsg(registerClanMsg, '');
     }
 
     tabLogin.onclick = () => switchTab('login');
     tabRegister.onclick = () => switchTab('register');
+    acctUser.onclick = () => switchAccountType('user');
+    acctClan.onclick = () => switchAccountType('clan');
 
     document.getElementById('adminToggle').onclick = () => {
       document.getElementById('adminPanel').classList.toggle('visible');
@@ -357,13 +412,51 @@
       return res.ok;
     }
 
-    function setUserSession(user) {
+    function setUserSession(user, accountType = 'user') {
       sessionStorage.setItem('codmUserAuth', '1');
       sessionStorage.setItem('codmUserId', user.id);
       sessionStorage.setItem('codmUsername', user.username);
-      sessionStorage.setItem('codmUserEmail', user.email);
+      sessionStorage.setItem('codmUserEmail', user.email || '');
       sessionStorage.setItem('codmUserStatus', user.status);
-      sessionStorage.setItem('codmUserRole', 'user');
+      sessionStorage.setItem('codmUserRole', accountType);
+      sessionStorage.setItem('codmAccountType', accountType);
+      if (accountType === 'clan') {
+        sessionStorage.setItem('codmClanTag', user.clan_tag || '');
+        sessionStorage.setItem('codmClanName', user.clan_name || '');
+        sessionStorage.setItem('codmClanApproved', (user.clan_approved === true || user.clan_approved === 'true') ? 'true' : 'false');
+      } else {
+        sessionStorage.removeItem('codmClanTag');
+        sessionStorage.removeItem('codmClanName');
+        sessionStorage.removeItem('codmClanApproved');
+      }
+    }
+
+    async function fetchClans() {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${CLANS_CONFIG_KEY}&select=value`, {
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+      });
+      const data = await res.json();
+      if (!data || !data.length || !data[0].value) return [];
+      try {
+        const parsed = JSON.parse(data[0].value);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+
+    async function saveClans(clans) {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/config`, {
+        method: 'POST',
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`,
+          'Content-Type': 'application/json',
+          Prefer: 'resolution=merge-duplicates, return=minimal',
+        },
+        body: JSON.stringify({ key: CLANS_CONFIG_KEY, value: JSON.stringify(clans) }),
+      });
+      return res.ok;
     }
 
     // --- USER LOGIN ---
@@ -382,10 +475,21 @@
       setMsg(loginMsg, '');
 
       try {
+        let user = null;
+        let accountType = 'user';
+
         const users = await fetchUsers();
-        const user = users.find(u =>
+        user = users.find(u =>
           normalize(u.username) === identifier || normalize(u.email) === identifier
         );
+
+        if (!user) {
+          const clans = await fetchClans();
+          user = clans.find(c =>
+            normalize(c.username) === identifier || normalize(c.email) === identifier
+          );
+          if (user) accountType = 'clan';
+        }
 
         if (!user) {
           setMsg(loginMsg, 'Account not found. Check your credentials or create an account.', 'error');
@@ -400,7 +504,9 @@
 
         const status = (user.status || 'pending approval').toLowerCase();
         if (status === 'pending approval') {
-          setMsg(loginMsg, 'Your account is pending approval. Please wait for an admin to activate it.', 'info');
+          setMsg(loginMsg, accountType === 'clan'
+            ? 'Your clan account is pending admin approval. Please wait for verification.'
+            : 'Your account is pending approval. Please wait for an admin to activate it.', 'info');
           return;
         }
         if (status === 'inactive') {
@@ -408,14 +514,117 @@
           return;
         }
 
-        setUserSession(user);
-        logActivity('User Login', `User "${user.username}" (${user.email}) logged in successfully.`, 'AUTH');
-        window.location.href = 'user_dashboard.html';
+        if (accountType === 'clan') {
+          const approved = user.clan_approved === true || user.clan_approved === 'true';
+          if (!approved) {
+            setMsg(loginMsg, '⚠️ Your clan is NOT yet on the APPROVED CLAN LIST. Reservation will be restricted.', 'info');
+          }
+        }
+
+        setUserSession(user, accountType);
+        logActivity(`${accountType === 'clan' ? 'Clan' : 'User'} Login`, `${accountType === 'clan' ? 'Clan' : 'User'} account "${user.username}" logged in.`, 'AUTH', user.username, accountType);
+        if (accountType === 'clan') {
+          window.location.href = 'scrim_reservation.html';
+        } else {
+          window.location.href = 'user_dashboard.html';
+        }
       } catch (err) {
+        console.error(err);
         setMsg(loginMsg, 'Connection error. Please try again.', 'error');
       } finally {
         btn.disabled = false;
         btn.textContent = 'Sign In';
+      }
+    }
+
+    // --- CLAN REGISTER ---
+    async function doClanRegister() {
+      const clanTag = (document.getElementById('regClanTag').value || '').trim().toUpperCase();
+      const clanName = (document.getElementById('regClanName').value || '').trim();
+      const leader = (document.getElementById('regClanLeader').value || '').trim();
+      const username = (document.getElementById('regClanUsername').value || '').trim();
+      const password = document.getElementById('regClanPass').value;
+      const confirm = document.getElementById('regClanConfirm').value;
+      const btn = document.getElementById('registerClanBtn');
+
+      if (!clanTag || !clanName || !leader || !username || !password || !confirm) {
+        setMsg(registerClanMsg, 'Please fill in all required (*) fields.', 'error');
+        return;
+      }
+      if (clanTag.length < 2) {
+        setMsg(registerClanMsg, 'Clan tag must be at least 2 characters.', 'error');
+        return;
+      }
+      if (username.length < 3) {
+        setMsg(registerClanMsg, 'Username must be at least 3 characters.', 'error');
+        return;
+      }
+      if (password.length < 6) {
+        setMsg(registerClanMsg, 'Password must be at least 6 characters.', 'error');
+        return;
+      }
+      if (password !== confirm) {
+        setMsg(registerClanMsg, 'Passwords do not match.', 'error');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Creating clan account...';
+      setMsg(registerClanMsg, '');
+
+      try {
+        const clans = await fetchClans();
+        if (clans.some(c => normalize(c.username) === normalize(username))) {
+          setMsg(registerClanMsg, 'Username is already taken.', 'error');
+          return;
+        }
+        if (clans.some(c => normalize(c.clan_tag) === normalize(clanTag))) {
+          setMsg(registerClanMsg, `Clan tag "${clanTag}" already has an account.`, 'error');
+          return;
+        }
+
+        const users = await fetchUsers();
+        if (users.some(u => normalize(u.username) === normalize(username))) {
+          setMsg(registerClanMsg, 'Username is already in use (user list).', 'error');
+          return;
+        }
+
+        const newClan = {
+          id: crypto.randomUUID(),
+          clan_tag: clanTag,
+          clan_name: clanName,
+          clan_handler: leader,
+          username,
+          password: await hashPassword(password),
+          status: 'pending approval',
+          clan_approved: false,
+          account_type: 'clan',
+          created_at: new Date().toISOString(),
+        };
+
+        clans.push(newClan);
+        const saved = await saveClans(clans);
+        if (!saved) {
+          setMsg(registerClanMsg, 'Failed to create clan account. Please try again.', 'error');
+          return;
+        }
+
+        logActivity('Clan Register', `New clan account registered: "${clanTag}" / "${clanName}" - Pending Approval`, 'AUTH', username, 'clan');
+
+        setMsg(registerClanMsg, '✅ Clan account created! Pending admin approval. You will be notified once verified.', 'success');
+        document.getElementById('regClanTag').value = '';
+        document.getElementById('regClanName').value = '';
+        document.getElementById('regClanLeader').value = '';
+        document.getElementById('regClanUsername').value = '';
+        document.getElementById('regClanPass').value = '';
+        document.getElementById('regClanConfirm').value = '';
+        setTimeout(() => { switchTab('login'); switchAccountType('clan'); }, 3000);
+      } catch (err) {
+        console.error(err);
+        setMsg(registerClanMsg, 'Connection error. Please try again.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '🛡️ Create Clan Account';
       }
     }
 
@@ -578,17 +787,23 @@
 
     document.getElementById('loginBtn').onclick = doUserLogin;
     document.getElementById('registerBtn').onclick = doRegister;
+    document.getElementById('registerClanBtn').onclick = doClanRegister;
     document.getElementById('adminLoginBtn').onclick = doAdminLogin;
 
     document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') doUserLogin(); });
     document.getElementById('regConfirm').addEventListener('keydown', e => { if (e.key === 'Enter') doRegister(); });
+    document.getElementById('regClanConfirm').addEventListener('keydown', e => { if (e.key === 'Enter') doClanRegister(); });
     document.getElementById('adminKey').addEventListener('keydown', e => { if (e.key === 'Enter') doAdminLogin(); });
 
     // Redirect if already logged in
     if (sessionStorage.getItem('codmAdminAuth') === '1') {
       window.location.href = 'admin_dashboard.html';
     } else if (sessionStorage.getItem('codmUserAuth') === '1' && sessionStorage.getItem('codmUserStatus') === 'active') {
-      window.location.href = 'user_dashboard.html';
+      if (sessionStorage.getItem('codmAccountType') === 'clan') {
+        window.location.href = 'scrim_reservation.html';
+      } else {
+        window.location.href = 'user_dashboard.html';
+      }
     }
 
     setTimeout(() => document.getElementById('loginUser').focus(), 50);
