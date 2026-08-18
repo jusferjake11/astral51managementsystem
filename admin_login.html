@@ -280,7 +280,7 @@
     <!-- REGISTER - CLAN -->
     <div id="registerClanPanel" class="form-panel">
       <label class="field-label" for="regClanTag">Clan Tag <span style="color:#fca5a5;">*</span></label>
-      <input type="text" id="regClanTag" class="input" placeholder="e.g. A51, ZRM, DTX" maxlength="10" style="text-transform:uppercase;">
+      <input type="text" id="regClanTag" class="input" placeholder="e.g. A51, ZRM (1-5 chars)" maxlength="5" style="text-transform:uppercase;">
       <label class="field-label" for="regClanName">Full Clan Name <span style="color:#fca5a5;">*</span></label>
       <input type="text" id="regClanName" class="input" placeholder="e.g. ASTRAL 51 ELITE">
       <label class="field-label" for="regClanLeader">CLAN HANDLER NAME <span style="color:#fca5a5;">*</span></label>
@@ -563,8 +563,12 @@
         setMsg(registerClanMsg, 'Please fill in all required (*) fields.', 'error');
         return;
       }
-      if (clanTag.length < 2) {
-        setMsg(registerClanMsg, 'Clan tag must be at least 2 characters.', 'error');
+      if (clanTag.length < 1 || clanTag.length > 5) {
+        setMsg(registerClanMsg, 'Clan tag must be 1 to 5 characters only.', 'error');
+        return;
+      }
+      if (!/^[A-Z0-9]+$/.test(clanTag)) {
+        setMsg(registerClanMsg, 'Clan tag can only contain letters and numbers (no spaces or symbols).', 'error');
         return;
       }
       if (username.length < 3) {
