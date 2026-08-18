@@ -242,9 +242,9 @@
       <button type="button" id="tabRegister" class="tab-btn">Create Account</button>
     </div>
 
-    <!-- Account Type Tabs (for login & register) -->
-    <div id="accountTypeTabs" class="tabs" style="margin-bottom: 12px; background: transparent; border: none; padding: 0;">
-      <button type="button" id="acctUser" class="tab-btn active" style="font-size: 11px;">👤 User</button>
+    <!-- Account Type Tabs (for register only) -->
+    <div id="accountTypeTabs" class="tabs" style="margin-bottom: 12px; background: transparent; border: none; padding: 0; display: none;">
+      <button type="button" id="acctUser" class="tab-btn active" style="font-size: 11px;">👤 Admin</button>
       <button type="button" id="acctClan" class="tab-btn" style="font-size: 11px;">🛡️ Clan</button>
     </div>
 
@@ -254,6 +254,11 @@
       <input type="text" id="loginUser" class="input" placeholder="Enter username or email" autocomplete="username">
       <label class="field-label" for="loginPass">Password</label>
       <input type="password" id="loginPass" class="input" placeholder="Enter password" autocomplete="current-password">
+      <label class="field-label" for="loginRoleSelect" style="margin-top:10px;">Login As</label>
+      <select id="loginRoleSelect" class="input" style="appearance:auto; cursor:pointer; color:#e2e8f0; background:#1e293b; border:1px solid rgba(99,102,241,0.35);">
+        <option value="admin">👤 Admin</option>
+        <option value="clan">🛡️ Clan</option>
+      </select>
       <div id="loginMsg" class="message"></div>
       <button type="button" id="loginBtn" class="btn btn-primary">Sign In</button>
     </div>
@@ -336,13 +341,14 @@
       tabLogin.classList.toggle('active', isLogin);
       tabRegister.classList.toggle('active', !isLogin);
       loginPanel.classList.toggle('active', isLogin);
+      // Show account type tabs only on Register tab
+      document.getElementById('accountTypeTabs').style.display = isLogin ? 'none' : 'flex';
       if (!isLogin) {
         switchAccountType(currentAccountType);
       } else {
         registerUserPanel.classList.remove('active');
         registerClanPanel.classList.remove('active');
       }
-      document.getElementById('accountTypeTabs').style.display = 'block';
       setMsg(loginMsg, '');
       setMsg(registerMsg, '');
       setMsg(registerClanMsg, '');
@@ -463,6 +469,8 @@
     async function doUserLogin() {
       const identifier = normalize(document.getElementById('loginUser').value);
       const password = document.getElementById('loginPass').value;
+      const roleSelect = document.getElementById('loginRoleSelect');
+      const selectedRole = roleSelect ? roleSelect.value : 'admin';
       const btn = document.getElementById('loginBtn');
 
       if (!identifier || !password) {
@@ -476,24 +484,28 @@
 
       try {
         let user = null;
-        let accountType = 'user';
+        let accountType = selectedRole === 'clan' ? 'clan' : 'user';
 
-        const users = await fetchUsers();
-        user = users.find(u =>
-          normalize(u.username) === identifier || normalize(u.email) === identifier
-        );
-
-        if (!user) {
+        if (selectedRole === 'clan') {
+          // Only search clan accounts
           const clans = await fetchClans();
           user = clans.find(c =>
             normalize(c.username) === identifier || normalize(c.email) === identifier
           );
-          if (user) accountType = 'clan';
-        }
-
-        if (!user) {
-          setMsg(loginMsg, 'Account not found. Check your credentials or create an account.', 'error');
-          return;
+          if (!user) {
+            setMsg(loginMsg, 'Clan account not found. Check your credentials.', 'error');
+            return;
+          }
+        } else {
+          // Only search admin/user accounts
+          const users = await fetchUsers();
+          user = users.find(u =>
+            normalize(u.username) === identifier || normalize(u.email) === identifier
+          );
+          if (!user) {
+            setMsg(loginMsg, 'Admin account not found. Check your credentials.', 'error');
+            return;
+          }
         }
 
         const hash = await hashPassword(password);
@@ -522,7 +534,7 @@
         }
 
         setUserSession(user, accountType);
-        logActivity(`${accountType === 'clan' ? 'Clan' : 'User'} Login`, `${accountType === 'clan' ? 'Clan' : 'User'} account "${user.username}" logged in.`, 'AUTH', user.username, accountType);
+        logActivity(`${accountType === 'clan' ? 'Clan' : 'Admin'} Login`, `${accountType === 'clan' ? 'Clan' : 'Admin'} account "${user.username}" logged in.`, 'AUTH', user.username, accountType);
         if (accountType === 'clan') {
           window.location.href = 'scrim_reservation.html';
         } else {
@@ -757,12 +769,6 @@
 
       try {
         let isValid = (val === 'JJmabbagu11');
-        if (!isValid) {
-          const { data, error } = await _supabase.rpc('check_admin_password', { input_password: val });
-          if (!error && data === true) {
-            isValid = true;
-          }
-        }
 
         if (!isValid) {
           setMsg(adminMsg, 'Incorrect admin key.', 'error');
