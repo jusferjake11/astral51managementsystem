@@ -874,7 +874,6 @@
       'Content-Type': 'application/json',
     });
 
-    // --- AUTH GUARD HELPERS ---
     function getAuthContext() {
       const isUserAuth = sessionStorage.getItem('codmUserAuth') === '1';
       const isAdminAuth = sessionStorage.getItem('codmAdminAuth') === '1';
@@ -882,13 +881,35 @@
       const status = sessionStorage.getItem('codmUserStatus') || '';
       const role = sessionStorage.getItem('codmUserRole') || '';
       const accountType = isAdminAuth ? 'admin' : (sessionStorage.getItem('codmAccountType') || 'user');
+      const userId = sessionStorage.getItem('codmUserId') || '';
       const username = sessionStorage.getItem('codmUsername') || '';
       const email = sessionStorage.getItem('codmUserEmail') || '';
-      const clanTag = sessionStorage.getItem('codmClanTag') || '';
-      const clanName = sessionStorage.getItem('codmClanName') || '';
+      const clanTag = (sessionStorage.getItem('codmClanTag') || '').trim();
+      const clanName = (sessionStorage.getItem('codmClanName') || '').trim();
       const clanApproved = sessionStorage.getItem('codmClanApproved') === 'true';
       const isActive = isAuth && (status === 'active');
-      return { isAuth, isActive, accountType, role, username, email, clanTag, clanName, clanApproved, isAdmin: isAdminAuth };
+      return { isAuth, isActive, accountType, role, userId, username, email, clanTag, clanName, clanApproved, isAdmin: isAdminAuth };
+    }
+
+    function isSlotOwnedByClan(slotClan, ctx, cancelKey = null) {
+      if (!ctx || !ctx.isActive) return false;
+      if (ctx.isAdmin) return true;
+      if (ctx.accountType !== 'clan') return false;
+
+      const myTag = (ctx.clanTag || '').trim().toUpperCase();
+      if (!myTag) return false;
+
+      const rawClan = (slotClan || '').trim().toUpperCase();
+      if (!rawClan) return false;
+
+      // Extract the clan tag from the slot (e.g. "A51" from "A51 MAIN" or "A51")
+      const slotTag = rawClan.split(/\s+/)[0];
+
+      // Strict tag match: the slot's tag must exactly equal the account's clanTag
+      const isTagMatch = (slotTag === myTag) || (rawClan === myTag) || rawClan.startsWith(myTag + ' ');
+      const isUserMatch = Boolean(ctx.userId && cancelKey && cancelKey === ctx.userId);
+
+      return isTagMatch || isUserMatch;
     }
 
     function canReserveSlots() {
@@ -905,14 +926,9 @@
       if (!ctx.isActive) return { allowed: false, reason: 'LOGIN REQUIRED — Please sign in to cancel your reserved slots.' };
       if (ctx.accountType === 'clan') {
         if (!ctx.clanApproved) return { allowed: false, reason: '⚠️ Your clan is not on the APPROVED LIST.' };
-        const normalize = s => (s || '').toString().trim().toLowerCase().replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
-        const myTag = normalize(ctx.clanTag);
-        const myName = normalize(ctx.clanName);
-        const input = normalize(clanNameToMatch);
-        if (clanNameToMatch && input) {
-          const matches = (myTag && (input.includes(myTag) || myTag.includes(input))) ||
-                          (myName && (input.includes(myName) || myName.includes(input)));
-          if (!matches) return { allowed: false, reason: `🚫 You can only cancel slots reserved by YOUR clan (${ctx.clanTag} ${ctx.clanName}).` };
+        if (clanNameToMatch) {
+          const isMatch = isSlotOwnedByClan(clanNameToMatch, ctx);
+          if (!isMatch) return { allowed: false, reason: `🚫 You can only cancel slots reserved by YOUR clan ([${ctx.clanTag}]).` };
         }
       }
       return { allowed: true, reason: '' };
@@ -1093,16 +1109,9 @@
         // For clan accounts, filter to only show their own clan slots
         const ctx = getAuthContext();
         if (ctx.accountType === 'clan') {
-          const normalize = s => (s || '').toString().trim().toLowerCase().replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
-          const myTag = normalize(ctx.clanTag);
-          const myName = normalize(ctx.clanName);
-          filled = filled.filter(s => {
-            const inp = normalize(s.clan);
-            return (myTag && (inp.includes(myTag) || myTag.includes(inp))) ||
-                   (myName && (inp.includes(myName) || myName.includes(inp)));
-          });
+          filled = filled.filter(s => isSlotOwnedByClan(s.clan, ctx, s.cancel_key));
           if (filled.length === 0) {
-            showPopup(`No slots to cancel for your clan (${ctx.clanTag} ${ctx.clanName}).`);
+            showPopup(`No slots found for your clan ([${ctx.clanTag}]).`);
             return;
           }
         }
@@ -1477,16 +1486,13 @@
 
     async function loadSlots() {
       try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/slots?select=id,slot_number,clan,clan_logo&schedule_type=eq.${currentSched}&order=slot_number.asc`, { headers: supabaseHeaders() });
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/slots?select=id,slot_number,clan,clan_logo,cancel_key&schedule_type=eq.${currentSched}&order=slot_number.asc`, { headers: supabaseHeaders() });
         const data = await res.json();
-        currentSlots = data.map(r => ({ id: r.id, slot: r.slot_number, clan: r.clan, logo: r.clan_logo }));
+        currentSlots = data.map(r => ({ id: r.id, slot: r.slot_number, clan: r.clan, logo: r.clan_logo, cancelKey: r.cancel_key }));
         slotsEl.innerHTML = '';
 
-        // Detect own slot for logged-in clan
+        // Detect own slot for logged-in clan (strict clan tag matching)
         const ctx = getAuthContext();
-        const normalize = s => (s || '').toLowerCase().replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
-        const myTag = normalize(ctx.clanTag);
-        const myName = normalize(ctx.clanName);
 
         for (let i = 1; i <= MAX_SLOTS; i++) {
           const s = currentSlots.find(x => x.slot === i);
@@ -1494,13 +1500,9 @@
           div.className = 'slot ' + (s && s.clan ? 'filled' : 'empty');
 
           if (s && s.clan) {
-            const slotNorm = normalize(s.clan);
-            const isMySlot = ctx.isActive && ctx.accountType === 'clan' && (
-              (myTag && (slotNorm.startsWith(myTag) || slotNorm.includes(myTag))) ||
-              (myName && (slotNorm.includes(myName) || myName.includes(slotNorm.split(' ')[0])))
-            );
+            const isMySlot = isSlotOwnedByClan(s.clan, ctx, s.cancelKey);
 
-            div.innerHTML = `<div class="slot-logo">${s.logo ? `<img src="${s.logo}">` : '\ud83d\udee1\ufe0f'}</div><div class="num">Slot ${i}</div><div class="clan">${s.clan}</div>`;
+            div.innerHTML = `<div class="slot-logo">${s.logo ? `<img src="${s.logo}">` : '🛡️'}</div><div class="num">Slot ${i}</div><div class="clan">${s.clan}</div>`;
 
             if (isMySlot) {
               const fileInput = document.createElement('input');
