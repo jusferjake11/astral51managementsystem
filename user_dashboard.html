@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CODM Scrim User Dashboard</title>
+  <title>CODM Scrim Admin Dashboard</title>
   <script>
     // --- AUTHENTICATION GUARD ---
     localStorage.removeItem('codmUserAuth');
@@ -1612,7 +1612,7 @@
       <div class="main-view">
         <header>
           <div class="title-block">
-            <h1 id="adminPageTitle">Scrim Slots · User</h1>
+            <h1 id="adminPageTitle">Scrim Slots · Admin</h1>
             <div class="subtitle" id="viewSubtitle">Overview of all reserved slots and clan usage.</div>
           </div>
           <div id="headerReservationBlock" style="display:flex; align-items:center; gap:10px;">
@@ -1634,8 +1634,8 @@
               <button class="user-profile-btn" id="userProfileBtn" type="button">
                 <div class="user-avatar" id="userAvatarCircle">U</div>
                 <div class="user-info-text">
-                  <span class="user-display-name" id="userDisplayName">User</span>
-                  <span class="user-role-label" id="userRoleLabel">User</span>
+                  <span class="user-display-name" id="userDisplayName">Admin</span>
+                  <span class="user-role-label" id="userRoleLabel">Admin</span>
                 </div>
                 <svg class="user-caret-icon" width="12" height="12" viewBox="0 0 12 12" fill="none">
                   <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2868,6 +2868,30 @@
     // Delay initialization to ensure DOM is ready
     setTimeout(initSchedSwitcher, 100);
 
+    // --- LOGO VIEWER OVERLAY ---
+    function openLogoViewer(clanName, logoSrc) {
+      let overlay = document.getElementById('logoViewerOverlay');
+      if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'logoViewerOverlay';
+        overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;';
+        document.body.appendChild(overlay);
+      }
+      overlay.innerHTML = `
+        <div style="text-align:center;">
+          <div style="font-size:14px;font-weight:700;color:#e2e8f0;margin-bottom:12px;letter-spacing:1px;">${clanName} — Clan Logo</div>
+          <img src="${logoSrc}" style="max-width:280px;max-height:280px;border-radius:12px;border:2px solid #38bdf8;box-shadow:0 0 30px rgba(56,189,248,0.3);" alt="${clanName} logo">
+        </div>
+        <div style="display:flex;gap:12px;">
+          <button id="logoViewerBack" style="padding:10px 24px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:#e2e8f0;font-size:13px;font-weight:600;cursor:pointer;">← Back</button>
+          <a id="logoViewerSave" href="${logoSrc}" download="${clanName}_logo.png" style="padding:10px 24px;border-radius:8px;border:none;background:linear-gradient(135deg,#4f46e5,#3b82f6);color:#fff;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">💾 Save as PNG</a>
+        </div>
+      `;
+      overlay.style.display = 'flex';
+      document.getElementById('logoViewerBack').onclick = () => { overlay.style.display = 'none'; };
+      overlay.onclick = (e) => { if (e.target === overlay) overlay.style.display = 'none'; };
+    }
+
     function showAdminToast(message, type = 'info') {
       if (type === 'error') {
         showBsAlert(message, 'error');
@@ -3583,7 +3607,10 @@
         if (s.isFilled && s.logo) {
           const logoDiv = document.createElement('div');
           logoDiv.className = 'slot-logo-admin';
+          logoDiv.style.cursor = 'pointer';
+          logoDiv.title = 'Click to view & save logo';
           logoDiv.innerHTML = `<img src="${s.logo}" alt="Logo">`;
+          logoDiv.onclick = () => openLogoViewer(s.clan, s.logo);
           clanRow.appendChild(logoDiv);
         } else if (s.isFilled) {
           const logoDiv = document.createElement('div');
@@ -4198,7 +4225,10 @@
         if (s.isFilled && s.logo) {
           const logoDiv = document.createElement('div');
           logoDiv.className = 'slot-logo-admin';
+          logoDiv.style.cursor = 'pointer';
+          logoDiv.title = 'Click to view & save logo';
           logoDiv.innerHTML = `<img src="${s.logo}" alt="Logo">`;
+          logoDiv.onclick = () => openLogoViewer(s.clan, s.logo);
           clanRow.appendChild(logoDiv);
         } else if (s.isFilled) {
           const logoDiv = document.createElement('div');
@@ -4557,14 +4587,6 @@
       const clan = adminReserveClanInput.value.trim();
       if (!clan) {
         showAdminToast("Please enter a clan name.", "error");
-        return;
-      }
-
-      // --- CLAN LIST VALIDATION (NEW) ---
-      const approvedClans = await fetchApprovedClansList();
-      const approval = checkIfClanApprovedInClanList(clan, approvedClans);
-      if (!approval.found) {
-        showAdminToast(`🚫 CLAN NOT REGISTERED: "${clan}" is NOT on the APPROVED CLAN LIST.\n\nAsk admin to approve your clan first.`, 'error');
         return;
       }
 
@@ -5679,7 +5701,14 @@
         clan = parts[0].trim();
         team = parts.slice(1).join(' | ').trim();
       } else {
-        team = line;
+        const spaceIdx = line.indexOf(' ');
+        if (spaceIdx > 0) {
+          clan = line.slice(0, spaceIdx).trim();
+          team = line.slice(spaceIdx + 1).trim();
+        } else {
+          clan = line;
+          team = '';
+        }
       }
 
       return { clan, team, duration };
@@ -5710,17 +5739,38 @@
       const teamClean = clean(bannedItem.team);
       const combinedClean = clean(`${bannedItem.clan || ''} ${bannedItem.team || ''}`);
 
-      if (clanClean && inputClean === clanClean) return true;
-      if (teamClean && inputClean === teamClean) return true;
       if (combinedClean && inputClean === combinedClean) return true;
 
-      const inputTokens = inputClean.split(' ').filter(Boolean);
-      const clanTokens = clanClean.split(' ').filter(Boolean);
-      const teamTokens = teamClean.split(' ').filter(Boolean);
+      // When both clan tag and team name are specified, BOTH must match
+      if (clanClean && teamClean) {
+        const inputTokens = inputClean.split(' ').filter(Boolean);
+        const clanTokens = clanClean.split(' ').filter(Boolean);
+        const teamTokens = teamClean.split(' ').filter(Boolean);
+        const hasClan = clanTokens.every(t => inputTokens.includes(t));
+        const hasTeam = teamTokens.every(t => inputTokens.includes(t));
+        if (hasClan && hasTeam) return true;
+        return false;
+      }
 
-      if (clanTokens.length > 0 && clanTokens.every(t => inputTokens.includes(t))) return true;
-      if (teamTokens.length > 0 && teamClean.length >= 3 && teamTokens.every(t => inputTokens.includes(t))) return true;
-      if (clanClean && clanClean.length >= 2 && (inputClean.startsWith(clanClean + ' ') || inputClean === clanClean)) return true;
+      // When ONLY clan is specified (entire clan banned)
+      if (clanClean && !teamClean) {
+        if (inputClean === clanClean) return true;
+        if (inputClean.startsWith(clanClean + ' ')) return true;
+        const inputTokens = inputClean.split(' ').filter(Boolean);
+        const clanTokens = clanClean.split(' ').filter(Boolean);
+        if (clanTokens.length > 0 && clanTokens.every(t => inputTokens.includes(t))) return true;
+        return false;
+      }
+
+      // When ONLY team is specified
+      if (!clanClean && teamClean) {
+        if (inputClean === teamClean) return true;
+        const inputTokens = inputClean.split(' ').filter(Boolean);
+        const teamTokens = teamClean.split(' ').filter(Boolean);
+        if (teamTokens.length > 1 && teamTokens.every(t => inputTokens.includes(t))) return true;
+        if (teamTokens.length === 1 && (inputClean === teamClean || inputClean.startsWith(teamClean + ' '))) return true;
+        return false;
+      }
 
       return false;
     }
