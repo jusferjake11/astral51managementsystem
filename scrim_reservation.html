@@ -1264,7 +1264,14 @@
         clan = parts[0].trim();
         team = parts.slice(1).join(' | ').trim();
       } else {
-        team = line;
+        const spaceIdx = line.indexOf(' ');
+        if (spaceIdx > 0) {
+          clan = line.slice(0, spaceIdx).trim();
+          team = line.slice(spaceIdx + 1).trim();
+        } else {
+          clan = line;
+          team = '';
+        }
       }
 
       return { clan, team, duration };
@@ -1299,16 +1306,30 @@
             const teamClean = clean(item.team);
             const combinedClean = clean(`${item.clan || ''} ${item.team || ''}`);
             let match = false;
-            if (clanClean && inputClean === clanClean) match = true;
-            else if (teamClean && inputClean === teamClean) match = true;
-            else if (combinedClean && inputClean === combinedClean) match = true;
-            else {
+            if (combinedClean && inputClean === combinedClean) {
+              match = true;
+            } else if (clanClean && teamClean) {
               const inputTokens = inputClean.split(' ').filter(Boolean);
               const clanTokens = clanClean.split(' ').filter(Boolean);
               const teamTokens = teamClean.split(' ').filter(Boolean);
-              if (clanTokens.length > 0 && clanTokens.every(t => inputTokens.includes(t))) match = true;
-              else if (teamTokens.length > 0 && teamClean.length >= 3 && teamTokens.every(t => inputTokens.includes(t))) match = true;
-              else if (clanClean && clanClean.length >= 2 && (inputClean.startsWith(clanClean + ' ') || inputClean === clanClean)) match = true;
+              const hasClan = clanTokens.every(t => inputTokens.includes(t));
+              const hasTeam = teamTokens.every(t => inputTokens.includes(t));
+              if (hasClan && hasTeam) match = true;
+            } else if (clanClean && !teamClean) {
+              if (inputClean === clanClean || inputClean.startsWith(clanClean + ' ')) match = true;
+              else {
+                const inputTokens = inputClean.split(' ').filter(Boolean);
+                const clanTokens = clanClean.split(' ').filter(Boolean);
+                if (clanTokens.length > 0 && clanTokens.every(t => inputTokens.includes(t))) match = true;
+              }
+            } else if (!clanClean && teamClean) {
+              if (inputClean === teamClean) match = true;
+              else {
+                const inputTokens = inputClean.split(' ').filter(Boolean);
+                const teamTokens = teamClean.split(' ').filter(Boolean);
+                if (teamTokens.length > 1 && teamTokens.every(t => inputTokens.includes(t))) match = true;
+                if (teamTokens.length === 1 && (inputClean === teamClean || inputClean.startsWith(teamClean + ' '))) match = true;
+              }
             }
             if (match) return { type, duration: item.duration || defaultDur, details: l };
           }
