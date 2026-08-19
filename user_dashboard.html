@@ -4631,6 +4631,19 @@
                   }).length;
                   if (groupCount >= 3) { showAdminToast(`Limit reached! Max 3 slots for "${newTag}" group.`, 'error'); return; }
 
+                  // Check if team is on Banned List
+                  const bannedInfo = await getBannedMatchInfo(newName);
+                  if (bannedInfo && bannedInfo.isBanned) {
+                    const { confirmed } = await openAdminPopup({
+                      title: `🚫 Banned Team: ${bannedInfo.type}`,
+                      message: `Team "${newName}" is currently listed under ${bannedInfo.type} (${bannedInfo.duration || bannedInfo.details}).\n\nDo you want to override and update this slot?`,
+                      requireInput: false,
+                      confirmText: 'Override & Update',
+                      cancelText: 'Cancel'
+                    });
+                    if (!confirmed) return;
+                  }
+
                   const patchBody = { clan: newName };
                   if (newLogo !== null) patchBody.clan_logo = newLogo;
                   const res = await fetch(`${SUPABASE_URL}/rest/v1/slots?id=eq.${s.id}`, {
