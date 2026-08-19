@@ -1573,6 +1573,61 @@
       font-size: 13px;
     }
 
+    .approved-clan-chip .chip-gcs {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      padding: 2px 6px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      border-radius: 6px;
+      color: #86efac;
+    }
+
+    .gc-time-checkboxes {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .gc-time-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 3px 6px;
+      border-radius: 6px;
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(75, 85, 99, 0.5);
+      color: #94a3b8;
+    }
+
+    .gc-time-pill:hover {
+      border-color: rgba(148, 163, 184, 0.6);
+      background: rgba(30, 41, 59, 0.8);
+    }
+
+    .gc-time-pill.checked {
+      background: rgba(34, 197, 94, 0.18);
+      border-color: rgba(34, 197, 94, 0.55);
+      color: #86efac;
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.15);
+    }
+
+    .gc-time-pill input[type="checkbox"] {
+      cursor: pointer;
+      accent-color: #22c55e;
+      margin: 0;
+      width: 12px;
+      height: 12px;
+    }
+
     .chip-remove-btn {
       width: 20px;
       height: 20px;
@@ -2613,6 +2668,9 @@
                   <option value="active-approved">✅ Approved (Active)</option>
                   <option value="active-unapproved">⚠️ Active Not Approved</option>
                   <option value="inactive">🚫 Inactive</option>
+                  <option value="gc-6pm">🕐 6PM GC Allowed</option>
+                  <option value="gc-8pm">🕒 8PM GC Allowed</option>
+                  <option value="gc-10pm">🕔 10PM GC Allowed</option>
                 </select>
                 <input id="searchClans" type="text" placeholder="Search clan tag/name/handler..."
                   style="background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:6px 12px; font-size:12px; color:#e5e7eb; width:200px; outline:none;">
@@ -2635,13 +2693,14 @@
                     <th>Login</th>
                     <th style="width:90px;">Status</th>
                     <th style="width:90px;">CLAN LIST</th>
-                    <th style="width:110px;">Registered</th>
+                    <th style="width:160px;">ALLOWED GC (6/8/10)</th>
+                    <th style="width:100px;">Registered</th>
                     <th style="width:230px;">Actions</th>
                   </tr>
                 </thead>
                 <tbody id="clansTableBody">
                   <tr>
-                    <td colspan="8" style="text-align:center; color:#9ca3af; padding:30px;">Loading clan accounts...
+                    <td colspan="9" style="text-align:center; color:#9ca3af; padding:30px;">Loading clan accounts...
                     </td>
                   </tr>
                 </tbody>
@@ -6400,6 +6459,43 @@
       return false;
     }
 
+    function getClanAllowedTimes(clan) {
+      if (!clan || !Array.isArray(clan.allowed_times)) {
+        return ['6pm', '8pm', '10pm'];
+      }
+      return clan.allowed_times.map(t => (t || '').toString().toLowerCase()).filter(Boolean);
+    }
+
+    async function toggleClanAllowedTime(clanId, timeSlot, isAllowed) {
+      const clans = await fetchAppClans();
+      const idx = clans.findIndex(c => c.id === clanId);
+      if (idx === -1) { showAdminToast('Clan not found.', 'error'); return false; }
+      const clan = clans[idx];
+      let currentAllowed = getClanAllowedTimes(clan);
+      const timeNorm = (timeSlot || '').toLowerCase();
+
+      if (isAllowed) {
+        if (!currentAllowed.includes(timeNorm)) currentAllowed.push(timeNorm);
+      } else {
+        currentAllowed = currentAllowed.filter(t => t !== timeNorm);
+      }
+
+      clans[idx].allowed_times = currentAllowed;
+      clans[idx].updated_at = new Date().toISOString();
+      const saved = await saveAppClans(clans);
+      if (saved) {
+        latestClans = clans;
+        const timeDisplay = timeSlot.toUpperCase();
+        showAdminToast(`${isAllowed ? '✅ Allowed' : '🚫 Blocked'} ${timeDisplay} GC for [${clan.clan_tag || 'CLAN'}]`, 'success');
+        logSystemActivity('Clan GC Permission Changed',
+          `Clan "${clan.clan_name || clan.clan_tag}" (${clan.username || '—'}) ${isAllowed ? 'granted' : 'revoked'} access to ${timeDisplay} SGC. Allowed GCs: [${currentAllowed.map(t => t.toUpperCase()).join(', ')}].`, 'USER');
+        applyClansFilter();
+        return true;
+      }
+      showAdminToast('Failed to update allowed times.', 'error');
+      return false;
+    }
+
     function renderApprovedClanChips(clans) {
       if (!approvedClanChips) return;
       const approved = clans.filter(c => c.clan_approved === true);
@@ -6408,13 +6504,18 @@
         return;
       }
       approved.sort((a, b) => (a.clan_tag || a.clan_name || '').localeCompare(b.clan_tag || b.clan_name || ''));
-      approvedClanChips.innerHTML = approved.map(c => `
+      approvedClanChips.innerHTML = approved.map(c => {
+        const allowed = getClanAllowedTimes(c).map(t => t.toUpperCase());
+        const allowedLabel = allowed.length === 3 ? '6/8/10 GC' : (allowed.length ? allowed.join(' · ') : 'NO GC');
+        return `
         <div class="approved-clan-chip">
           <span class="chip-tag">${escapeHtml(c.clan_tag || '—')}</span>
           <span class="chip-name">${escapeHtml(c.clan_name || '—')}</span>
+          <span class="chip-gcs" title="Allowed Scrim GCs: ${escapeHtml(allowedLabel)}">⏰ ${escapeHtml(allowedLabel)}</span>
           <button class="chip-remove-btn" data-remove-id="${c.id}" title="Remove from CLAN LIST">✕</button>
         </div>
-      `).join('');
+      `;
+      }).join('');
       approvedClanChips.querySelectorAll('.chip-remove-btn').forEach(btn => {
         btn.addEventListener('click', async (ev) => {
           const id = ev.currentTarget.getAttribute('data-remove-id');
@@ -6427,7 +6528,7 @@
     function renderClansTable(clans) {
       if (!clansTableBody) return;
       if (!clans || clans.length === 0) {
-        clansTableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#9ca3af; padding:25px;">🛡️ No clan registrations yet.</td></tr>';
+        clansTableBody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:#9ca3af; padding:25px;">🛡️ No clan registrations yet.</td></tr>';
         return;
       }
       clansTableBody.innerHTML = clans.map(c => {
@@ -6435,6 +6536,11 @@
         const sClass = statusBadgeClass(status);
         const listApproved = c.clan_approved === true;
         const listClass = listApproved ? 'active' : 'inactive';
+        const allowedTimes = getClanAllowedTimes(c);
+        const has6pm = allowedTimes.includes('6pm');
+        const has8pm = allowedTimes.includes('8pm');
+        const has10pm = allowedTimes.includes('10pm');
+
         return `
           <tr>
             <td><span class="status-badge" style="background:linear-gradient(135deg,#6366f1,#8b5cf6); color:white;">${escapeHtml(c.clan_tag || '—')}</span></td>
@@ -6448,6 +6554,22 @@
             <td><span class="status-badge ${sClass}">${escapeHtml(status)}</span></td>
             <td>
               <span class="status-badge ${listClass}">${listApproved ? '✅ ON CLAN LIST' : '❌ NOT ON LIST'}</span>
+            </td>
+            <td>
+              <div class="gc-time-checkboxes">
+                <label class="gc-time-pill ${has6pm ? 'checked' : ''}" title="Allow to mine on 6PM SGC">
+                  <input type="checkbox" class="gc-time-check" data-id="${c.id}" data-time="6pm" ${has6pm ? 'checked' : ''}>
+                  <span>6PM</span>
+                </label>
+                <label class="gc-time-pill ${has8pm ? 'checked' : ''}" title="Allow to mine on 8PM SGC">
+                  <input type="checkbox" class="gc-time-check" data-id="${c.id}" data-time="8pm" ${has8pm ? 'checked' : ''}>
+                  <span>8PM</span>
+                </label>
+                <label class="gc-time-pill ${has10pm ? 'checked' : ''}" title="Allow to mine on 10PM SGC">
+                  <input type="checkbox" class="gc-time-check" data-id="${c.id}" data-time="10pm" ${has10pm ? 'checked' : ''}>
+                  <span>10PM</span>
+                </label>
+              </div>
             </td>
             <td style="color:#94a3b8; font-size:11px; white-space:nowrap;">${formatUserDate(c.created_at)}</td>
             <td>
@@ -6465,6 +6587,20 @@
           </tr>
         `;
       }).join('');
+
+      clansTableBody.querySelectorAll('.gc-time-check').forEach(chk => {
+        chk.addEventListener('change', async (e) => {
+          const id = e.target.getAttribute('data-id');
+          const time = e.target.getAttribute('data-time');
+          const checked = e.target.checked;
+          e.target.disabled = true;
+          const ok = await toggleClanAllowedTime(id, time, checked);
+          e.target.disabled = false;
+          if (!ok) {
+            e.target.checked = !checked;
+          }
+        });
+      });
 
       clansTableBody.querySelectorAll('.clan-approveall-btn').forEach(b => b.addEventListener('click', async (e) => {
         const id = e.currentTarget.getAttribute('data-id');
@@ -6519,11 +6655,14 @@
         (c.clan_handler || c.clan_leader || '').toLowerCase().includes(q) ||
         (c.username || '').toLowerCase().includes(q)
       );
-      if (f !== 'all') {
-        if (f === 'pending') list = list.filter(c => (c.status || '').toLowerCase() !== 'active');
-        else if (f === 'approved') list = list.filter(c => c.clan_approved === true);
-        else if (f === 'notapproved') list = list.filter(c => c.clan_approved !== true);
+      if (f !== 'all' && f !== '') {
+        if (f === 'pending' || f === 'pending approval') list = list.filter(c => (c.status || '').toLowerCase() !== 'active');
+        else if (f === 'approved' || f === 'active-approved') list = list.filter(c => c.clan_approved === true && (c.status || '').toLowerCase() === 'active');
+        else if (f === 'notapproved' || f === 'active-unapproved') list = list.filter(c => c.clan_approved !== true && (c.status || '').toLowerCase() === 'active');
         else if (f === 'inactive') list = list.filter(c => (c.status || '').toLowerCase() === 'inactive');
+        else if (f === 'gc-6pm') list = list.filter(c => getClanAllowedTimes(c).includes('6pm'));
+        else if (f === 'gc-8pm') list = list.filter(c => getClanAllowedTimes(c).includes('8pm'));
+        else if (f === 'gc-10pm') list = list.filter(c => getClanAllowedTimes(c).includes('10pm'));
       }
       list.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
       updateClanCounts(latestClans);
@@ -6533,14 +6672,14 @@
 
     async function loadClansTable() {
       if (!clansTableBody) return;
-      clansTableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#9ca3af; padding:25px;">🛡️ Loading clans...</td></tr>';
+      clansTableBody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:#9ca3af; padding:25px;">🛡️ Loading clans...</td></tr>';
       try {
         latestClans = await fetchAppClans();
         if (!Array.isArray(latestClans)) latestClans = [];
         applyClansFilter();
       } catch (e) {
         console.error(e);
-        clansTableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#fecaca; padding:25px;">❌ Failed to load clans.</td></tr>';
+        clansTableBody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:#fecaca; padding:25px;">❌ Failed to load clans.</td></tr>';
       }
     }
 
@@ -6562,6 +6701,7 @@
         password: username ? '' : 'MANUAL_ENTRY_NO_LOGIN',
         status: username ? 'active' : 'manual',
         clan_approved: addNow,
+        allowed_times: ['6pm', '8pm', '10pm'],
         account_type: 'clan',
         manual_entry: true,
         created_at: new Date().toISOString()
