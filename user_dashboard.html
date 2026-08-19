@@ -2789,7 +2789,7 @@
     }
 
     function doLogout() {
-      ['codmUserAuth', 'codmUserId', 'codmUsername', 'codmUserEmail', 'codmUserStatus', 'codmUserRole', 'codmAccountType', 'codmClanTag', 'codmClanName', 'codmClanApproved'].forEach(k => sessionStorage.removeItem(k));
+      ['codmUserAuth', 'codmUserId', 'codmUsername', 'codmUserEmail', 'codmUserStatus', 'codmUserRole', 'codmAccountType', 'codmClanTag', 'codmClanName', 'codmClanApproved', 'codmClanAllowedTimes'].forEach(k => sessionStorage.removeItem(k));
       window.location.href = 'admin_login.html';
     }
 
