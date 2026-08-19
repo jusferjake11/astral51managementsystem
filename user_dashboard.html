@@ -12,7 +12,7 @@
     if (sessionStorage.getItem('codmUserAuth') !== '1') {
       window.location.href = 'admin_login.html';
     } else if (sessionStorage.getItem('codmUserStatus') !== 'active') {
-      ['codmUserAuth','codmUserId','codmUsername','codmUserEmail','codmUserStatus','codmUserRole','codmAccountType','codmClanTag','codmClanName','codmClanApproved'].forEach(k => sessionStorage.removeItem(k));
+      ['codmUserAuth', 'codmUserId', 'codmUsername', 'codmUserEmail', 'codmUserStatus', 'codmUserRole', 'codmAccountType', 'codmClanTag', 'codmClanName', 'codmClanApproved'].forEach(k => sessionStorage.removeItem(k));
       window.location.href = 'admin_login.html';
     }
   </script>
@@ -94,6 +94,7 @@
       .layout {
         grid-template-columns: 1fr;
       }
+
       .sidebar {
         height: auto !important;
         position: relative !important;
@@ -101,46 +102,58 @@
         border-bottom: 1px solid rgba(148, 163, 184, 0.3);
         padding: 15px !important;
       }
+
       .sidebar-title {
         text-align: center;
         margin-bottom: 15px !important;
       }
+
       .sidebar-nav {
         flex-direction: row !important;
         overflow-x: auto;
         padding-bottom: 5px;
         -webkit-overflow-scrolling: touch;
       }
+
       .sidebar-item {
         white-space: nowrap;
         flex-shrink: 0;
       }
+
       .main-view {
         padding: 20px 15px !important;
       }
+
       header {
         flex-direction: column;
         align-items: flex-start !important;
         gap: 15px;
       }
+
       .title-block h1 {
         font-size: 20px !important;
       }
+
       .card-header {
         flex-direction: column;
         align-items: flex-start !important;
         gap: 10px;
       }
+
       .badge-admin {
         align-self: flex-start;
       }
+
       #adminScoreboardLayout {
         grid-template-columns: 1fr !important;
         gap: 20px !important;
       }
-      #playerStatsContainer table, #adminScoreboardLayout table {
+
+      #playerStatsContainer table,
+      #adminScoreboardLayout table {
         font-size: 11px !important;
       }
+
       #adminScoreboardLayout input {
         width: 45px !important;
         padding: 4px 2px !important;
@@ -237,8 +250,17 @@
     }
 
     @keyframes livePulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.4;
+        transform: scale(0.85);
+      }
     }
 
     .sidebar-section-label {
@@ -263,6 +285,7 @@
     .sidebar-nav::-webkit-scrollbar {
       width: 4px;
     }
+
     .sidebar-nav::-webkit-scrollbar-thumb {
       background: rgba(255, 255, 255, 0.1);
       border-radius: 4px;
@@ -649,11 +672,13 @@
       gap: 16px;
       margin-top: 14px;
     }
+
     @media (max-width: 900px) {
       .banned-section-grid {
         grid-template-columns: 1fr;
       }
     }
+
     .banned-card {
       background: radial-gradient(circle at top left, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98));
       border: 1px solid rgba(71, 85, 105, 0.6);
@@ -666,6 +691,7 @@
       position: relative;
       overflow: hidden;
     }
+
     .banned-card::before {
       content: '';
       position: absolute;
@@ -674,15 +700,19 @@
       right: 0;
       height: 3px;
     }
+
     .banned-card.noshow::before {
       background: linear-gradient(90deg, #ef4444, #f87171, #fb923c);
     }
+
     .banned-card.latecancel::before {
       background: linear-gradient(90deg, #f97316, #fbbf24, #f59e0b);
     }
+
     .banned-card.perm::before {
       background: linear-gradient(90deg, #dc2626, #991b1b, #7f1d1d);
     }
+
     .banned-card.warning::before {
       background: linear-gradient(90deg, #eab308, #facc15, #fef08a);
     }
@@ -696,10 +726,22 @@
       letter-spacing: 0.05em;
       text-transform: uppercase;
     }
-    .banned-card.noshow .banned-card-title { color: #fca5a5; }
-    .banned-card.latecancel .banned-card-title { color: #fdba74; }
-    .banned-card.perm .banned-card-title { color: #f87171; }
-    .banned-card.warning .banned-card-title { color: #fef08a; }
+
+    .banned-card.noshow .banned-card-title {
+      color: #fca5a5;
+    }
+
+    .banned-card.latecancel .banned-card-title {
+      color: #fdba74;
+    }
+
+    .banned-card.perm .banned-card-title {
+      color: #f87171;
+    }
+
+    .banned-card.warning .banned-card-title {
+      color: #fef08a;
+    }
 
     .banned-card-subtitle {
       font-size: 11px;
@@ -723,6 +765,7 @@
       gap: 8px;
       align-items: flex-end;
     }
+
     @media (max-width: 640px) {
       .banned-input-row {
         grid-template-columns: 1fr 1fr;
@@ -734,6 +777,7 @@
       flex-direction: column;
       gap: 4px;
     }
+
     .banned-input-group label {
       font-size: 10px;
       font-weight: 600;
@@ -754,10 +798,12 @@
       width: 100%;
       box-sizing: border-box;
     }
+
     .banned-input-field:focus {
       border-color: #38bdf8;
       box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
     }
+
     .banned-input-field::placeholder {
       color: #64748b;
       font-size: 11px;
@@ -769,12 +815,14 @@
       gap: 6px;
       flex-wrap: wrap;
     }
+
     .banned-preset-label {
       font-size: 10px;
       color: #64748b;
       text-transform: uppercase;
       font-weight: 600;
     }
+
     .banned-preset-btn {
       background: rgba(30, 41, 59, 0.9);
       border: 1px solid rgba(71, 85, 105, 0.6);
@@ -786,6 +834,7 @@
       cursor: pointer;
       transition: all 0.15s ease;
     }
+
     .banned-preset-btn:hover {
       background: rgba(51, 65, 85, 0.9);
       color: #f8fafc;
@@ -812,6 +861,7 @@
       box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
       white-space: nowrap;
     }
+
     .banned-add-btn:hover {
       background: linear-gradient(135deg, #f87171, #ef4444);
       transform: translateY(-1px);
@@ -822,6 +872,7 @@
       background: linear-gradient(135deg, #f97316, #ea580c);
       box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
     }
+
     .banned-card.latecancel .banned-add-btn:hover {
       background: linear-gradient(135deg, #fb923c, #f97316);
       box-shadow: 0 6px 16px rgba(249, 115, 22, 0.45);
@@ -851,6 +902,7 @@
       border-collapse: collapse;
       font-size: 11px;
     }
+
     .banned-table th {
       background: rgba(30, 41, 59, 0.95);
       color: #94a3b8;
@@ -864,12 +916,14 @@
       top: 0;
       z-index: 2;
     }
+
     .banned-table td {
       padding: 8px 10px;
       border-bottom: 1px solid rgba(51, 65, 85, 0.3);
       color: #e2e8f0;
       vertical-align: middle;
     }
+
     .banned-table tr:hover td {
       background: rgba(51, 65, 85, 0.25);
     }
@@ -898,6 +952,7 @@
       font-weight: 700;
       font-size: 10px;
     }
+
     .banned-scrim-badge.late {
       background: rgba(249, 115, 22, 0.15);
       border-color: rgba(249, 115, 22, 0.4);
@@ -918,11 +973,13 @@
       align-items: center;
       gap: 3px;
     }
+
     .banned-action-btn:hover {
       background: rgba(239, 68, 68, 0.2);
       border-color: #ef4444;
       color: #fca5a5;
     }
+
     .banned-action-btn.dec-btn:hover {
       background: rgba(59, 130, 246, 0.2);
       border-color: #3b82f6;
@@ -966,13 +1023,25 @@
 
     /* ── Bootstrap-Style Alert Modal (Error / Warning / Info / Success) ── */
     @keyframes bsModalFadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
     }
 
     @keyframes bsModalSlideUp {
-      from { opacity: 0; transform: translateY(25px) scale(0.97); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
+      from {
+        opacity: 0;
+        transform: translateY(25px) scale(0.97);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     #bsAlertModal {
@@ -1054,10 +1123,21 @@
       line-height: 1.2;
     }
 
-    .bs-alert-header.error .bs-alert-title   { color: #fecaca; }
-    .bs-alert-header.warning .bs-alert-title { color: #fed7aa; }
-    .bs-alert-header.info .bs-alert-title    { color: #bfdbfe; }
-    .bs-alert-header.success .bs-alert-title { color: #bbf7d0; }
+    .bs-alert-header.error .bs-alert-title {
+      color: #fecaca;
+    }
+
+    .bs-alert-header.warning .bs-alert-title {
+      color: #fed7aa;
+    }
+
+    .bs-alert-header.info .bs-alert-title {
+      color: #bfdbfe;
+    }
+
+    .bs-alert-header.success .bs-alert-title {
+      color: #bbf7d0;
+    }
 
     .bs-alert-body {
       padding: 22px 24px 18px;
@@ -1094,7 +1174,7 @@
       box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
     }
 
-    .bs-alert-header.error ~ * ~ .bs-alert-footer .bs-alert-close-btn,
+    .bs-alert-header.error~*~.bs-alert-footer .bs-alert-close-btn,
     #bsAlertModalContent:has(.bs-alert-header.error) .bs-alert-close-btn {
       background: linear-gradient(135deg, #ef4444, #dc2626);
       box-shadow: 0 6px 18px rgba(220, 38, 38, 0.35);
@@ -1456,78 +1536,230 @@
     }
 
     /* USER PROFILE & DROPDOWN */
-    .user-menu-wrapper { position: relative; display: inline-block; }
-    .user-profile-btn {
-      display: flex; align-items: center; gap: 10px;
-      padding: 6px 14px 6px 8px; border-radius: 999px;
-      background: radial-gradient(circle at top left, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.98));
-      border: 1px solid rgba(71, 85, 105, 0.6); color: #f8fafc;
-      cursor: pointer; font-family: inherit;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); user-select: none;
+    .user-menu-wrapper {
+      position: relative;
+      display: inline-block;
     }
+
+    .user-profile-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 14px 6px 8px;
+      border-radius: 999px;
+      background: radial-gradient(circle at top left, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.98));
+      border: 1px solid rgba(71, 85, 105, 0.6);
+      color: #f8fafc;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      user-select: none;
+    }
+
     .user-profile-btn:hover {
       background: radial-gradient(circle at top left, rgba(51, 65, 85, 0.95), rgba(30, 41, 59, 0.98));
-      border-color: rgba(99, 102, 241, 0.7); transform: translateY(-1px);
+      border-color: rgba(99, 102, 241, 0.7);
+      transform: translateY(-1px);
       box-shadow: 0 6px 18px rgba(99, 102, 241, 0.25);
     }
-    .user-profile-btn:active { transform: translateY(0); }
-    .user-avatar {
-      width: 32px; height: 32px; border-radius: 50%;
-      background: linear-gradient(135deg, #3b82f6, #06b6d4);
-      color: #fff; font-weight: 700; font-size: 13px;
-      display: flex; align-items: center; justify-content: center;
-      text-transform: uppercase; box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
-      border: 1.5px solid rgba(255, 255, 255, 0.25); flex-shrink: 0;
+
+    .user-profile-btn:active {
+      transform: translateY(0);
     }
-    .user-info-text { display: flex; flex-direction: column; align-items: flex-start; text-align: left; line-height: 1.2; }
-    .user-display-name { font-size: 12px; font-weight: 700; color: #f1f5f9; max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .user-role-label { font-size: 10px; font-weight: 500; color: #94a3b8; }
-    .user-caret-icon { color: #94a3b8; transition: transform 0.2s ease; margin-left: 2px; }
-    .user-profile-btn.active .user-caret-icon { transform: rotate(180deg); color: #3b82f6; }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3b82f6, #06b6d4);
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      flex-shrink: 0;
+    }
+
+    .user-info-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      line-height: 1.2;
+    }
+
+    .user-display-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: #f1f5f9;
+      max-width: 120px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-role-label {
+      font-size: 10px;
+      font-weight: 500;
+      color: #94a3b8;
+    }
+
+    .user-caret-icon {
+      color: #94a3b8;
+      transition: transform 0.2s ease;
+      margin-left: 2px;
+    }
+
+    .user-profile-btn.active .user-caret-icon {
+      transform: rotate(180deg);
+      color: #3b82f6;
+    }
+
     .user-dropdown-menu {
-      position: absolute; top: calc(100% + 8px); right: 0; width: 230px;
-      background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(71, 85, 105, 0.7);
-      border-radius: 14px; padding: 8px;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.05);
-      z-index: 1000; display: none; flex-direction: column; gap: 4px;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 230px;
+      background: rgba(15, 23, 42, 0.98);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(71, 85, 105, 0.7);
+      border-radius: 14px;
+      padding: 8px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
+      z-index: 1000;
+      display: none;
+      flex-direction: column;
+      gap: 4px;
       animation: dropdownFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       transform-origin: top right;
     }
-    .user-dropdown-menu.show { display: flex; }
+
+    .user-dropdown-menu.show {
+      display: flex;
+    }
+
     @keyframes dropdownFadeIn {
-      from { opacity: 0; transform: scale(0.95) translateY(-6px); }
-      to   { opacity: 1; transform: scale(1) translateY(0); }
+      from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
     }
+
     .user-dropdown-header {
-      display: flex; align-items: center; gap: 10px; padding: 8px 10px;
-      border-radius: 10px; background: rgba(30,41,59,0.6);
-      border: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
+
     .user-dropdown-avatar {
-      width: 34px; height: 34px; border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
       background: linear-gradient(135deg, #3b82f6, #06b6d4);
-      color: #fff; font-weight: 700; font-size: 14px;
-      display: flex; align-items: center; justify-content: center;
-      text-transform: uppercase; flex-shrink: 0;
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
+      flex-shrink: 0;
     }
-    .user-dropdown-meta { display: flex; flex-direction: column; overflow: hidden; line-height: 1.3; text-align: left; }
-    .user-dropdown-meta strong { font-size: 12px; color: #f8fafc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .user-dropdown-meta small  { font-size: 10px; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .user-dropdown-divider { height: 1px; background: rgba(71,85,105,0.4); margin: 4px 2px; }
+
+    .user-dropdown-meta {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      line-height: 1.3;
+      text-align: left;
+    }
+
+    .user-dropdown-meta strong {
+      font-size: 12px;
+      color: #f8fafc;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-dropdown-meta small {
+      font-size: 10px;
+      color: #94a3b8;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-dropdown-divider {
+      height: 1px;
+      background: rgba(71, 85, 105, 0.4);
+      margin: 4px 2px;
+    }
+
     .user-dropdown-item {
-      display: flex; align-items: center; gap: 10px; padding: 9px 12px;
-      border-radius: 8px; background: transparent; border: none;
-      color: #e2e8f0; font-size: 12px; font-weight: 600; font-family: inherit;
-      cursor: pointer; text-align: left; width: 100%; transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      background: transparent;
+      border: none;
+      color: #e2e8f0;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      transition: all 0.15s ease;
     }
-    .user-dropdown-item:hover { background: rgba(51,65,85,0.7); color: #fff; transform: translateX(2px); }
-    .user-dropdown-item.text-danger { color: #fca5a5; }
-    .user-dropdown-item.text-danger:hover { background: rgba(239,68,68,0.2); color: #f87171; }
-    .dropdown-icon { font-size: 14px; display: flex; align-items: center; justify-content: center; width: 18px; }
-    .pwd-toggle-btn { opacity: 0.7; transition: opacity 0.15s ease; }
-    .pwd-toggle-btn:hover { opacity: 1; }
+
+    .user-dropdown-item:hover {
+      background: rgba(51, 65, 85, 0.7);
+      color: #fff;
+      transform: translateX(2px);
+    }
+
+    .user-dropdown-item.text-danger {
+      color: #fca5a5;
+    }
+
+    .user-dropdown-item.text-danger:hover {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+    }
+
+    .dropdown-icon {
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+    }
+
+    .pwd-toggle-btn {
+      opacity: 0.7;
+      transition: opacity 0.15s ease;
+    }
+
+    .pwd-toggle-btn:hover {
+      opacity: 1;
+    }
   </style>
 </head>
 
@@ -1539,13 +1771,17 @@
         <div class="sidebar-brand">
           <div class="sidebar-brand-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L3 7V13C3 18.52 6.84 23.74 12 25C17.16 23.74 21 18.52 21 13V7L12 2Z" fill="url(#userGrad)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
-              <path d="M12 11C13.1046 11 14 10.1046 14 9C14 7.89543 13.1046 7 12 7C10.8954 7 10 7.89543 10 9C10 10.1046 10.8954 11 12 11Z" fill="#ffffff"/>
-              <path d="M8 16C8 14.3431 9.79086 13 12 13C14.2091 13 16 14.3431 16 16" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M12 2L3 7V13C3 18.52 6.84 23.74 12 25C17.16 23.74 21 18.52 21 13V7L12 2Z" fill="url(#userGrad)"
+                stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+              <path
+                d="M12 11C13.1046 11 14 10.1046 14 9C14 7.89543 13.1046 7 12 7C10.8954 7 10 7.89543 10 9C10 10.1046 10.8954 11 12 11Z"
+                fill="#ffffff" />
+              <path d="M8 16C8 14.3431 9.79086 13 12 13C14.2091 13 16 14.3431 16 16" stroke="#ffffff" stroke-width="1.5"
+                stroke-linecap="round" />
               <defs>
                 <linearGradient id="userGrad" x1="3" y1="2" x2="21" y2="25" gradientUnits="userSpaceOnUse">
-                  <stop stop-color="#3b82f6"/>
-                  <stop offset="1" stop-color="#06b6d4"/>
+                  <stop stop-color="#3b82f6" />
+                  <stop offset="1" stop-color="#06b6d4" />
                 </linearGradient>
               </defs>
             </svg>
@@ -1638,7 +1874,8 @@
                   <span class="user-role-label" id="userRoleLabel">Admin</span>
                 </div>
                 <svg class="user-caret-icon" width="12" height="12" viewBox="0 0 12 12" fill="none">
-                  <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
                 </svg>
               </button>
               <div class="user-dropdown-menu" id="userDropdownMenu">
@@ -1865,7 +2102,8 @@
           <div class="card">
             <div class="card-header" style="align-items:flex-start; flex-wrap:wrap; gap:12px;">
               <div>
-                <div style="font-size:15px; font-weight:700; color:#f8fafc; letter-spacing:0.02em;">Banned & Warning Teams Manager</div>
+                <div style="font-size:15px; font-weight:700; color:#f8fafc; letter-spacing:0.02em;">Banned & Warning
+                  Teams Manager</div>
                 <div style="font-size:12px; color:#9ca3af; margin-top:2px;">
                   Quickly add, manage, and track scrim bans for No Show, Late Cancel, Permanent Bans, and Warnings.
                 </div>
@@ -1883,7 +2121,9 @@
               <div class="banned-card noshow">
                 <div class="banned-card-title">
                   <span>🚫 NO SHOW</span>
-                  <span style="font-size:10px; background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); color:#fca5a5; padding:2px 8px; border-radius:999px;">5 SCRIMS BAN</span>
+                  <span
+                    style="font-size:10px; background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); color:#fca5a5; padding:2px 8px; border-radius:999px;">5
+                    SCRIMS BAN</span>
                 </div>
                 <div class="banned-card-subtitle">Add teams that did not show up for their scheduled match.</div>
 
@@ -1899,7 +2139,8 @@
                     </div>
                     <div class="banned-input-group">
                       <label>Scrim Banned</label>
-                      <input type="text" id="bannedNoShowScrim" class="banned-input-field" placeholder="5 Scrims" value="5 Scrims">
+                      <input type="text" id="bannedNoShowScrim" class="banned-input-field" placeholder="5 Scrims"
+                        value="5 Scrims">
                     </div>
                     <button type="button" id="bannedNoShowAddBtn" class="banned-add-btn">
                       ➕ Add Team
@@ -1907,11 +2148,16 @@
                   </div>
                   <div class="banned-preset-row">
                     <span class="banned-preset-label">Quick Scrim Ban:</span>
-                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('noShow', '5 Scrims')">5 Scrims</button>
-                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('noShow', '4 Scrims')">4 Scrims</button>
-                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('noShow', '3 Scrims')">3 Scrims</button>
-                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('noShow', '2 Scrims')">2 Scrims</button>
-                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('noShow', '1 Scrim')">1 Scrim</button>
+                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('noShow', '5 Scrims')">5
+                      Scrims</button>
+                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('noShow', '4 Scrims')">4
+                      Scrims</button>
+                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('noShow', '3 Scrims')">3
+                      Scrims</button>
+                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('noShow', '2 Scrims')">2
+                      Scrims</button>
+                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('noShow', '1 Scrim')">1
+                      Scrim</button>
                   </div>
                 </div>
 
@@ -1936,7 +2182,9 @@
               <div class="banned-card latecancel">
                 <div class="banned-card-title">
                   <span>🚫 LATE CANCELLATION</span>
-                  <span style="font-size:10px; background:rgba(249,115,22,0.2); border:1px solid rgba(249,115,22,0.4); color:#fdba74; padding:2px 8px; border-radius:999px;">3 SCRIMS BAN</span>
+                  <span
+                    style="font-size:10px; background:rgba(249,115,22,0.2); border:1px solid rgba(249,115,22,0.4); color:#fdba74; padding:2px 8px; border-radius:999px;">3
+                    SCRIMS BAN</span>
                 </div>
                 <div class="banned-card-subtitle">Add teams that cancelled less than designated lead time.</div>
 
@@ -1952,7 +2200,8 @@
                     </div>
                     <div class="banned-input-group">
                       <label>Scrim Banned</label>
-                      <input type="text" id="bannedLateScrim" class="banned-input-field" placeholder="3 Scrims" value="3 Scrims">
+                      <input type="text" id="bannedLateScrim" class="banned-input-field" placeholder="3 Scrims"
+                        value="3 Scrims">
                     </div>
                     <button type="button" id="bannedLateAddBtn" class="banned-add-btn">
                       ➕ Add Team
@@ -1960,10 +2209,14 @@
                   </div>
                   <div class="banned-preset-row">
                     <span class="banned-preset-label">Quick Scrim Ban:</span>
-                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('late', '3 Scrims')">3 Scrims</button>
-                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('late', '2 Scrims')">2 Scrims</button>
-                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('late', '1 Scrim')">1 Scrim</button>
-                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('late', '5 Scrims')">5 Scrims</button>
+                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('late', '3 Scrims')">3
+                      Scrims</button>
+                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('late', '2 Scrims')">2
+                      Scrims</button>
+                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('late', '1 Scrim')">1
+                      Scrim</button>
+                    <button type="button" class="banned-preset-btn" onclick="setBannedPreset('late', '5 Scrims')">5
+                      Scrims</button>
                   </div>
                 </div>
 
@@ -1988,7 +2241,9 @@
               <div class="banned-card perm">
                 <div class="banned-card-title">
                   <span>🚫 PERMANENT BANNED</span>
-                  <span style="font-size:10px; background:rgba(220,38,38,0.2); border:1px solid rgba(220,38,38,0.4); color:#f87171; padding:2px 8px; border-radius:999px;">PERM BAN</span>
+                  <span
+                    style="font-size:10px; background:rgba(220,38,38,0.2); border:1px solid rgba(220,38,38,0.4); color:#f87171; padding:2px 8px; border-radius:999px;">PERM
+                    BAN</span>
                 </div>
                 <div class="banned-card-subtitle">Teams or clans permanently disqualified from all scrims.</div>
 
@@ -2028,7 +2283,8 @@
               <div class="banned-card warning">
                 <div class="banned-card-title">
                   <span>⚠️ WARNING LIST</span>
-                  <span style="font-size:10px; background:rgba(234,179,8,0.2); border:1px solid rgba(234,179,8,0.4); color:#fef08a; padding:2px 8px; border-radius:999px;">WARNINGS</span>
+                  <span
+                    style="font-size:10px; background:rgba(234,179,8,0.2); border:1px solid rgba(234,179,8,0.4); color:#fef08a; padding:2px 8px; border-radius:999px;">WARNINGS</span>
                 </div>
                 <div class="banned-card-subtitle">Teams on notice or given strikes for rule violations.</div>
 
@@ -2040,7 +2296,8 @@
                     </div>
                     <div class="banned-input-group">
                       <label>Reason / Level</label>
-                      <input type="text" id="warningReason" class="banned-input-field" placeholder="e.g. Warning 1 (Late Check-in)">
+                      <input type="text" id="warningReason" class="banned-input-field"
+                        placeholder="e.g. Warning 1 (Late Check-in)">
                     </div>
                     <button type="button" id="warningAddBtn" class="banned-add-btn">
                       ➕ Add Warning
@@ -2066,26 +2323,33 @@
             </div>
 
             <!-- Advanced: Raw Text / Bulk Editor (Synchronized in Real-Time) -->
-            <details style="margin-top:16px; background:rgba(15,23,42,0.6); border:1px solid rgba(51,65,85,0.6); border-radius:10px; padding:10px 14px;">
+            <details
+              style="margin-top:16px; background:rgba(15,23,42,0.6); border:1px solid rgba(51,65,85,0.6); border-radius:10px; padding:10px 14px;">
               <summary style="font-size:11px; font-weight:600; color:#94a3b8; cursor:pointer; user-select:none;">
                 ⚙️ Advanced: Raw Text / Bulk Editor (Synchronized in Real-Time)
               </summary>
-              <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:10px; margin-top:10px;">
+              <div
+                style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:10px; margin-top:10px;">
                 <div>
                   <div style="font-size:10px; font-weight:bold; color:#fca5a5; margin-bottom:4px;">RAW NO SHOW</div>
-                  <textarea id="bannedNoShow" style="width:100%; height:120px; background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:8px; color:#e5e7eb; font-size:11px; outline:none; resize:vertical; font-family:monospace; box-sizing:border-box;"></textarea>
+                  <textarea id="bannedNoShow"
+                    style="width:100%; height:120px; background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:8px; color:#e5e7eb; font-size:11px; outline:none; resize:vertical; font-family:monospace; box-sizing:border-box;"></textarea>
                 </div>
                 <div>
                   <div style="font-size:10px; font-weight:bold; color:#fdba74; margin-bottom:4px;">RAW LATE CANCEL</div>
-                  <textarea id="bannedLateCancel" style="width:100%; height:120px; background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:8px; color:#e5e7eb; font-size:11px; outline:none; resize:vertical; font-family:monospace; box-sizing:border-box;"></textarea>
+                  <textarea id="bannedLateCancel"
+                    style="width:100%; height:120px; background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:8px; color:#e5e7eb; font-size:11px; outline:none; resize:vertical; font-family:monospace; box-sizing:border-box;"></textarea>
                 </div>
                 <div>
                   <div style="font-size:10px; font-weight:bold; color:#f87171; margin-bottom:4px;">RAW PERM BAN</div>
-                  <textarea id="bannedPerm" style="width:100%; height:120px; background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:8px; color:#e5e7eb; font-size:11px; outline:none; resize:vertical; font-family:monospace; box-sizing:border-box;"></textarea>
+                  <textarea id="bannedPerm"
+                    style="width:100%; height:120px; background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:8px; color:#e5e7eb; font-size:11px; outline:none; resize:vertical; font-family:monospace; box-sizing:border-box;"></textarea>
                 </div>
                 <div>
-                  <div style="font-size:10px; font-weight:bold; color:#fef08a; margin-bottom:4px;">RAW WARNING LIST</div>
-                  <textarea id="warningList" style="width:100%; height:120px; background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:8px; color:#e5e7eb; font-size:11px; outline:none; resize:vertical; font-family:monospace; box-sizing:border-box;"></textarea>
+                  <div style="font-size:10px; font-weight:bold; color:#fef08a; margin-bottom:4px;">RAW WARNING LIST
+                  </div>
+                  <textarea id="warningList"
+                    style="width:100%; height:120px; background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:8px; color:#e5e7eb; font-size:11px; outline:none; resize:vertical; font-family:monospace; box-sizing:border-box;"></textarea>
                 </div>
               </div>
             </details>
@@ -2104,7 +2368,8 @@
                 <button id="refreshTournamentBtn" class="btn btn-ghost">Refresh</button>
                 <button id="tournamentAdminReserveBtn" class="btn btn-reserve-admin">🛡️ Admin Reserve</button>
                 <button id="copyTournamentSlotsBtn" class="btn btn-ghost">Copy Slots</button>
-                <button id="announceTournamentBtn" class="btn btn-update" style="background:#22c55e; border-color:#16a34a;">📢
+                <button id="announceTournamentBtn" class="btn btn-update"
+                  style="background:#22c55e; border-color:#16a34a;">📢
                   Copy GC Announce</button>
                 <button id="resetTournamentSlotsBtn" class="btn btn-danger">Reset All Slots</button>
               </div>
@@ -2119,7 +2384,8 @@
             </div>
             <div class="chips" id="tournamentTopClans"></div>
             <div class="footer" style="margin-bottom:10px;">
-              Tournament slots are separate from scrim schedules. What you list here is what appears on Tournament Scoreboard.
+              Tournament slots are separate from scrim schedules. What you list here is what appears on Tournament
+              Scoreboard.
             </div>
             <div class="slot-grid" id="tournamentSlotGrid"></div>
           </div>
@@ -2135,7 +2401,8 @@
                   Teams sync from Tournament Slot (filled slots only).
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px;">
-                  <label for="tournamentScoreboardDatePicker" style="font-size: 11px; color: #9ca3af; white-space: nowrap;">Event
+                  <label for="tournamentScoreboardDatePicker"
+                    style="font-size: 11px; color: #9ca3af; white-space: nowrap;">Event
                     Date:</label>
                   <input type="date" id="tournamentScoreboardDatePicker"
                     style="padding: 4px 6px; border-radius: 6px; border: 1px solid rgba(148,163,184,0.5); background: rgba(15,23,42,0.9); color: #e5e7eb; font-size: 11px; width: 110px; outline: none;">
@@ -2148,7 +2415,8 @@
                   style="font-size:11px; padding:6px 10px; background: #0284c7; border-color: #0369a1;">
                   ⛶ Full Screen
                 </button>
-                <button id="resetTournamentScoreboardBtn" class="btn btn-danger" style="font-size:11px; padding:6px 10px;">
+                <button id="resetTournamentScoreboardBtn" class="btn btn-danger"
+                  style="font-size:11px; padding:6px 10px;">
                   Reset Scoreboard
                 </button>
                 <button id="copyTournamentTopTeamsBtn" class="btn btn-update" style="font-size:11px; padding:6px 10px;">
@@ -2161,7 +2429,8 @@
               </div>
             </div>
             <div style="font-size:13px; color:#9ca3af; padding:4px 2px 10px 2px; margin-bottom:6px;">
-              Team names are synced from Tournament Slot so you don't have to type them again. Fill in round points and totals as needed.
+              Team names are synced from Tournament Slot so you don't have to type them again. Fill in round points and
+              totals as needed.
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 340px; gap: 15px; margin-top: 15px;"
@@ -2278,9 +2547,11 @@
                       <tr>
                         <td style="background:#4dd0e1; color:#020617; font-weight:900; padding:4px; text-align:center;">
                           MVP</td>
-                        <td id="tournamentAdminSumMVP" style="background:#334155; color:#f8fafc; padding:4px; text-align:center;">
+                        <td id="tournamentAdminSumMVP"
+                          style="background:#334155; color:#f8fafc; padding:4px; text-align:center;">
                           PENDING TO UPDATE</td>
-                        <td id="tournamentAdminPtsMVP" style="background:#475569; color:#f8fafc; padding:4px; text-align:center;">
+                        <td id="tournamentAdminPtsMVP"
+                          style="background:#475569; color:#f8fafc; padding:4px; text-align:center;">
                           0 KILLS</td>
                       </tr>
                     </tbody>
@@ -2333,7 +2604,9 @@
         <label style="font-size: 11px; color: #9ca3af;">Clan Name</label>
         <input type="text" id="adminReserveClanInput" class="admin-popup-input"
           style="display: block; width: 100%; margin-top: 4px;" placeholder="Enter Clan Name">
-        <div id="adminReserveBannedNotice" style="display:none; margin-top:8px; padding:8px 10px; border-radius:8px; font-size:11px; text-align:left; line-height:1.4;"></div>
+        <div id="adminReserveBannedNotice"
+          style="display:none; margin-top:8px; padding:8px 10px; border-radius:8px; font-size:11px; text-align:left; line-height:1.4;">
+        </div>
       </div>
 
       <div style="margin-bottom: 15px;">
@@ -2388,40 +2661,53 @@
     <div class="admin-popup-content" style="width:360px; max-height:90vh; overflow-y:auto;">
       <h3 style="color:#60a5fa;">⚙️ Account Settings</h3>
       <div style="font-size:11px; color:#9ca3af; margin-bottom:18px;">Manage your account preferences.</div>
-      <div style="background:rgba(30,41,59,0.6); border:1px solid rgba(71,85,105,0.4); border-radius:10px; padding:12px 14px; margin-bottom:18px; display:flex; align-items:center; gap:12px;">
-        <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#06b6d4);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#fff;flex-shrink:0;" id="settingsAvatarCircle">U</div>
+      <div
+        style="background:rgba(30,41,59,0.6); border:1px solid rgba(71,85,105,0.4); border-radius:10px; padding:12px 14px; margin-bottom:18px; display:flex; align-items:center; gap:12px;">
+        <div
+          style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#06b6d4);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#fff;flex-shrink:0;"
+          id="settingsAvatarCircle">U</div>
         <div style="overflow:hidden;">
           <div style="font-size:13px;font-weight:700;color:#f8fafc;" id="settingsDisplayName">User</div>
           <div style="font-size:11px;color:#94a3b8;" id="settingsEmail">user@system</div>
-          <div style="font-size:10px;margin-top:2px;"><span style="padding:2px 8px;border-radius:999px;font-weight:600;background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.4);color:#bfdbfe;" id="settingsRoleBadge">User</span></div>
+          <div style="font-size:10px;margin-top:2px;"><span
+              style="padding:2px 8px;border-radius:999px;font-weight:600;background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.4);color:#bfdbfe;"
+              id="settingsRoleBadge">User</span></div>
         </div>
       </div>
       <div style="border-top:1px solid rgba(71,85,105,0.4); padding-top:16px;">
-        <div style="font-size:12px;font-weight:700;color:#bfdbfe;margin-bottom:12px;letter-spacing:0.05em;">🔐 CHANGE PASSWORD</div>
+        <div style="font-size:12px;font-weight:700;color:#bfdbfe;margin-bottom:12px;letter-spacing:0.05em;">🔐 CHANGE
+          PASSWORD</div>
         <div style="margin-bottom:10px;">
           <label style="font-size:11px;color:#9ca3af;display:block;margin-bottom:4px;">Current Password</label>
           <div style="position:relative;">
-            <input type="password" id="settingsOldPass" class="admin-popup-input" style="display:block;width:100%;padding-right:38px;" placeholder="Enter current password">
-            <button type="button" class="pwd-toggle-btn" onclick="togglePwdVis('settingsOldPass',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#94a3b8;cursor:pointer;font-size:14px;padding:0;">👁</button>
+            <input type="password" id="settingsOldPass" class="admin-popup-input"
+              style="display:block;width:100%;padding-right:38px;" placeholder="Enter current password">
+            <button type="button" class="pwd-toggle-btn" onclick="togglePwdVis('settingsOldPass',this)"
+              style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#94a3b8;cursor:pointer;font-size:14px;padding:0;">👁</button>
           </div>
         </div>
         <div style="margin-bottom:10px;">
           <label style="font-size:11px;color:#9ca3af;display:block;margin-bottom:4px;">New Password</label>
           <div style="position:relative;">
-            <input type="password" id="settingsNewPass" class="admin-popup-input" style="display:block;width:100%;padding-right:38px;" placeholder="At least 6 characters">
-            <button type="button" class="pwd-toggle-btn" onclick="togglePwdVis('settingsNewPass',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#94a3b8;cursor:pointer;font-size:14px;padding:0;">👁</button>
+            <input type="password" id="settingsNewPass" class="admin-popup-input"
+              style="display:block;width:100%;padding-right:38px;" placeholder="At least 6 characters">
+            <button type="button" class="pwd-toggle-btn" onclick="togglePwdVis('settingsNewPass',this)"
+              style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#94a3b8;cursor:pointer;font-size:14px;padding:0;">👁</button>
           </div>
         </div>
         <div style="margin-bottom:14px;">
           <label style="font-size:11px;color:#9ca3af;display:block;margin-bottom:4px;">Confirm New Password</label>
           <div style="position:relative;">
-            <input type="password" id="settingsConfirmPass" class="admin-popup-input" style="display:block;width:100%;padding-right:38px;" placeholder="Repeat new password">
-            <button type="button" class="pwd-toggle-btn" onclick="togglePwdVis('settingsConfirmPass',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#94a3b8;cursor:pointer;font-size:14px;padding:0;">👁</button>
+            <input type="password" id="settingsConfirmPass" class="admin-popup-input"
+              style="display:block;width:100%;padding-right:38px;" placeholder="Repeat new password">
+            <button type="button" class="pwd-toggle-btn" onclick="togglePwdVis('settingsConfirmPass',this)"
+              style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#94a3b8;cursor:pointer;font-size:14px;padding:0;">👁</button>
           </div>
         </div>
         <div id="settingsPwdMsg" style="font-size:11px;min-height:16px;margin-bottom:10px;"></div>
         <div class="admin-popup-buttons">
-          <button id="settingsSavePassBtn" class="admin-popup-confirm" style="background:#3b82f6;">Save Password</button>
+          <button id="settingsSavePassBtn" class="admin-popup-confirm" style="background:#3b82f6;">Save
+            Password</button>
           <button id="settingsCloseBtn" class="admin-popup-cancel">Close</button>
         </div>
       </div>
@@ -2503,7 +2789,7 @@
     }
 
     function doLogout() {
-      ['codmUserAuth','codmUserId','codmUsername','codmUserEmail','codmUserStatus','codmUserRole','codmAccountType','codmClanTag','codmClanName','codmClanApproved'].forEach(k => sessionStorage.removeItem(k));
+      ['codmUserAuth', 'codmUserId', 'codmUsername', 'codmUserEmail', 'codmUserStatus', 'codmUserRole', 'codmAccountType', 'codmClanTag', 'codmClanName', 'codmClanApproved'].forEach(k => sessionStorage.removeItem(k));
       window.location.href = 'admin_login.html';
     }
 
@@ -2698,7 +2984,7 @@
         const data = await res.json();
         let logs = [];
         if (data && data.length > 0 && data[0].value) {
-          try { logs = JSON.parse(data[0].value); } catch(e) { logs = []; }
+          try { logs = JSON.parse(data[0].value); } catch (e) { logs = []; }
         }
         if (!Array.isArray(logs)) logs = [];
         logs.unshift(newEntry);
@@ -2713,7 +2999,7 @@
           },
           body: JSON.stringify({ key: 'app_system_logs', value: JSON.stringify(logs) })
         });
-      } catch(e) {}
+      } catch (e) { }
     }
 
     const slotGrid = document.getElementById('slotGrid');
@@ -2992,9 +3278,9 @@
         else if (m.includes('error') || m.includes('failed') || m.includes('cannot') || m.includes('not ') || m.includes('incorrect') || m.includes('banned') || m.includes('limit') || m.includes('full') || m.includes('duplicate') || m.includes('🚫') || m.includes('empty') || m.includes('bawal')) t = 'error';
       }
       header.className = 'bs-alert-header ' + t;
-      if (t === 'error')   { icon.textContent = '⛔'; title.textContent = 'ERROR'; }
+      if (t === 'error') { icon.textContent = '⛔'; title.textContent = 'ERROR'; }
       if (t === 'warning') { icon.textContent = '⚠️'; title.textContent = 'WARNING'; }
-      if (t === 'info')    { icon.textContent = 'ℹ️'; title.textContent = 'INFO'; }
+      if (t === 'info') { icon.textContent = 'ℹ️'; title.textContent = 'INFO'; }
       if (t === 'success') { icon.textContent = '✅'; title.textContent = 'SUCCESS'; }
       if (t === 'error' && closeBtn) {
         closeBtn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
@@ -4451,7 +4737,7 @@
           headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
         });
         let banData = await banRes.json();
-        
+
         // Fallback logic
         const usedFallback = (!banData || banData.length === 0 || !banData[0] || !banData[0].value);
         if (usedFallback) {
@@ -5604,7 +5890,7 @@
         container.style.position = 'absolute'; container.style.left = '0'; container.style.top = '0'; container.style.zIndex = '-9999';
         container.style.width = '1080px'; container.style.padding = '35px'; container.style.backgroundColor = '#020617';
         container.style.color = '#e5e7eb'; container.style.fontFamily = "'Inter', sans-serif";
-        
+
         container.innerHTML = `
           <div style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:-1;">
              <img src="https://images.unsplash.com/photo-1544200175-ca6e80a7b323?q=80&w=1280&auto=format&fit=crop" style="width:100%; height:100%; object-fit:cover; opacity:0.6; filter: brightness(0.8) contrast(1.2);" crossorigin="anonymous">
@@ -5710,7 +5996,7 @@
       warning: []
     };
 
-    window.setBannedPreset = function(type, val) {
+    window.setBannedPreset = function (type, val) {
       if (type === 'noShow') {
         const el = document.getElementById('bannedNoShowScrim');
         if (el) el.value = val;
@@ -6022,14 +6308,14 @@
       if (syncText) syncBannedTextareas();
     }
 
-    window.removeBannedItem = function(type, idx) {
+    window.removeBannedItem = function (type, idx) {
       if (!bannedState[type] || !bannedState[type][idx]) return;
       const removed = bannedState[type].splice(idx, 1);
       renderBannedTables(true);
       showAdminToast(`Removed: ${removed[0]?.team || removed[0]?.clan || 'Team'}`, 'info');
     };
 
-    window.decrementBannedScrim = function(type, idx) {
+    window.decrementBannedScrim = function (type, idx) {
       if (!bannedState[type] || !bannedState[type][idx]) return;
       const item = bannedState[type][idx];
       const match = (item.duration || '').match(/\d+/);
@@ -6200,7 +6486,7 @@
           headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
         });
         let data = await res.json();
-        
+
         // If specific slot key is empty, try the global fallback
         const usedFallback = (!data || data.length === 0 || !data[0] || !data[0].value);
         if (usedFallback) {
@@ -6232,8 +6518,8 @@
             bannedState.noShow = nsLines.map(l => parseBannedLine(l, '5 Scrims')).filter(Boolean);
           }
         }
-      } catch (e) { 
-        console.error('Failed to load banned teams.', e); 
+      } catch (e) {
+        console.error('Failed to load banned teams.', e);
       } finally {
         renderBannedTables(true);
       }
