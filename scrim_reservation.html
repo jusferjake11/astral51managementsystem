@@ -773,6 +773,25 @@
       }
     }
 
+    function getClanAllowedTimes(clan) {
+      if (!clan || !Array.isArray(clan.allowed_times)) {
+        return ['6pm', '8pm', '10pm'];
+      }
+      return clan.allowed_times.map(t => (t || '').toString().toLowerCase()).filter(Boolean);
+    }
+
+    function isClanAllowedForSched(clanObj, sched) {
+      if (!clanObj) return true;
+      const times = getClanAllowedTimes(clanObj);
+      const schedNorm = (sched || currentSched || '8pm').toString().toLowerCase();
+      return times.includes(schedNorm);
+    }
+
+    function getNotOnSgcErrorMessage(sched = currentSched) {
+      const timeUpper = (sched || '8pm').toString().toUpperCase();
+      return `You are not on ${timeUpper}SGC please contact admin and try again`;
+    }
+
     function checkIfClanApprovedInClanList(clanNameOrTag, approvedClans) {
       if (!approvedClans || approvedClans.length === 0) return { found: false, match: null };
       const inputNormalized = (clanNameOrTag || '').toString().trim().toLowerCase();
@@ -919,8 +938,16 @@
       const clanTag = (sessionStorage.getItem('codmClanTag') || '').trim();
       const clanName = (sessionStorage.getItem('codmClanName') || '').trim();
       const clanApproved = sessionStorage.getItem('codmClanApproved') === 'true';
+      let clanAllowedTimes = ['6pm', '8pm', '10pm'];
+      try {
+        const rawTimes = sessionStorage.getItem('codmClanAllowedTimes');
+        if (rawTimes) {
+          const parsed = JSON.parse(rawTimes);
+          if (Array.isArray(parsed)) clanAllowedTimes = parsed;
+        }
+      } catch (e) { }
       const isActive = isAuth && (status === 'active');
-      return { isAuth, isActive, accountType, role, userId, username, email, clanTag, clanName, clanApproved, isAdmin: isAdminAuth };
+      return { isAuth, isActive, accountType, role, userId, username, email, clanTag, clanName, clanApproved, clanAllowedTimes, isAdmin: isAdminAuth };
     }
 
     function isSlotOwnedByClan(slotClan, ctx, cancelKey = null) {
@@ -944,11 +971,18 @@
       return isTagMatch || isUserMatch;
     }
 
-    function canReserveSlots() {
+    function canReserveSlots(sched = currentSched) {
       const ctx = getAuthContext();
       if (!ctx.isActive) return { allowed: false, reason: 'LOGIN REQUIRED — Please sign in with your account before reserving slots.' };
-      if (ctx.accountType === 'clan' && !ctx.clanApproved) {
-        return { allowed: false, reason: '⚠️ CLAN NOT APPROVED — Your clan is NOT on the APPROVED CLAN LIST yet. Ask an admin to approve your clan first.' };
+      if (ctx.accountType === 'clan') {
+        if (!ctx.clanApproved) {
+          return { allowed: false, reason: '⚠️ CLAN NOT APPROVED — Your clan is NOT on the APPROVED CLAN LIST yet. Ask an admin to approve your clan first.' };
+        }
+        const schedNorm = (sched || currentSched || '8pm').toLowerCase();
+        const times = (ctx.clanAllowedTimes || []).map(t => (t || '').toLowerCase());
+        if (times.length > 0 && !times.includes(schedNorm)) {
+          return { allowed: false, reason: getNotOnSgcErrorMessage(sched) };
+        }
       }
       return { allowed: true, reason: '' };
     }
@@ -996,11 +1030,20 @@
 
       if (ctx.accountType === 'clan') {
         const display = `${ctx.clanTag ? `[${ctx.clanTag.toUpperCase()}] ` : ''}${ctx.clanName || ctx.username || ''}`;
-        if (ctx.clanApproved) {
+        const schedUpper = currentSched.toUpperCase();
+        const times = (ctx.clanAllowedTimes || []).map(t => (t || '').toUpperCase());
+        const isAllowedThisSched = times.length === 0 || times.includes(schedUpper);
+
+        if (ctx.clanApproved && isAllowedThisSched) {
           banner.style.background = 'linear-gradient(135deg, rgba(34,197,94,0.18), rgba(6,182,212,0.14))';
           banner.style.borderColor = 'rgba(34,197,94,0.5)';
-          bannerText.innerHTML = `✅ Logged in as <strong style="color:#bbf7d0;">${escapeHtml(display)}</strong> · Clan Account · <span style="color:#86efac;">APPROVED ON CLAN LIST</span> — You may reserve slots.`;
+          bannerText.innerHTML = `✅ Logged in as <strong style="color:#bbf7d0;">${escapeHtml(display)}</strong> · Clan Account · <span style="color:#86efac;">APPROVED ON ${schedUpper} GC</span> — You may reserve slots.`;
           bannerText.style.color = '#bbf7d0';
+        } else if (ctx.clanApproved && !isAllowedThisSched) {
+          banner.style.background = 'rgba(239,68,68,0.2)';
+          banner.style.borderColor = 'rgba(239,68,68,0.5)';
+          bannerText.innerHTML = `⚠️ Logged in as <strong style="color:#fca5a5;">${escapeHtml(display)}</strong> · <span style="color:#f87171;">NOT ON ${schedUpper}SGC</span> (Permitted: ${escapeHtml(times.join(', ') || 'None')}) — Contact admin to be added.`;
+          bannerText.style.color = '#fca5a5';
         } else {
           banner.style.background = 'rgba(180,83,9,0.22)';
           banner.style.borderColor = 'rgba(245,158,11,0.55)';
@@ -1022,7 +1065,7 @@
 
     function handleLogout() {
       ['codmUserAuth', 'codmAdminAuth', 'codmUserId', 'codmUsername', 'codmUserEmail',
-        'codmUserStatus', 'codmUserRole', 'codmAccountType', 'codmClanTag', 'codmClanName', 'codmClanApproved']
+        'codmUserStatus', 'codmUserRole', 'codmAccountType', 'codmClanTag', 'codmClanName', 'codmClanApproved', 'codmClanAllowedTimes']
         .forEach(k => sessionStorage.removeItem(k));
       document.getElementById('authLogoutBtn').style.display = 'none';
       document.getElementById('authLoginLink').style.display = 'inline-block';
@@ -1474,6 +1517,13 @@
         const approval = checkIfClanApprovedInClanList(clan, approvedClans);
         if (!approval.found) {
           showPopup(`🚫 CLAN NOT REGISTERED: "${clan}" is NOT on the APPROVED CLAN LIST.\n\nAsk an admin to add your clan first via Admin → Clan Management.\n\nNote: Your clan needs BOTH a registered clan account AND admin approval on the CLAN LIST.`);
+          clanSubmitBtn.disabled = false;
+          return;
+        }
+
+        // --- GC PERMISSION CHECK (6/8/10 GC) ---
+        if (!isClanAllowedForSched(approval.match, currentSched)) {
+          showPopup(getNotOnSgcErrorMessage(currentSched));
           clanSubmitBtn.disabled = false;
           return;
         }
