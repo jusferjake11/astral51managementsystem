@@ -430,10 +430,12 @@
         sessionStorage.setItem('codmClanTag', user.clan_tag || '');
         sessionStorage.setItem('codmClanName', user.clan_name || '');
         sessionStorage.setItem('codmClanApproved', (user.clan_approved === true || user.clan_approved === 'true') ? 'true' : 'false');
+        sessionStorage.setItem('codmClanAllowedTimes', JSON.stringify(user.allowed_times || ['6pm', '8pm', '10pm']));
       } else {
         sessionStorage.removeItem('codmClanTag');
         sessionStorage.removeItem('codmClanName');
         sessionStorage.removeItem('codmClanApproved');
+        sessionStorage.removeItem('codmClanAllowedTimes');
       }
     }
 
@@ -614,6 +616,7 @@
           password: await hashPassword(password),
           status: 'pending approval',
           clan_approved: false,
+          allowed_times: ['6pm', '8pm', '10pm'],
           account_type: 'clan',
           created_at: new Date().toISOString(),
         };
