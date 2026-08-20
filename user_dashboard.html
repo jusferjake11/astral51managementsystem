@@ -2715,8 +2715,8 @@
   </div>
 
   <script>
-    const SUPABASE_URL = 'https://pmijauhozoxmtjvbdusq.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_4pWlSLYxW_2YjUFE3iDbpw_EyKcKFz9';
+    const SUPABASE_URL = 'https://yzdtszfubnastllfyczs.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6ZHRzemZ1Ym5hc3RsbGZ5Y3pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNzEyOTgsImV4cCI6MjA4NzY0NzI5OH0.GJz1ouXTbi3GQZYJa0756w4CgqabT9C2EH_mW_m_5TY';
     const MAX_SLOTS = 25;
 
     const supabaseHeaders = () => ({
@@ -2966,7 +2966,40 @@
     };
 
     async function logSystemActivity(action, details, context = 'GENERAL', actorOverride = null, roleOverride = null) {
-      // Disabled to prevent Supabase database storage bloat and improve speed
+      try {
+        const actor = actorOverride || sessionStorage.getItem('codmUsername') || 'User';
+        const role = roleOverride || sessionStorage.getItem('codmUserRole') || 'user';
+        const newEntry = {
+          id: (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : (Date.now().toString(36) + Math.random().toString(36).slice(2)),
+          timestamp: new Date().toISOString(),
+          actor,
+          role,
+          action,
+          details,
+          context: (context || 'GENERAL').toUpperCase()
+        };
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.app_system_logs&select=value`, {
+          headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+        });
+        const data = await res.json();
+        let logs = [];
+        if (data && data.length > 0 && data[0].value) {
+          try { logs = JSON.parse(data[0].value); } catch (e) { logs = []; }
+        }
+        if (!Array.isArray(logs)) logs = [];
+        logs.unshift(newEntry);
+        if (logs.length > 500) logs = logs.slice(0, 500);
+        await fetch(`${SUPABASE_URL}/rest/v1/config`, {
+          method: 'POST',
+          headers: {
+            apikey: SUPABASE_KEY,
+            Authorization: `Bearer ${SUPABASE_KEY}`,
+            'Content-Type': 'application/json',
+            Prefer: 'resolution=merge-duplicates, return=minimal'
+          },
+          body: JSON.stringify({ key: 'app_system_logs', value: JSON.stringify(logs) })
+        });
+      } catch (e) { }
     }
 
     const slotGrid = document.getElementById('slotGrid');
@@ -3459,13 +3492,11 @@
       const s = schedStartTime.value;
       const e = schedEndTime.value;
       try {
-        await fetch(`${SUPABASE_URL}/rest/v1/config`, {
-          method: 'POST',
-          headers: { ...supabaseHeaders(), Prefer: 'resolution=merge-duplicates, return=minimal' },
-          body: JSON.stringify([
-            { key: `${currentSched}_sched_start`, value: s },
-            { key: `${currentSched}_sched_end`, value: e }
-          ])
+        await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${currentSched}_sched_start`, {
+          method: 'PATCH', headers: supabaseHeaders(), body: JSON.stringify({ value: s })
+        });
+        await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${currentSched}_sched_end`, {
+          method: 'PATCH', headers: supabaseHeaders(), body: JSON.stringify({ value: e })
         });
         showAdminToast(`${currentSched.toUpperCase()} schedule saved.`, 'success');
         schedulePopup.style.display = 'none';
@@ -3476,13 +3507,11 @@
     schedulePopupClear.onclick = async () => {
       if (!confirm(`Clear schedule timer for ${currentSched.toUpperCase()}?`)) return;
       try {
-        await fetch(`${SUPABASE_URL}/rest/v1/config`, {
-          method: 'POST',
-          headers: { ...supabaseHeaders(), Prefer: 'resolution=merge-duplicates, return=minimal' },
-          body: JSON.stringify([
-            { key: `${currentSched}_sched_start`, value: '' },
-            { key: `${currentSched}_sched_end`, value: '' }
-          ])
+        await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${currentSched}_sched_start`, {
+          method: 'PATCH', headers: supabaseHeaders(), body: JSON.stringify({ value: '' })
+        });
+        await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${currentSched}_sched_end`, {
+          method: 'PATCH', headers: supabaseHeaders(), body: JSON.stringify({ value: '' })
         });
         showAdminToast("Timer cleared.", 'success');
         schedulePopup.style.display = 'none';
@@ -5484,8 +5513,9 @@
       const isCurrentlyManualOpen = toggleOpenBtn.dataset.currentVal === 'open';
       const makeOpen = !isCurrentlyManualOpen;
       const { confirmed } = await openAdminPopup({
+
         title: makeOpen ? `Open ${currentSched.toUpperCase()} manually` : `Close ${currentSched.toUpperCase()} manually`,
-        message: makeOpen ? `Open reservations for ${currentSched.toUpperCase()}?` : `Close reservations for ${currentSched.toUpperCase()}?`,
+        message: makeOpen ? `Open reservations for ${currentSched.toUpperCase()} ? ` : `Close reservations for ${currentSched.toUpperCase()} ? `,
         requireInput: false,
         confirmText: makeOpen ? 'Open' : 'Close',
         cancelText: 'Cancel'
@@ -5493,10 +5523,10 @@
       if (!confirmed) return;
       try {
         const value = makeOpen ? 'true' : 'false';
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/config`, {
-          method: 'POST',
-          headers: { ...supabaseHeaders(), Prefer: 'resolution=merge-duplicates, return=minimal' },
-          body: JSON.stringify({ key: `${currentSched}_is_open`, value }),
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${currentSched}_is_open`, {
+          method: 'PATCH',
+          headers: supabaseHeaders(),
+          body: JSON.stringify({ value }),
         });
         if (res.ok) {
           await checkGlobalStatus();
