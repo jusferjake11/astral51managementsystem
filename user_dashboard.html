@@ -2715,8 +2715,8 @@
   </div>
 
   <script>
-    const SUPABASE_URL = 'https://yzdtszfubnastllfyczs.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6ZHRzemZ1Ym5hc3RsbGZ5Y3pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNzEyOTgsImV4cCI6MjA4NzY0NzI5OH0.GJz1ouXTbi3GQZYJa0756w4CgqabT9C2EH_mW_m_5TY';
+    const SUPABASE_URL = 'https://pmijauhozoxmtjvbdusq.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_4pWlSLYxW_2YjUFE3iDbpw_EyKcKFz9';
     const MAX_SLOTS = 25;
 
     const supabaseHeaders = () => ({
@@ -2966,40 +2966,7 @@
     };
 
     async function logSystemActivity(action, details, context = 'GENERAL', actorOverride = null, roleOverride = null) {
-      try {
-        const actor = actorOverride || sessionStorage.getItem('codmUsername') || 'User';
-        const role = roleOverride || sessionStorage.getItem('codmUserRole') || 'user';
-        const newEntry = {
-          id: (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : (Date.now().toString(36) + Math.random().toString(36).slice(2)),
-          timestamp: new Date().toISOString(),
-          actor,
-          role,
-          action,
-          details,
-          context: (context || 'GENERAL').toUpperCase()
-        };
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.app_system_logs&select=value`, {
-          headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
-        });
-        const data = await res.json();
-        let logs = [];
-        if (data && data.length > 0 && data[0].value) {
-          try { logs = JSON.parse(data[0].value); } catch (e) { logs = []; }
-        }
-        if (!Array.isArray(logs)) logs = [];
-        logs.unshift(newEntry);
-        if (logs.length > 500) logs = logs.slice(0, 500);
-        await fetch(`${SUPABASE_URL}/rest/v1/config`, {
-          method: 'POST',
-          headers: {
-            apikey: SUPABASE_KEY,
-            Authorization: `Bearer ${SUPABASE_KEY}`,
-            'Content-Type': 'application/json',
-            Prefer: 'resolution=merge-duplicates, return=minimal'
-          },
-          body: JSON.stringify({ key: 'app_system_logs', value: JSON.stringify(logs) })
-        });
-      } catch (e) { }
+      // Disabled to prevent Supabase database storage bloat and improve speed
     }
 
     const slotGrid = document.getElementById('slotGrid');
@@ -3411,6 +3378,7 @@
         const res = await fetch(`${SUPABASE_URL}/rest/v1/config?key=in.(${keys})&select=key,value`, {
           headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
         });
+        if (!res.ok) throw new Error(`Server error ${res.status}: ${await res.text()}`);
         const rows = await res.json();
         let isOp = 'false', sStart = '', sEnd = '';
         rows.forEach(r => {
