@@ -3459,11 +3459,13 @@
       const s = schedStartTime.value;
       const e = schedEndTime.value;
       try {
-        await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${currentSched}_sched_start`, {
-          method: 'PATCH', headers: supabaseHeaders(), body: JSON.stringify({ value: s })
-        });
-        await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${currentSched}_sched_end`, {
-          method: 'PATCH', headers: supabaseHeaders(), body: JSON.stringify({ value: e })
+        await fetch(`${SUPABASE_URL}/rest/v1/config`, {
+          method: 'POST',
+          headers: { ...supabaseHeaders(), Prefer: 'resolution=merge-duplicates, return=minimal' },
+          body: JSON.stringify([
+            { key: `${currentSched}_sched_start`, value: s },
+            { key: `${currentSched}_sched_end`, value: e }
+          ])
         });
         showAdminToast(`${currentSched.toUpperCase()} schedule saved.`, 'success');
         schedulePopup.style.display = 'none';
@@ -3474,11 +3476,13 @@
     schedulePopupClear.onclick = async () => {
       if (!confirm(`Clear schedule timer for ${currentSched.toUpperCase()}?`)) return;
       try {
-        await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${currentSched}_sched_start`, {
-          method: 'PATCH', headers: supabaseHeaders(), body: JSON.stringify({ value: '' })
-        });
-        await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${currentSched}_sched_end`, {
-          method: 'PATCH', headers: supabaseHeaders(), body: JSON.stringify({ value: '' })
+        await fetch(`${SUPABASE_URL}/rest/v1/config`, {
+          method: 'POST',
+          headers: { ...supabaseHeaders(), Prefer: 'resolution=merge-duplicates, return=minimal' },
+          body: JSON.stringify([
+            { key: `${currentSched}_sched_start`, value: '' },
+            { key: `${currentSched}_sched_end`, value: '' }
+          ])
         });
         showAdminToast("Timer cleared.", 'success');
         schedulePopup.style.display = 'none';
@@ -5480,9 +5484,8 @@
       const isCurrentlyManualOpen = toggleOpenBtn.dataset.currentVal === 'open';
       const makeOpen = !isCurrentlyManualOpen;
       const { confirmed } = await openAdminPopup({
-
         title: makeOpen ? `Open ${currentSched.toUpperCase()} manually` : `Close ${currentSched.toUpperCase()} manually`,
-        message: makeOpen ? `Open reservations for ${currentSched.toUpperCase()} ? ` : `Close reservations for ${currentSched.toUpperCase()} ? `,
+        message: makeOpen ? `Open reservations for ${currentSched.toUpperCase()}?` : `Close reservations for ${currentSched.toUpperCase()}?`,
         requireInput: false,
         confirmText: makeOpen ? 'Open' : 'Close',
         cancelText: 'Cancel'
@@ -5490,10 +5493,10 @@
       if (!confirmed) return;
       try {
         const value = makeOpen ? 'true' : 'false';
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${currentSched}_is_open`, {
-          method: 'PATCH',
-          headers: supabaseHeaders(),
-          body: JSON.stringify({ value }),
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/config`, {
+          method: 'POST',
+          headers: { ...supabaseHeaders(), Prefer: 'resolution=merge-duplicates, return=minimal' },
+          body: JSON.stringify({ key: `${currentSched}_is_open`, value }),
         });
         if (res.ok) {
           await checkGlobalStatus();
