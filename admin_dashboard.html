@@ -2109,6 +2109,13 @@
               <span class="nav-text">User Accounts</span>
             </span>
           </button>
+          <button id="navLogs" class="sidebar-item">
+            <span class="nav-item-left">
+              <span class="nav-icon">📜</span>
+              <span class="nav-text">System Logs</span>
+            </span>
+            <span class="nav-pill" id="logsCountBadge">0</span>
+          </button>
         </div>
 
         <!-- Footer Info Widget -->
@@ -2752,6 +2759,65 @@
           </div>
         </div>
 
+        <!-- SYSTEM LOGS VIEW -->
+        <div id="logsView" style="display:none;">
+          <div class="card">
+            <div class="card-header" style="flex-wrap:wrap; gap:12px;">
+              <div>
+                <div style="font-size:15px; font-weight:700; color:#f8fafc; display:flex; align-items:center; gap:8px;">
+                  <span>📜 System Activity Logs</span>
+                  <span id="logsTotalCount"
+                    style="font-size:11px; background:rgba(99,102,241,0.2); border:1px solid rgba(99,102,241,0.4); color:#c7d2fe; padding:2px 8px; border-radius:999px;">0
+                    logs</span>
+                </div>
+                <div style="font-size:12px; color:#9ca3af; margin-top:4px;">Audit trail of all administrative and user
+                  operations.</div>
+              </div>
+              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                <input id="searchLogs" type="text" placeholder="Search activity (clan, user, action)..."
+                  style="background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:6px 12px; font-size:12px; color:#e5e7eb; width:220px; outline:none;">
+                <select id="filterLogAction"
+                  style="background:rgba(15,23,42,0.9); border:1px solid rgba(55,65,81,0.9); border-radius:8px; padding:6px 10px; font-size:12px; color:#e5e7eb; outline:none; cursor:pointer;">
+                  <option value="">All Actions</option>
+                  <option value="Slot">Slot Events</option>
+                  <option value="Scoreboard">Scoreboard</option>
+                  <option value="Banned">Banned Teams</option>
+                  <option value="Schedule">Schedule / Timer</option>
+                  <option value="User">User Management</option>
+                  <option value="Auth">Login / Auth</option>
+                  <option value="Settings">Password / Settings</option>
+                </select>
+                <button id="refreshLogsBtn" class="btn btn-ghost" style="font-size:11px; padding:6px 12px;">🔄
+                  Refresh</button>
+                <button id="exportLogsBtn" class="btn btn-ghost" style="font-size:11px; padding:6px 12px;">📋 Copy
+                  All</button>
+                <button id="clearLogsBtn" class="btn btn-danger" style="font-size:11px; padding:6px 12px;">🗑️ Clear
+                  Logs</button>
+              </div>
+            </div>
+
+            <div style="overflow-x:auto; margin-top:14px;">
+              <table class="users-table" style="font-size:12px;">
+                <thead>
+                  <tr>
+                    <th style="width:160px;">Timestamp</th>
+                    <th style="width:150px;">Actor / User</th>
+                    <th style="width:160px;">Action</th>
+                    <th style="width:105px;">Context</th>
+                    <th>Details</th>
+                  </tr>
+                </thead>
+                <tbody id="logsTableBody">
+                  <tr>
+                    <td colspan="5" style="text-align:center; color:#9ca3af; padding:25px;">Loading activity logs...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
         <!-- TOURNAMENT SLOTS VIEW (single list — no 6/8/10 PM schedule) -->
         <div id="tournamentView" style="display:none;">
           <div class="card">
@@ -3119,8 +3185,8 @@
   </div>
 
   <script>
-    const SUPABASE_URL = 'https://pmijauhozoxmtjvbdusq.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_4pWlSLYxW_2YjUFE3iDbpw_EyKcKFz9';
+    const SUPABASE_URL = 'https://yzdtszfubnastllfyczs.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6ZHRzemZ1Ym5hc3RsbGZ5Y3pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNzEyOTgsImV4cCI6MjA4NzY0NzI5OH0.GJz1ouXTbi3GQZYJa0756w4CgqabT9C2EH_mW_m_5TY';
     const MAX_SLOTS = 25;
 
     const supabaseHeaders = () => ({
@@ -3823,13 +3889,11 @@
         return;
       }
       try {
-        await fetch(`${SUPABASE_URL}/rest/v1/config`, {
-          method: 'POST',
-          headers: { ...supabaseHeaders(), Prefer: 'resolution=merge-duplicates, return=minimal' },
-          body: JSON.stringify([
-            { key: `${currentSched}_sched_start`, value: s },
-            { key: `${currentSched}_sched_end`, value: e }
-          ])
+        await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${currentSched}_sched_start`, {
+          method: 'PATCH', headers: supabaseHeaders(), body: JSON.stringify({ value: s })
+        });
+        await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${currentSched}_sched_end`, {
+          method: 'PATCH', headers: supabaseHeaders(), body: JSON.stringify({ value: e })
         });
         showAdminToast(`${currentSched.toUpperCase()} schedule saved.`, 'success');
         logSystemActivity('Schedule Timer Set', `${currentSched.toUpperCase()} schedule timer set: ${formatTime(s)} - ${formatTime(e)}.`, 'SCHEDULE');
@@ -3841,13 +3905,11 @@
     schedulePopupClear.onclick = async () => {
       if (!confirm(`Clear schedule timer for ${currentSched.toUpperCase()}?`)) return;
       try {
-        await fetch(`${SUPABASE_URL}/rest/v1/config`, {
-          method: 'POST',
-          headers: { ...supabaseHeaders(), Prefer: 'resolution=merge-duplicates, return=minimal' },
-          body: JSON.stringify([
-            { key: `${currentSched}_sched_start`, value: '' },
-            { key: `${currentSched}_sched_end`, value: '' }
-          ])
+        await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${currentSched}_sched_start`, {
+          method: 'PATCH', headers: supabaseHeaders(), body: JSON.stringify({ value: '' })
+        });
+        await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${currentSched}_sched_end`, {
+          method: 'PATCH', headers: supabaseHeaders(), body: JSON.stringify({ value: '' })
         });
         showAdminToast("Timer cleared.", 'success');
         logSystemActivity('Schedule Timer Cleared', `${currentSched.toUpperCase()} schedule timer cleared.`, 'SCHEDULE');
@@ -4422,6 +4484,7 @@
       bannedView.style.display = view === 'banned' ? 'block' : 'none';
       if (clansView) clansView.style.display = view === 'clans' ? 'block' : 'none';
       if (usersView) usersView.style.display = view === 'users' ? 'block' : 'none';
+      if (logsView) logsView.style.display = view === 'logs' ? 'block' : 'none';
       if (tournamentView) tournamentView.style.display = view === 'tournamentSlot' ? 'block' : 'none';
       if (tournamentScoreboardView) tournamentScoreboardView.style.display = view === 'tournamentScoreboard' ? 'block' : 'none';
 
@@ -4430,11 +4493,12 @@
       if (navBanned) navBanned.classList.toggle('active', view === 'banned');
       if (navClans) navClans.classList.toggle('active', view === 'clans');
       if (navUsers) navUsers.classList.toggle('active', view === 'users');
+      if (navLogs) navLogs.classList.toggle('active', view === 'logs');
       if (navTournamentSlot) navTournamentSlot.classList.toggle('active', view === 'tournamentSlot');
       if (navTournamentScoreboard) navTournamentScoreboard.classList.toggle('active', view === 'tournamentScoreboard');
 
       const schedSwitcherWrap = document.getElementById('schedSwitcherWrap');
-      const hideSched = view === 'tournamentSlot' || view === 'tournamentScoreboard' || view === 'clans' || view === 'users';
+      const hideSched = view === 'tournamentSlot' || view === 'tournamentScoreboard' || view === 'clans' || view === 'users' || view === 'logs';
       if (schedSwitcherWrap) schedSwitcherWrap.style.display = hideSched ? 'none' : '';
 
       if (headerReservationBlock) {
@@ -4447,6 +4511,7 @@
         else if (view === 'banned') adminPageTitle.textContent = 'Banned Teams · Admin';
         else if (view === 'clans') adminPageTitle.textContent = 'Clan Management · Admin';
         else if (view === 'users') adminPageTitle.textContent = 'User Management · Admin';
+        else if (view === 'logs') adminPageTitle.textContent = 'System Logs · Admin';
         else if (view === 'tournamentSlot') adminPageTitle.textContent = 'Tournament Slot · Admin';
         else if (view === 'tournamentScoreboard') adminPageTitle.textContent = 'Tournament Scoreboard · Admin';
       }
@@ -4456,6 +4521,7 @@
       else if (view === 'banned') viewSubtitle.textContent = `Managing ${currentSched.toUpperCase()} Banned & Warning Teams.`;
       else if (view === 'clans') viewSubtitle.textContent = 'Approve clan accounts and manage the APPROVED CLAN LIST for scrim reservations.';
       else if (view === 'users') viewSubtitle.textContent = 'Approve, activate, or deactivate registered user accounts.';
+      else if (view === 'logs') viewSubtitle.textContent = 'Audit trail of all administrative and user operations.';
       else if (view === 'tournamentSlot') viewSubtitle.textContent = 'Manage tournament slot registrations. No schedule needed.';
       else if (view === 'tournamentScoreboard') viewSubtitle.textContent = 'Scores for teams registered in Tournament Slots.';
 
@@ -4465,6 +4531,10 @@
 
       if (view === 'users') {
         loadUsersTable();
+      }
+
+      if (view === 'logs') {
+        loadSystemLogs();
       }
 
       if (view === 'tournamentSlot' || view === 'tournamentScoreboard') {
@@ -5862,8 +5932,9 @@
       const isCurrentlyManualOpen = toggleOpenBtn.dataset.currentVal === 'open';
       const makeOpen = !isCurrentlyManualOpen;
       const { confirmed } = await openAdminPopup({
+
         title: makeOpen ? `Open ${currentSched.toUpperCase()} manually` : `Close ${currentSched.toUpperCase()} manually`,
-        message: makeOpen ? `Open reservations for ${currentSched.toUpperCase()}?` : `Close reservations for ${currentSched.toUpperCase()}?`,
+        message: makeOpen ? `Open reservations for ${currentSched.toUpperCase()} ? ` : `Close reservations for ${currentSched.toUpperCase()} ? `,
         requireInput: false,
         confirmText: makeOpen ? 'Open' : 'Close',
         cancelText: 'Cancel'
@@ -5871,10 +5942,10 @@
       if (!confirmed) return;
       try {
         const value = makeOpen ? 'true' : 'false';
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/config`, {
-          method: 'POST',
-          headers: { ...supabaseHeaders(), Prefer: 'resolution=merge-duplicates, return=minimal' },
-          body: JSON.stringify({ key: `${currentSched}_is_open`, value }),
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${currentSched}_is_open`, {
+          method: 'PATCH',
+          headers: supabaseHeaders(),
+          body: JSON.stringify({ value }),
         });
         if (res.ok) {
           await checkGlobalStatus();
@@ -5908,6 +5979,9 @@
     }
     if (navUsers) {
       navUsers.addEventListener('click', () => setActiveView('users'));
+    }
+    if (navLogs) {
+      navLogs.addEventListener('click', () => setActiveView('logs'));
     }
     if (refreshUsersBtn) {
       refreshUsersBtn.addEventListener('click', () => loadUsersTable());
@@ -6044,7 +6118,42 @@
     const LOGS_CONFIG_KEY = 'app_system_logs';
 
     async function logSystemActivity(action, details, context = 'GENERAL', actorOverride = null, roleOverride = null) {
-      // Disabled to prevent Supabase database storage bloat and improve speed
+      try {
+        const actor = actorOverride || sessionStorage.getItem('codmUsername') || 'Admin';
+        const role = roleOverride || sessionStorage.getItem('codmUserRole') || 'admin';
+        const newEntry = {
+          id: (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : (Date.now().toString(36) + Math.random().toString(36).slice(2)),
+          timestamp: new Date().toISOString(),
+          actor,
+          role,
+          action,
+          details,
+          context: (context || 'GENERAL').toUpperCase()
+        };
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/config?key=eq.${LOGS_CONFIG_KEY}&select=value`, {
+          headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+        });
+        const data = await res.json();
+        let logs = [];
+        if (data && data.length > 0 && data[0].value) {
+          try { logs = JSON.parse(data[0].value); } catch (e) { logs = []; }
+        }
+        if (!Array.isArray(logs)) logs = [];
+        logs.unshift(newEntry);
+        if (logs.length > 500) logs = logs.slice(0, 500);
+        await fetch(`${SUPABASE_URL}/rest/v1/config`, {
+          method: 'POST',
+          headers: { ...supabaseHeaders(), Prefer: 'resolution=merge-duplicates, return=minimal' },
+          body: JSON.stringify({ key: LOGS_CONFIG_KEY, value: JSON.stringify(logs) })
+        });
+        latestSystemLogs = logs;
+        const total = logs.length;
+        if (logsCountBadge) logsCountBadge.textContent = total;
+        if (logsTotalCount) logsTotalCount.textContent = `${total} logs`;
+        if (logsView && logsView.style.display !== 'none') {
+          applyLogsFilter();
+        }
+      } catch (e) { console.error('logSystemActivity error:', e); }
     }
 
     function getLogBadgeClass(context) {
